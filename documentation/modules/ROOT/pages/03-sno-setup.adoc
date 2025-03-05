@@ -101,7 +101,7 @@ spec:
 
 The source path of this Application points to the ApplicationSet used.
 
-ApplicationSet is a Custom Resource that can be used to genereate Applications to multiple clusters from multiple origins. ApplicationSet controller is installed alongside ArgoCD even though it must be explicitaly enabled. 
+ApplicationSet is a Custom Resource that can be used to generate Applications to multiple clusters from multiple origins. ApplicationSet controller is installed alongside ArgoCD even though it must be explicitly enabled. 
 
 ApplicationSet is a helpful approach for multi cluster management, and it supplements ArgoCD by adding additional features in support of _cluster-administrator-focused_ scenarios. Some of those are:
 
@@ -358,8 +358,8 @@ It is possible also to take a look in the _Argo Hub_ web console (https://consol
 image::cluster-wide-role-binding.png[]
 
 NOTE: Take a look to:
-https://developers.redhat.com/articles/2023/03/06/5-global-environment-variables-provided-openshift-gitops#5_environment_variables__overview[Global Env Vars], https://docs.openshift.com/container-platform/4.10/cicd/gitops/setting-up-argocd-instance.html#gitops-deploy-resources-different-namespaces_setting-up-argocd-instance[How to label namespaces] 
-and https://docs.openshift.com/container-platform/4.12/cicd/gitops/configuring-an-openshift-cluster-by-deploying-an-application-with-cluster-configurations.html#gitops-additional-permissions-for-cluster-config_configuring-an-openshift-cluster-by-deploying-an-application-with-cluster-configurations[How to create a _Role Binding_].
+https://developers.redhat.com/articles/2023/03/06/5-global-environment-variables-provided-openshift-gitops#5_environment_variables__overview[Global Env Vars], https://docs.openshift.com/gitops/1.15/argocd_instance/setting-up-argocd-instance.html#gitops-deploy-resources-different-namespaces_setting-up-argocd-instance[How to label namespaces] 
+and https://docs.openshift.com/gitops/1.15/declarative_clusterconfig/configuring-an-openshift-cluster-by-deploying-an-application-with-cluster-configurations.html#gitops-additional-permissions-for-cluster-config_configuring-an-openshift-cluster-by-deploying-an-application-with-cluster-configurations[How to create a _Role Binding_].
 
 Once the _openshift-gitops_ operator is running, we need to deploy the ArgoCD instance. To make sure instance is deployed after the operator is running we use _Sync Waves_ and _Custom Resources Healthcheck_.
 
