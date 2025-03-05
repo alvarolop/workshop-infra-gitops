@@ -3,7 +3,7 @@ runtime:
 
 site:
   title: GitOps Infrastructure Configuration Workshop
-  url: https://redhat-scholars.github.io/course-template
+  url: https://alvarolop.github.io/workshop-infra-gitops/index.html
   start_page: workshop-infra-gitops::index.adoc
 
 content:
