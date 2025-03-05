@@ -51,7 +51,7 @@ IMPORTANT: Replace *_<name>_* for your assigned cluster in this workshop. *_<pas
 [source, shell,subs="+macros,+attributes"]
 ----
 oc login -u userXX -p <pass> <ocp-hub-cluster-api>
-----  
+----
 
 It is possible to log in as well trough the web console, we recommend to do it because this way you will be able to jump between _Argo Hub_ and _SNO_ clusters easily.
 
@@ -79,7 +79,7 @@ on hub-setup Application.
 .Managed cluster secret in Argo Hub
 image::cluster-api-sno.png[]
 
-You can take a look to the chart used for creating these secrets https://github.com/romerobu/workshop-gitops-content-deploy/blob/setup-sno/hub-setup/charts/gitops-setup/values.yaml[here] and https://github.com/romerobu/workshop-gitops-content-deploy/blob/setup-sno/hub-setup/charts/gitops-setup/templates/secret-cluster.yaml[here].
+You can take a look to the chart used for creating these secrets https://github.com/alvarolop/workshop-gitops-infra-deploy/blob/main/02-gitops-setup/values.yaml[here] and https://github.com/alvarolop/workshop-gitops-infra-deploy/blob/main/02-gitops-setup/templates/secret-cluster.yaml#L25-L26[here].
 
 [#hubsetup]
 == 2.3 Argo Hub Setup
@@ -97,7 +97,7 @@ IMPORTANT: Change _<domain>_ information, provided by the instructor at the begi
 .Log in openshift-gitops console instance
 image::argo-login-1.png[]
 
-- Hit *_my_htpasswd_provider_*. 
+- Hit *Workshop Users*. 
 
 .OpenShift credentials for openshift-gitops instance
 image::hub-login-1.png[]
@@ -168,7 +168,7 @@ IMPORTANT: Change _<domain>_ information, provided by the instructor at the begi
 .Log in argocd console instance
 image::argo-login-1.png[]
 
-- Hit *_my_htpasswd_provider_*. 
+- Hit *Workshop Users*. 
 
 .OpenShift credentials for argocd instance
 image::hub-login-1.png[]
