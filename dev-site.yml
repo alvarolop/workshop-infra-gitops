@@ -3,8 +3,8 @@ runtime:
 
 site:
   title: GitOps Infrastructure Configuration Workshop
-  url: http://localhost:3000/index.html
-  start_page: ROOT::index.adoc
+  url: http://localhost:3000/workshop-infra-gitops/index.html
+  start_page: workshop-infra-gitops::index.adoc
 
 content:
   sources:
