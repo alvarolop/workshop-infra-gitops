@@ -3,8 +3,8 @@ runtime:
 
 site:
   title: GitOps Infrastructure Configuration Workshop
-  url: http://localhost:3000/workshop-infra-gitops/index.html
-  start_page: workshop-infra-gitops::index.adoc
+  url: http://localhost:3000/index.html
+  start_page: ROOT::index.adoc
 
 content:
   sources:
@@ -19,7 +19,8 @@ asciidoc:
     - ./lib/tab-block.js
 ui:
   bundle:
-    url: https://github.com/redhat-developer-demos/rhd-tutorial-ui/releases/download/v0.1.10/ui-bundle.zip
+    # url: https://github.com/redhat-developer-demos/rhd-tutorial-ui/releases/download/v0.1.10/ui-bundle.zip
+    url: https://github.com/aolle/rhd-tutorial-ui/releases/download/v0.1.13/ui-bundle.zip
     snapshot: true
   supplemental_files: ./supplemental-ui
 output:

@@ -1,4 +1,4 @@
-name: workshop-infra-gitops
+name: ROOT
 title: GitOps Infrastructure Configuration Workshop
 version: master
 nav:
