@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://redhat-scholars.github.io/course-template/workshop-infra-gitops/01-setup.html</loc>
-<lastmod>2025-03-05T20:19:18.946Z</lastmod>
+<loc>https://alvarolop.github.io/workshop-infra-gitops/index.html/workshop-infra-gitops/01-setup.html</loc>
+<lastmod>2025-03-05T20:22:22.323Z</lastmod>
 </url>
 <url>
-<loc>https://redhat-scholars.github.io/course-template/workshop-infra-gitops/02-deploy.html</loc>
-<lastmod>2025-03-05T20:19:18.946Z</lastmod>
+<loc>https://alvarolop.github.io/workshop-infra-gitops/index.html/workshop-infra-gitops/02-deploy.html</loc>
+<lastmod>2025-03-05T20:22:22.323Z</lastmod>
 </url>
 <url>
-<loc>https://redhat-scholars.github.io/course-template/workshop-infra-gitops/index.html</loc>
-<lastmod>2025-03-05T20:19:18.946Z</lastmod>
+<loc>https://alvarolop.github.io/workshop-infra-gitops/index.html/workshop-infra-gitops/index.html</loc>
+<lastmod>2025-03-05T20:22:22.323Z</lastmod>
 </url>
 </urlset>
