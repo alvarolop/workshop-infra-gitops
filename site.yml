@@ -2,9 +2,9 @@ runtime:
   cache_dir: ./.cache/antora
 
 site:
-  title: Template Tutorial
+  title: GitOps Infrastructure Configuration Workshop
   url: https://redhat-scholars.github.io/course-template
-  start_page: template-tutorial::index.adoc
+  start_page: workshop-infra-gitops::index.adoc
 
 content:
   sources:
