@@ -1,29 +1,87 @@
-= Setup
+= 1. Environment Setup
 include::_attributes.adoc[]
 
 [#prerequisite]
-== Prerequisite CLI tools
+== 1.1 Prerequisite CLI tools
 
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/prerequisites-kubernetes.adoc[]
+The following CLI tools are required for running the exercises in this tutorial. 
+Please have them installed and configured before you get started with any of the tutorial chapters.
+
+[cols="4*^,4*.",options="header,+attributes"]
+|===
+|**Tool**|**macOS**|**Fedora**|**windows**
+
+| `Git`
+| https://git-scm.com/download/mac[Download]
+| https://git-scm.com/download/linux[Download]
+| https://git-scm.com/download/win[Download]
+
+| `oc`
+| https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/openshift-client-mac.tar.gz[Download]
+| https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/openshift-client-linux.tar.gz[Download]
+| https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/openshift-client-windows.zip[Download]
+
+| `helm`
+| https://helm.sh/docs/intro/install/#from-homebrew-macos[Download]
+| https://helm.sh/docs/intro/install/#from-dnfyum-fedora[Download]
+| https://helm.sh/docs/intro/install/#from-scoop-windows[Download]
+
+| `Visual Studio Code`
+| https://code.visualstudio.com/docs/setup/mac[Download]
+| https://code.visualstudio.com/docs/setup/linux[Download]
+| https://code.visualstudio.com/docs/setup/windows[Download]
 |===
 
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/optional-requisites.adoc[]
-|===
+[#gettutorialsources]
+== 1.2 Get tutorial sources
 
-[#minikube]
-== Setup Kubernetes
+Regarding this workshop, there are two GitHub repositories you will need to fork. Follow the next steps in order to be able to start the workshop. 
+Beware to select all branches when you fork your repo!
 
-:profile: my_profile
+- Login in https://github.com/[GitHub].
+- Access https://github.com/alvarolop/workshop-gitops-content-deploy[workshop-gitops-content-deploy] repository.
+- Hit *_Fork_* available at the top right of the screen. Then click *_Create fork_* with the default configuration.
 
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/kubernetes-setup.adoc[]
+.Fork workshop-gitops-content-deploy
+image::fork-1.png[]
 
-And then you are ready for start using Kubernetes:
 
-image::kubelogo.png[]
+Now that you have the *_workshop-gitops-content-deploy_* repository forked in your GitHub account, let's clone it and create a new branch.
 
-[#downloadtutorial]
-== Get tutorial sources
+You will need to clone your repo using SSH keys in Git, if you haven't configured a ssh key pair you can take a look https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent[here].
 
-:tutorial-url: https://github.com/redhat-developer-demos/rhd-tutorial-common.git
-:folder: my_folder
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/download-sources.adoc[]
+IMPORTANT: Replace *_<your_user>_* for your GitHub user account, and *_<name>_* for your assigned cluster in this workshop.
+
+[.lines_7]
+[.console-input]
+[source, shell,subs="+macros,+attributes"]
+----
+cd ~
+git clone git@github.com:<your_user>/workshop-gitops-content-deploy.git
+
+cd ~/workshop-gitops-content-deploy
+git checkout -b sno-<name>-setup
+----
+
+Do the same with the second repository.
+
+- Access https://github.com/alvarolop/helm-infra-gitops-workshop[helm-infra-gitops-workshop] repository.
+- Hit *_Fork_* available at the top right of the screen. Then click *_Create fork_* with the default configuration.
+
+.Fork helm-infra-gitops-workshop
+image::fork-2.png[]
+
+Now you have the *_helm-infra-gitops-workshop_* repository forked in your GitHub account, let's clone it in local and create a new branch.
+
+IMPORTANT: Replace *_<your_user>_* for your GitHub user account, and *_<name>_* for your assigned cluster in this workshop.
+
+[.lines_7]
+[.console-input]
+[source, shell,subs="+macros,+attributes"]
+----
+cd ~
+git clone git@github.com:<your_user>/helm-infra-gitops-workshop.git
+
+cd ~/helm-infra-gitops-workshop
+git checkout -b sno-<name>  
+----  
