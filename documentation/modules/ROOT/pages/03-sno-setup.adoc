@@ -3,9 +3,9 @@
 [#managedconfiguration]
 == 3.1 Managed Cluster Configuration
 
-_Argo Hub_ setup has been already performed, so you just need to be focus on managed your Single Node OpenShift.
+_Argo Hub_ Application has been already synced, so you just need to be focus on managing your Single Node OpenShift.
 
-Let´s make some modifications in the code to start deploying _GitOps_ in the managed cluster. Open the _workshop-gitops-content-deploy_ folder and make sure all the changes are done in the correct branch _sno-<name>-setup_:
+Let's make some modifications in the code to start deploying _GitOps_ in the managed cluster. Open the _workshop-gitops-content-deploy_ folder and make sure all the changes are done in the correct branch _sno-<name>-setup_:
 
 NOTE: What is https://www.redhat.com/en/topics/devops/what-is-gitops[GitOps]?
 

@@ -1,6 +1,9 @@
 = 2. Deploy Argo Hub Setup
 include::_attributes.adoc[]
 
+
+
+
 [#laboverview]
 == 2.1 Lab overview
 
@@ -35,16 +38,21 @@ Once GitOps is deployed on your managed cluster you can start configuring day 2 
 .Day 2 operations and applications deploy
 image::diagram-5.png[]
 
+
+
+
+
+
+
 [#environment]
 == 2.2 Environment
 
-You have access to two clusters: *_Argo Hub_* and your own *_SNO_*.
+You have access to two clusters: *_Argo Hub_* and your own *_SNO_*:
 
-NOTE: Learn more about *https://www.redhat.com/en/blog/meet-single-node-openshift-our-smallest-openshift-footprint-edge-architectures[Sigle Node OpenShift]*, our managed cluster in this workshop. 
+* The Argo Hub is a normal OpenShift cluster that will be used to control the full fleet of clusters. It will be shared by all the participants of the workshop.
+* The SNO, or Single Node OpenShift, is a smaller cluster that will be individual to each of you so that you can experiment freely. Learn more about *https://www.redhat.com/en/blog/meet-single-node-openshift-our-smallest-openshift-footprint-edge-architectures[SNO]*, our managed cluster, in this workshop.
 
-Let's start logging in to *_Argo Hub_* cluster:
-
-IMPORTANT: Replace XX values of the *_OCP_USER_*, *_OCP_SNO_API_*, and *_OCP_SNO_CONSOLE_* with the values provided by the instructor at the beginning of this workshop.
+Replace XX values of the *_OCP_USER_*, *_OCP_SNO_API_*, and *_OCP_SNO_CONSOLE_* with the values provided by the instructor at the beginning of this workshop. After that, keep those variables at hand and present every time that you execute commands in your terminal.
 
 [.lines_7]
 [.console-input]
@@ -67,6 +75,15 @@ Make sure to use the correct values for *_OCP_USER_*, *_OCP_PASS_*, *_OCP_HUB_AP
 
 
 
+
+
+
+
+[#argohub]
+== 2.3 Accessing the Argo Hub
+
+Let's start logging in to *_Argo Hub_* cluster API:
+
 [.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
@@ -75,7 +92,7 @@ oc login -u $OCP_USER -p $OCP_PASS $OCP_HUB_API
 ----
 
 
-It is possible to log in as well trough the web console, we recommend to do it because this way you will be able to jump between _Argo Hub_ and _SNO_ clusters easily.
+You should also log in trough the web console. This way you will be able to jump between _Argo Hub_ and _SNO_ clusters easily.
 
 IMPORTANT: Change _<domain>_ information, provided by the instructor at the beginning of this workshop.
 
@@ -87,7 +104,7 @@ image::hub-login-1.png[]
 
 - Insert _userXX_ and _<pass>_ provided by instructor and click *_Log in_* button.
 
-.Insert Argo Hub crentials to log in
+.Insert Argo Hub credentials to log in
 image::hub-login-2.png[]
 
 On top of that, once logged into _Argo Hub_ you will only have permissions over your project and destination cluster.
@@ -102,11 +119,22 @@ image::cluster-api-sno.png[]
 
 You can take a look to the chart used for creating these secrets https://github.com/alvarolop/workshop-gitops-infra-deploy/blob/main/02-gitops-setup/values.yaml[here] and https://github.com/alvarolop/workshop-gitops-infra-deploy/blob/main/02-gitops-setup/templates/secret-cluster.yaml#L25-L26[here].
 
-[#hubsetup]
-== 2.3 Argo Hub Setup
 
-In the _Argo Hub_ cluster you can find two argo instances, _openshift-gitops_ (default) and _argocd_. Default instance is intended to manage the hub itself, and it is in charge of
-deploying the _argocd_ instance and its configuration. While _argocd_ instance is dedicated for managed clusters setup and configuration.
+
+
+
+
+
+
+
+
+[#hubsetup]
+== 2.4 Overview of the Hub Setup Application
+
+In the _Argo Hub_ cluster you can find two argo instances in different namespaces:
+
+* **openshift-gitops** (default) in the `openshift-gitops` namespace. The default instance is intended to manage the hub itself, and it is in charge of deploying the _argocd_ instance and its configuration.
+* **argocd** in the `openshift-operators` namespace which is dedicated for managed clusters setup and configuration.
 
 _Argo Hub_ setup should be done only once before this workshop, you can log in to _openshift-gitops_ instance console.
 
@@ -128,7 +156,7 @@ image::hub-login-1.png[]
 .openshift-gitops instance log in
 image::hub-login-2.png[]
 
-This user has _view permissions_ in _openshift-gitops_ instance, you can take a look to the objects argo is managing for deploying the second instance.
+This user has _view permissions_ in _openshift-gitops_ instance. You can take a look to the objects that ArgoCD is managing for deploying the second instance.
 
 .hub-setup overview
 image::hub-setup-overview.png[]
@@ -163,7 +191,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://github.com/<your_user>/workshop-gitops-content-deploy.git
+    repoURL: https://github.com/alvarolop/workshop-gitops-content-deploy.git
     targetRevision: setup-sno
     path: hub-setup/charts/gitops-setup 
   syncPolicy:
@@ -179,7 +207,17 @@ image::hub-setup-app.png[]
 
 For this initial setup it is only required to create _argocd_ instance, _App Projects_, _Groups_, _Role Bindings_ and _Secrets_ for cluster destinations.
 
-Then once this second instance, _argocd_, is up and running, you can login to the argo console with your *_userXX_*:
+
+
+
+
+
+
+[#managed]
+== 2.5 Accessing the Managed Cluster
+
+
+Once **argocd** instance (The second) is up and running, you can login to the ArgoCD console with your *_userXX_*:
 
 IMPORTANT: Change _<domain>_ information, provided by the instructor at the beginning of this workshop.
 
@@ -196,10 +234,10 @@ image::hub-login-1.png[]
 
 - Insert user _userXX_ and _<pass>_ provided by instructor and click *_Log in_* button.
 
-.argocd instance log in
+.ArgoCD instance log in
 image::hub-login-2.png[]
 
-In this instance ,_argocd_, you will log in to the console as *_admin user_* of your own project while you will only have *_cluster reader_* permissions when you login to OpenShift _Argo Hub_ console.
+In the *argocd* instance, your user will have **admin** permissions for your own applications, while you will only have *_cluster reader_* permissions when you login to OpenShift _Argo Hub_ console.
 
 By using _argocd_ instance you will be able to setup your own managed cluster.
 
