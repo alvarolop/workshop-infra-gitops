@@ -236,7 +236,7 @@ vi cluster-definition/sno-&lt;name&gt;/cluster.json</code></pre>
   "region": "eu-central-1",
   "cluster": {
     "name": "sno-&lt;name&gt;",
-    "address": "https://api.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com:6443"
+    "address": "https://api.sno-&lt;name&gt;.&lt;domain&gt;:6443"
   }
 }</code></pre>
 </div>
@@ -503,7 +503,7 @@ vi cluster-addons/charts/bootstrap/values.yaml</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">...
 vault:
-  vault_addr: "http://vault-vault.apps.argo-hub.&lt;domain&gt;.opentlc.com"
+  vault_addr: "http://vault-vault.apps.argo-hub.&lt;domain&gt;"
   avp_type: vault
 ...</code></pre>
 </div>
@@ -603,7 +603,7 @@ you need to change this configuration to make the instance <em>cluster wide</em>
 </div>
 </div>
 <div class="paragraph">
-<p>It is possible also to take a look in the <em>Argo Hub</em> web console (<a href="https://console-openshift-console.apps.argo-hub.&lt;domain&gt;.opentlc.com/" class="bare">https://console-openshift-console.apps.argo-hub.&lt;domain&gt;.opentlc.com/</a>):</p>
+<p>It is possible also to take a look in the <em>Argo Hub</em> web console (<a href="https://console-openshift-console.apps.argo-hub.&lt;domain&gt;/" class="bare">https://console-openshift-console.apps.argo-hub.&lt;domain&gt;/</a>):</p>
 </div>
 <div class="imageblock">
 <div class="content">
