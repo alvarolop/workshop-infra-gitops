@@ -42,22 +42,44 @@ You have access to two clusters: *_Argo Hub_* and your own *_SNO_*.
 
 NOTE: Learn more about *https://www.redhat.com/en/blog/meet-single-node-openshift-our-smallest-openshift-footprint-edge-architectures[Sigle Node OpenShift]*, our managed cluster in this workshop. 
 
-Let´s start log in to *_Argo Hub_* cluster:
+Let's start logging in to *_Argo Hub_* cluster:
 
-IMPORTANT: Replace *_<name>_* for your assigned cluster in this workshop. *_<pass>_* and *_<ocp-hub-cluster-api>_* provided by the instructor at the beginning of this workshop. 
+IMPORTANT: Replace XX values of the *_OCP_USER_*, *_OCP_SNO_API_*, and *_OCP_SNO_CONSOLE_* with the values provided by the instructor at the beginning of this workshop.
 
 [.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
-oc login -u userXX -p <pass> <ocp-hub-cluster-api>
+OCP_USER=userXX
+OCP_PASS=redhat
+OCP_PASS=redhat
+DOMAIN=sandbox2414.opentlc.com
+OCP_HUB_API=https://api.argo-hub.sandbox2414.opentlc.com:6443
+OCP_HUB_CONSOLE=https://console-openshift-console.apps.argo-hub.sandbox2414.opentlc.com
+OCP_SNO_API=https://api.sno-XX.sandbox2414.opentlc.com:6443
+OCP_SNO_CONSOLE=https://console-openshift-console.apps.sno-XX.sandbox2414.opentlc.com
 ----
+
+[NOTE]
+====
+Make sure to use the correct values for *_OCP_USER_*, *_OCP_PASS_*, *_OCP_HUB_API_*, *_OCP_HUB_CONSOLE_*, *_OCP_SNO_API_*, and *_OCP_SNO_CONSOLE_* as provided.
+====
+
+
+
+[.lines_7]
+[.console-input]
+[source, shell,subs="+macros,+attributes"]
+----
+oc login -u $OCP_USER -p $OCP_PASS $OCP_HUB_API
+----
+
 
 It is possible to log in as well trough the web console, we recommend to do it because this way you will be able to jump between _Argo Hub_ and _SNO_ clusters easily.
 
 IMPORTANT: Change _<domain>_ information, provided by the instructor at the beginning of this workshop.
 
-- Open <hub-ocp-cluster-console> (E.g. https://console-openshift-console.apps.argo-hub.<domain>.opentlc.com/)
+- Open $OCP_HUB_CONSOLE (E.g. https://console-openshift-console.apps.argo-hub.<domain>/)
 - Hit *Workshop Users*. 
 
 .Argo Hub log in
@@ -72,8 +94,7 @@ On top of that, once logged into _Argo Hub_ you will only have permissions over 
 
 The reason why _Argo Hub_ has permissions over your managed cluster is because it is configured as a destination server, given an authentication method.
 
-In _Argo Hub_ there is a secret in _openshift-operators_ namespace for every managed cluster containing this information. There are several ways to implement this, you can generate an 
-authentication token for this purpose or you can pass _kubeconfig_ file to give full control over the destination cluster. You do not need to do anything as this is already done
+In _Argo Hub_ there is a secret in _openshift-operators_ namespace for every managed cluster containing this information. There are several ways to implement this, you can generate an authentication token for this purpose or you can pass _kubeconfig_ file to give full control over the destination cluster. You do not need to do anything as this is already done
 on hub-setup Application.
 
 .Managed cluster secret in Argo Hub
@@ -91,7 +112,7 @@ _Argo Hub_ setup should be done only once before this workshop, you can log in t
 
 IMPORTANT: Change _<domain>_ information, provided by the instructor at the beginning of this workshop.
 
-- Open <openshift-gitops-instance-console> (E.g. https://openshift-gitops-server-openshift-gitops.apps.argo-hub.<domain>.opentlc.com)
+- Open <openshift-gitops-instance-console> (E.g. https://openshift-gitops-server-openshift-gitops.apps.argo-hub.<domain>)
 - Click *_LOG IN VIA OPENSHIFT_*.
 
 .Log in openshift-gitops console instance
@@ -162,7 +183,7 @@ Then once this second instance, _argocd_, is up and running, you can login to th
 
 IMPORTANT: Change _<domain>_ information, provided by the instructor at the beginning of this workshop.
 
-- Open <argocd-instance-console> (E.g. https://argocd-server-openshift-operators.apps.argo-hub.<domain>.opentlc.com)
+- Open <argocd-instance-console> (E.g. https://argocd-server-openshift-operators.apps.argo-hub.<domain>)
 - Click *_LOG IN VIA OPENSHIFT_*.
 
 .Log in argocd console instance

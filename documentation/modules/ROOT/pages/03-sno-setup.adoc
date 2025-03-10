@@ -55,7 +55,7 @@ vi cluster-definition/sno-<name>/cluster.json
   "region": "eu-central-1",
   "cluster": {
     "name": "sno-<name>",
-    "address": "https://api.sno-<name>.<domain>.opentlc.com:6443"
+    "address": "https://api.sno-<name>.<domain>:6443"
   }
 }
 ----
@@ -271,7 +271,7 @@ vi cluster-addons/charts/bootstrap/values.yaml
 ----
 ...
 vault: 
-  vault_addr: "http://vault-vault.apps.argo-hub.<domain>.opentlc.com"
+  vault_addr: "http://vault-vault.apps.argo-hub.<domain>"
   avp_type: vault
 ...
 ----
@@ -352,7 +352,7 @@ After setting this global variable you can see a new _Cluster Role Binding_ for 
 oc get clusterrolebinding openshift-gitops-openshift-gitops-argocd-application-controller -n openshift-operators -o yaml
 ----
 
-It is possible also to take a look in the _Argo Hub_ web console (https://console-openshift-console.apps.argo-hub.<domain>.opentlc.com/):
+It is possible also to take a look in the _Argo Hub_ web console (https://console-openshift-console.apps.argo-hub.<domain>/):
 
 .Cluster Role Binding
 image::cluster-wide-role-binding.png[]

@@ -330,7 +330,7 @@ oc get oauth cluster -o yaml
 
 It might take a while till authentication pods restart, if you see oauth is not progressing manually restart openshift-authentication pods.
 
-- _Log out_ and _Log in_ back (E.g. https://console-openshift-console.apps.sno-<name>.<domain>.opentlc.com). 
+- _Log out_ and _Log in_ back (E.g. https://console-openshift-console.apps.sno-<name>.<domain>). 
 
 - Then you should see new Identity Providers listed in your _SNO_.
 
@@ -420,7 +420,7 @@ git commit -m "operators"
 git push origin sno-<name>
 ----
 
-Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>.opentlc.com)
+Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>)
 
 To create _sno-<name>-operators_ Application, once logged in, click on:
 
@@ -467,7 +467,7 @@ If _Sync Waves_ are not configured properly it will try to create resources whos
 
 Once operators are installed, you can view them as well with the _Install Plan_ managed by Argo:
 
-- Log in _argocd-infra_ instance console: (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>.opentlc.com)
+- Log in _argocd-infra_ instance console: (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>)
 
 - Click on _sno-<name>-operators_ Application
 
@@ -476,7 +476,7 @@ image::operators-install-plan.png[]
 
 Then, deploy _Bookinfo_ app using _argocd-apps_ instance. You will realize you only need to deploy apps components as namespace is already managed by _argocd-infra_ instance:
 
-- Log in *_argocd-apps_* instance console: (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<name>.<domain>.opentlc.com)
+- Log in *_argocd-apps_* instance console: (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<name>.<domain>)
 
 Deploy the _sno-<name>-bookinfo_ Application, once logged in, click on:
 
@@ -590,7 +590,7 @@ git commit -m "namespace configuration"
 git push origin sno-<name>
 ----
 
-Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>.opentlc.com)
+Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>)
 
 To create _sno-<name>-namespace_ Application, once logged in, click on:
 
@@ -629,7 +629,7 @@ spec:
 
 - Then hit *_Save_* -> *_Create_*
 
-Then deploy an _example-app_ on *_argocd-apps_* instance (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<name>.<domain>.opentlc.com)
+Then deploy an _example-app_ on *_argocd-apps_* instance (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<name>.<domain>)
 
 Deploy the _sno-<name>-app_ Application, once logged in, click on:
 
@@ -826,7 +826,7 @@ git commit -m "monitoring"
 git push origin sno-<name>
 ----
 
-Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>.opentlc.com)
+Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>)
 
 To create _sno-<name>-monitoring_ Application, once logged in, click on:
 
@@ -867,7 +867,7 @@ spec:
 
 Configuring the monitoring application is quite straightforward since it does not have any direct dependencies on other objects. As such, you do not need to worry about setting up _Sync Waves_, which are typically used to manage the order in which objects are deployed to avoid issues with dependencies.
 
-Then navigate to OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<name>.<domain>.opentlc.com) to verify those objects deployed in the _argocd-infra_ instance exist on the _SNO_ and if _Service Monitor_ is scraping your metrics properly:
+Then navigate to OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<name>.<domain>) to verify those objects deployed in the _argocd-infra_ instance exist on the _SNO_ and if _Service Monitor_ is scraping your metrics properly:
 
 Once the _Service Monitor_ is created, the respective metrics should be found in the _SNO_ OpenShift Console (*_Observe_* -> *_Metrics_*). For example, it is possible to find the *_tomcat_sessions_active_current_sessions metric_*:
 
@@ -908,7 +908,7 @@ ConfigMap *_cmp-plugin_* defines the plugin that will be mounted in the sidecar 
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
-oc login -u admin -p <pass> https://api.sno-<name>.<domain>.opentlc.com:6443
+oc login -u admin -p <pass> https://api.sno-<name>.<domain>:6443
 oc get -n openshift-operators configmap cmp-plugin -o yaml 
 ----  
 
@@ -1109,7 +1109,7 @@ cat charts/vault/values.yaml
 
 If you take a look to the existing secret in _vault-secrets_ namespace, as we are telling Application not to use Vault plugin, it is *NOT* replacing the sensitive information:
 
-- Log in OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<name>.<domain>.opentlc.com)
+- Log in OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<name>.<domain>)
 
 - Hit *_my_htpasswd_provider_*. 
 
@@ -1120,7 +1120,7 @@ If you take a look to the existing secret in _vault-secrets_ namespace, as we ar
 .Vault plugin secret
 image::secret-vault.png[]
 
-So we need to modify existing Application _sno-<name>-vault_ in _argocd-apps_ instance (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<name>.<domain>.opentlc.com) to use *plugin*. 
+So we need to modify existing Application _sno-<name>-vault_ in _argocd-apps_ instance (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<name>.<domain>) to use *plugin*. 
 
 NOTE: This modification applies to *Vault application* deployed at the end of *_3.2 Helm Charts subsection_*.
 
@@ -1159,7 +1159,7 @@ You can try to delete it and see how it is created.
 ----
 
 oc get route vault -n vault-secrets 
-curl vault-vault-secrets.apps.sno-<name>.<domain>.opentlc.com
+curl vault-vault-secrets.apps.sno-<name>.<domain>
 ----
 
 [.lines_7]
