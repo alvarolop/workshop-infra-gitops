@@ -82,7 +82,13 @@
     <a class="nav-link" href="#environment">2.2 Environment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#hubsetup">2.3 Argo Hub Setup</a>
+    <a class="nav-link" href="#argohub">2.3 Accessing the Argo Hub</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#hubsetup">2.4 Overview of the Hub Setup Application</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#managed">2.5 Accessing the Managed Cluster</a>
   </li>
 </ul>
   </li>
@@ -220,34 +226,20 @@ You will be able to connect to both <em>Argo Hub</em> and <em>managed</em> clust
 <h2 id="environment"><a class="anchor" href="#environment"></a>2.2 Environment</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You have access to two clusters: <strong><em>Argo Hub</em></strong> and your own <strong><em>SNO</em></strong>.</p>
+<p>You have access to two clusters: <strong><em>Argo Hub</em></strong> and your own <strong><em>SNO</em></strong>:</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Learn more about <strong><a href="https://www.redhat.com/en/blog/meet-single-node-openshift-our-smallest-openshift-footprint-edge-architectures">Sigle Node OpenShift</a></strong>, our managed cluster in this workshop.
-</td>
-</tr>
-</table>
+<div class="ulist">
+<ul>
+<li>
+<p>The Argo Hub is a normal OpenShift cluster that will be used to control the full fleet of clusters. It will be shared by all the participants of the workshop.</p>
+</li>
+<li>
+<p>The SNO, or Single Node OpenShift, is a smaller cluster that will be individual to each of you so that you can experiment freely. Learn more about <strong><a href="https://www.redhat.com/en/blog/meet-single-node-openshift-our-smallest-openshift-footprint-edge-architectures">SNO</a></strong>, our managed cluster, in this workshop.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s start logging in to <strong><em>Argo Hub</em></strong> cluster:</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Replace XX values of the <strong><em>OCP_USER</em></strong>, <strong><em>OCP_SNO_API</em></strong>, and <strong><em>OCP_SNO_CONSOLE</em></strong> with the values provided by the instructor at the beginning of this workshop.
-</td>
-</tr>
-</table>
+<p>Replace XX values of the <strong><em>OCP_USER</em></strong>, <strong><em>OCP_SNO_API</em></strong>, and <strong><em>OCP_SNO_CONSOLE</em></strong> with the values provided by the instructor at the beginning of this workshop. After that, keep those variables at hand and present every time that you execute commands in your terminal.</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
@@ -275,13 +267,21 @@ OCP_SNO_CONSOLE=https://console-openshift-console.apps.sno-XX.sandbox2414.opentl
 </tr>
 </table>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="argohub"><a class="anchor" href="#argohub"></a>2.3 Accessing the Argo Hub</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start logging in to <strong><em>Argo Hub</em></strong> cluster API:</p>
+</div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc login -u $OCP_USER -p $OCP_PASS $OCP_HUB_API</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>It is possible to log in as well trough the web console, we recommend to do it because this way you will be able to jump between <em>Argo Hub</em> and <em>SNO</em> clusters easily.</p>
+<p>You should also log in trough the web console. This way you will be able to jump between <em>Argo Hub</em> and <em>SNO</em> clusters easily.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -322,7 +322,7 @@ Change <em>&lt;domain&gt;</em> information, provided by the instructor at the be
 <div class="content">
 <img src="_images/hub-login-2.png" alt="hub login 2">
 </div>
-<div class="title">Figure 7. Insert Argo Hub crentials to log in</div>
+<div class="title">Figure 7. Insert Argo Hub credentials to log in</div>
 </div>
 <div class="paragraph">
 <p>On top of that, once logged into <em>Argo Hub</em> you will only have permissions over your project and destination cluster.</p>
@@ -346,11 +346,20 @@ on hub-setup Application.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="hubsetup"><a class="anchor" href="#hubsetup"></a>2.3 Argo Hub Setup</h2>
+<h2 id="hubsetup"><a class="anchor" href="#hubsetup"></a>2.4 Overview of the Hub Setup Application</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the <em>Argo Hub</em> cluster you can find two argo instances, <em>openshift-gitops</em> (default) and <em>argocd</em>. Default instance is intended to manage the hub itself, and it is in charge of
-deploying the <em>argocd</em> instance and its configuration. While <em>argocd</em> instance is dedicated for managed clusters setup and configuration.</p>
+<p>In the <em>Argo Hub</em> cluster you can find two argo instances in different namespaces:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>openshift-gitops</strong> (default) in the <code>openshift-gitops</code> namespace. The default instance is intended to manage the hub itself, and it is in charge of deploying the <em>argocd</em> instance and its configuration.</p>
+</li>
+<li>
+<p><strong>argocd</strong> in the <code>openshift-operators</code> namespace which is dedicated for managed clusters setup and configuration.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p><em>Argo Hub</em> setup should be done only once before this workshop, you can log in to <em>openshift-gitops</em> instance console.</p>
@@ -410,7 +419,7 @@ Change <em>&lt;domain&gt;</em> information, provided by the instructor at the be
 <div class="title">Figure 11. openshift-gitops instance log in</div>
 </div>
 <div class="paragraph">
-<p>This user has <em>view permissions</em> in <em>openshift-gitops</em> instance, you can take a look to the objects argo is managing for deploying the second instance.</p>
+<p>This user has <em>view permissions</em> in <em>openshift-gitops</em> instance. You can take a look to the objects that ArgoCD is managing for deploying the second instance.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -460,7 +469,7 @@ spec:
     server: <a href="https://kubernetes.default.svc" class="bare">https://kubernetes.default.svc</a>
   project: default
   source:
-    repoURL: <a href="https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git" class="bare">https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git</a>
+    repoURL: <a href="https://github.com/alvarolop/workshop-gitops-content-deploy.git" class="bare">https://github.com/alvarolop/workshop-gitops-content-deploy.git</a>
     targetRevision: setup-sno
     path: hub-setup/charts/gitops-setup
   syncPolicy:
@@ -481,8 +490,13 @@ spec:
 <div class="paragraph">
 <p>For this initial setup it is only required to create <em>argocd</em> instance, <em>App Projects</em>, <em>Groups</em>, <em>Role Bindings</em> and <em>Secrets</em> for cluster destinations.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="managed"><a class="anchor" href="#managed"></a>2.5 Accessing the Managed Cluster</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Then once this second instance, <em>argocd</em>, is up and running, you can login to the argo console with your <strong><em>userXX</em></strong>:</p>
+<p>Once <strong>argocd</strong> instance (The second) is up and running, you can login to the ArgoCD console with your <strong><em>userXX</em></strong>:</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -536,10 +550,10 @@ Change <em>&lt;domain&gt;</em> information, provided by the instructor at the be
 <div class="content">
 <img src="_images/hub-login-2.png" alt="hub login 2">
 </div>
-<div class="title">Figure 16. argocd instance log in</div>
+<div class="title">Figure 16. ArgoCD instance log in</div>
 </div>
 <div class="paragraph">
-<p>In this instance ,<em>argocd</em>, you will log in to the console as <strong><em>admin user</em></strong> of your own project while you will only have <strong><em>cluster reader</em></strong> permissions when you login to OpenShift <em>Argo Hub</em> console.</p>
+<p>In the <strong>argocd</strong> instance, your user will have <strong>admin</strong> permissions for your own applications, while you will only have <strong><em>cluster reader</em></strong> permissions when you login to OpenShift <em>Argo Hub</em> console.</p>
 </div>
 <div class="paragraph">
 <p>By using <em>argocd</em> instance you will be able to setup your own managed cluster.</p>
