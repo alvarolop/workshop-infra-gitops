@@ -1104,7 +1104,7 @@ git push origin sno-&lt;clusterID&gt;-setup</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Now login to <em>argocd</em> instance in <em>Argo Hub</em> (<a href="https://argocd-server-openshift-operators.apps.argo-hub.&lt;domain&gt;.opentlc.com" class="bare">https://argocd-server-openshift-operators.apps.argo-hub.&lt;domain&gt;.opentlc.com</a>)</p>
+<p>Now login to <em>argocd</em> instance in <em>Argo Hub</em> (<a href="https://argocd-server-openshift-operators.apps.argo-hub.&lt;domain&gt;" class="bare">https://argocd-server-openshift-operators.apps.argo-hub.&lt;domain&gt;</a>)</p>
 </li>
 <li>
 <p>Click <strong><em>LOG IN VIA OPENSHIFT</em></strong>.</p>
@@ -1232,7 +1232,7 @@ spec:
 <div class="title">Figure 12. ApplicationSet view</div>
 </div>
 <div class="paragraph">
-<p>Verify in <em>Argo Hub</em> console (E.g. <a href="https://console-openshift-console.apps.argo-hub.&lt;domain&gt;.opentlc.com/" class="bare">https://console-openshift-console.apps.argo-hub.&lt;domain&gt;.opentlc.com/</a>) using your user with view role.</p>
+<p>Verify in <em>Argo Hub</em> console (E.g. <a href="https://console-openshift-console.apps.argo-hub.&lt;domain&gt;/" class="bare">https://console-openshift-console.apps.argo-hub.&lt;domain&gt;/</a>) using your user with view role.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1268,7 +1268,7 @@ to verify your local permissions.</p>
 <p>If you try to deploy a new Application from the OpenShift <em>Argo Hub</em> console you will see you can not deploy to a different cluster destination than your <em>SNO</em>.</p>
 </div>
 <div class="paragraph">
-<p>Check this in the <em>argocd</em> instance <strong><em>Settings</em></strong> section  (E.g. <a href="https://argocd-server-openshift-operators.apps.argo-hub.&lt;domain&gt;.opentlc.com/settings" class="bare">https://argocd-server-openshift-operators.apps.argo-hub.&lt;domain&gt;.opentlc.com/settings</a>)</p>
+<p>Check this in the <em>argocd</em> instance <strong><em>Settings</em></strong> section  (E.g. <a href="https://argocd-server-openshift-operators.apps.argo-hub.&lt;domain&gt;/settings" class="bare">https://argocd-server-openshift-operators.apps.argo-hub.&lt;domain&gt;/settings</a>)</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1320,7 +1320,7 @@ Remember to use your &lt;clusterID&gt; and &lt;domain&gt;.
 <div class="ulist">
 <ul>
 <li>
-<p>Open the OpenShift <em>SNO</em> console (E.g. <a href="https://console-openshift-console.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com" class="bare">https://console-openshift-console.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com</a>)</p>
+<p>Open the OpenShift <em>SNO</em> console (E.g. <a href="https://console-openshift-console.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://console-openshift-console.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>)</p>
 </li>
 <li>
 <p>Hit <strong><em>my_htpasswd_provider</em></strong>.</p>
@@ -1360,12 +1360,12 @@ Remember to use your &lt;clusterID&gt; and &lt;domain&gt;.
 </ul>
 </div>
 <div class="paragraph">
-<p>Now Log in <em>argocd-infra</em> instance using OpenShift credentials, with user <em>admin</em> and &lt;pass&gt; provided by intructor.</p>
+<p>Now, log in to the <em>argocd-infra</em> instance using OpenShift credentials, with user <em>admin</em> and &lt;pass&gt; provided by intructor.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>3) Click <strong><em>Settings</em></strong> section  (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com/settings" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com/settings</a>)</p>
+<p>3) Click <strong><em>Settings</em></strong> section  (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;/settings" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;/settings</a>)</p>
 </li>
 </ul>
 </div>
@@ -1391,7 +1391,7 @@ Remember to use your &lt;clusterID&gt; and &lt;domain&gt;.
 <div class="ulist">
 <ul>
 <li>
-<p>5) Follow the same steps to verify that <strong><em>argocd-apps</em></strong> (E.g. <a href="https://argocd-apps-server-openshift-operators.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com/settings" class="bare">https://argocd-apps-server-openshift-operators.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com/settings</a>) instance exists and is NOT <em>cluster-wide</em>.</p>
+<p>5) Follow the same steps to verify that <strong><em>argocd-apps</em></strong> (E.g. <a href="https://argocd-apps-server-openshift-operators.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;/settings" class="bare">https://argocd-apps-server-openshift-operators.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;/settings</a>) instance exists and is NOT <em>cluster-wide</em>.</p>
 </li>
 </ul>
 </div>
@@ -1491,7 +1491,7 @@ spec:
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc login -u admin -p &lt;pass&gt; <a href="https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com:6443" class="bare">https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com:6443</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc login -u admin -p &lt;pass&gt; <a href="https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;:6443" class="bare">https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;:6443</a></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1500,7 +1500,7 @@ spec:
 <div class="listingblock lines_7 console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get route vault -n vault-secrets
-curl vault-vault-secrets.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com</code></pre>
+curl vault-vault-secrets.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock lines_7 console-output">

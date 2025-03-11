@@ -260,7 +260,7 @@ Each time you create a <em>values-example.yaml</em> file in the following sectio
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Replace <strong><em>&lt;name&gt;</em></strong> and <strong><em>&lt;domain&gt;</em></strong>. (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com</a>)
+Replace <strong><em>&lt;name&gt;</em></strong> and <strong><em>&lt;domain&gt;</em></strong>. (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>)
 </td>
 </tr>
 </table>
@@ -421,7 +421,7 @@ vi values-oauth.yaml</code></pre>
   enabled: true # Enable dependency
   keycloak: # Update chart values
     clientid: myclient-&lt;name&gt;
-    issuer: <a href="https://keycloak-keycloak.apps.argo-hub.&lt;domain&gt;.opentlc.com/realms/myrealm-&lt;name&gt" class="bare">https://keycloak-keycloak.apps.argo-hub.&lt;domain&gt;.opentlc.com/realms/myrealm-&lt;name&gt</a>;
+    issuer: <a href="https://keycloak-keycloak.apps.argo-hub.&lt;domain&gt;/realms/myrealm-&lt;name&gt" class="bare">https://keycloak-keycloak.apps.argo-hub.&lt;domain&gt;/realms/myrealm-&lt;name&gt</a>;
     data: &lt;your_keycloak_secret_data&gt;
   ldap:
     sync:
@@ -441,7 +441,7 @@ vi values-oauth.yaml</code></pre>
 </table>
 </div>
 <div class="paragraph">
-<p>1) Login to <em>Argo Hub</em> OpenShift console (E.g. <a href="https://console-openshift-console.apps.argo-hub.&lt;domain&gt;.opentlc.com/" class="bare">https://console-openshift-console.apps.argo-hub.&lt;domain&gt;.opentlc.com/</a>)</p>
+<p>1) Login to <em>Argo Hub</em> OpenShift console (E.g. <a href="https://console-openshift-console.apps.argo-hub.&lt;domain&gt;/" class="bare">https://console-openshift-console.apps.argo-hub.&lt;domain&gt;/</a>)</p>
 </div>
 <div class="ulist">
 <ul>
@@ -464,7 +464,7 @@ vi values-oauth.yaml</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>2) Find <em>Keycloack</em> URL, in OpenShift <em>Routes</em> section, it should be something like: <a href="https://keycloak-keycloak.apps.argo-hub.&lt;domain&gt;.opentlc.com" class="bare">https://keycloak-keycloak.apps.argo-hub.&lt;domain&gt;.opentlc.com</a></p>
+<p>2) Find <em>Keycloack</em> URL, in OpenShift <em>Routes</em> section, it should be something like: <a href="https://keycloak-keycloak.apps.argo-hub.&lt;domain&gt" class="bare">https://keycloak-keycloak.apps.argo-hub.&lt;domain&gt</a>;</p>
 </div>
 <div class="paragraph">
 <p>3) Login in <em>Keycloack</em> as <em>"admin/admin"</em> (Administrative Console)</p>
@@ -517,7 +517,7 @@ git push origin sno-&lt;name&gt;</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>Log in the <em>argocd-infra</em> instance (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com</a>)</p>
+<p>Log in the <em>argocd-infra</em> instance (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>)</p>
 </div>
 <div class="paragraph">
 <p>To create <em>sno-&lt;name&gt;-oauth</em> Application, once logged in, click on:</p>
