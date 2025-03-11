@@ -83,7 +83,7 @@ You will now deploy applications to our _SNO_ Argo console by hand, and then at 
 
 - Log in *_argocd-infra_* instance using OpenShift credentials, with user _admin_ and <pass> provided by intructor. 
 
-NOTE: Replace *_<name>_* and *_<domain>_*. (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>.opentlc.com)
+NOTE: Replace *_<name>_* and *_<domain>_*. (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>)
 
 - If you try to deploy this Application on your cluster you will see it _syncs_, but it does not render objects as every value is disabled.
 
@@ -166,7 +166,7 @@ oauth:
   enabled: true # Enable dependency
   keycloak: # Update chart values
     clientid: myclient-<name>
-    issuer: https://keycloak-keycloak.apps.argo-hub.<domain>.opentlc.com/realms/myrealm-<name>
+    issuer: https://keycloak-keycloak.apps.argo-hub.<domain>/realms/myrealm-<name>
     data: <your_keycloak_secret_data>
   ldap:
     sync:
@@ -176,7 +176,7 @@ oauth:
 
 IMPORTANT: *How to get _Keycloack_ secret*: 
 
-1) Login to _Argo Hub_ OpenShift console (E.g. https://console-openshift-console.apps.argo-hub.<domain>.opentlc.com/)
+1) Login to _Argo Hub_ OpenShift console (E.g. https://console-openshift-console.apps.argo-hub.<domain>/)
 
 - Hit *_my_htpasswd_provider_*. 
 
@@ -185,7 +185,7 @@ image::hub-login-1.png[]
 
 - Insert _userXX_ and _<pass>_ provided by instructor and click *_Log in_* button.
   
-2) Find _Keycloack_ URL, in OpenShift _Routes_ section, it should be something like: https://keycloak-keycloak.apps.argo-hub.<domain>.opentlc.com
+2) Find _Keycloack_ URL, in OpenShift _Routes_ section, it should be something like: https://keycloak-keycloak.apps.argo-hub.<domain>
   
 3) Login in _Keycloack_ as _"admin/admin"_ (Administrative Console)
 
@@ -218,7 +218,7 @@ Replace the following:
 - *<domain> -> Assigned domain cluster*
 - *<your_user> -> Your GitHub user account*
 
-Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>.opentlc.com)
+Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>)
 
 To create _sno-<name>-oauth_ Application, once logged in, click on:
 

@@ -714,7 +714,7 @@ git commit -m "bootstrap application for SNO"
 git push origin sno-<clusterID>-setup
 ----
 
-- Now login to _argocd_ instance in _Argo Hub_ (https://argocd-server-openshift-operators.apps.argo-hub.<domain>.opentlc.com) 
+- Now login to _argocd_ instance in _Argo Hub_ (https://argocd-server-openshift-operators.apps.argo-hub.<domain>) 
 
 - Click *_LOG IN VIA OPENSHIFT_*.
 
@@ -786,7 +786,7 @@ Deep dive on *_managed-setup-a-<clusterID>_* Application to check all the resour
 .ApplicationSet view
 image::managed-setup-a-name.png[]
 
-Verify in _Argo Hub_ console (E.g. https://console-openshift-console.apps.argo-hub.<domain>.opentlc.com/) using your user with view role.
+Verify in _Argo Hub_ console (E.g. https://console-openshift-console.apps.argo-hub.<domain>/) using your user with view role.
 
 - *_userXX_*
 - *_<pass>_* provided by instructor at the beginning of the workshop
@@ -803,7 +803,7 @@ to verify your local permissions.
 
 If you try to deploy a new Application from the OpenShift _Argo Hub_ console you will see you can not deploy to a different cluster destination than your _SNO_.
 
-Check this in the _argocd_ instance *_Settings_* section  (E.g. https://argocd-server-openshift-operators.apps.argo-hub.<domain>.opentlc.com/settings)
+Check this in the _argocd_ instance *_Settings_* section  (E.g. https://argocd-server-openshift-operators.apps.argo-hub.<domain>/settings)
 
 .Settings section
 image::settings-section-argocd.png[]
@@ -822,7 +822,7 @@ Once this is completed login to you managed cluster, _SNO_, and verify:
 
 IMPORTANT: Remember to use your <clusterID> and <domain>.
 
-- Open the OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<clusterID>.<domain>.opentlc.com)
+- Open the OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<clusterID>.<domain>)
 
 - Hit *_my_htpasswd_provider_*.
 
@@ -840,9 +840,9 @@ Verify that:
 
 - 2) *_argo-infra_* instance exists as _ArgoCD_ object and is _cluster-wide_.
 
-Now Log in _argocd-infra_ instance using OpenShift credentials, with user _admin_ and <pass> provided by intructor.
+Now, log in to the _argocd-infra_ instance using OpenShift credentials, with user _admin_ and <pass> provided by intructor.
 
-- 3) Click *_Settings_* section  (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<clusterID>.<domain>.opentlc.com/settings)
+- 3) Click *_Settings_* section  (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<clusterID>.<domain>/settings)
 
 .Settings section
 image::settings-section-argocd.png[]
@@ -852,7 +852,7 @@ image::settings-section-argocd.png[]
 .General overview argocd-infra instance
 image::cluster-wide.png[]
 
-- 5) Follow the same steps to verify that *_argocd-apps_* (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<clusterID>.<domain>.opentlc.com/settings) instance exists and is NOT _cluster-wide_.
+- 5) Follow the same steps to verify that *_argocd-apps_* (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<clusterID>.<domain>/settings) instance exists and is NOT _cluster-wide_.
 
 .General overview argocd-apps instance
 image::argocd-apps-general-1.png[]
@@ -919,7 +919,7 @@ First log in the _SNO_, replace *_<clusterID>_*, *_<pass>_* and *_<domain>_*:
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
-oc login -u admin -p <pass> https://api.sno-<clusterID>.<domain>.opentlc.com:6443
+oc login -u admin -p <pass> https://api.sno-<clusterID>.<domain>:6443
 ----
 
 When the Application is created it deploys an app called _vault_ in namespace _vault-secrets_ that will encode a password and store it in _Vault_. If you access the application route you will not be able to see the password in plain text:
@@ -929,7 +929,7 @@ When the Application is created it deploys an app called _vault_ in namespace _v
 [source, shell,subs="+macros,+attributes"]
 ----
 oc get route vault -n vault-secrets 
-curl vault-vault-secrets.apps.sno-<clusterID>.<domain>.opentlc.com
+curl vault-vault-secrets.apps.sno-<clusterID>.<domain>
 ----
 
 [.lines_7]
