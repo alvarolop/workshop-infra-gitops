@@ -161,7 +161,7 @@
 <p><em>Argo Hub</em> Application has been already synced, so you just need to be focus on managing your Single Node OpenShift.</p>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s make some modifications in the code to start deploying <em>GitOps</em> in the managed cluster. Open the <em>workshop-gitops-content-deploy</em> folder and make sure all the changes are done in the correct branch <em>sno-&lt;name&gt;-setup</em>:</p>
+<p>Let&#8217;s make some modifications in the code to start deploying <em>GitOps</em> in the managed cluster. Open the <em>workshop-gitops-content-deploy</em> folder and make sure all the changes are done in the correct branch <em>sno-&lt;clusterID&gt;-setup</em>:</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -178,7 +178,7 @@ What is <a href="https://www.redhat.com/en/topics/devops/what-is-gitops">GitOps<
 <div class="listingblock lines_7 console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
-git checkout sno-&lt;name&gt;-setup</code></pre>
+git checkout sno-&lt;clusterID&gt;-setup</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -191,7 +191,7 @@ git checkout sno-&lt;name&gt;-setup</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Change <strong>cluster-definition/sno-&lt;name&gt;</strong> folder as your assigned cluster as this value will be used as a parameter for ApplicationSet.
+Change <strong>cluster-definition/sno-&lt;clusterID&gt;</strong> folder as your assigned cluster as this value will be used as a parameter for ApplicationSet.
 </td>
 </tr>
 </table>
@@ -199,7 +199,7 @@ Change <strong>cluster-definition/sno-&lt;name&gt;</strong> folder as your assig
 <div class="listingblock lines_7 console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
-E.g.: mv cluster-definition/sno-&lt;name&gt; cluster-definition/sno-1</code></pre>
+E.g.: mv cluster-definition/sno-&lt;clusterID&gt; cluster-definition/sno-22</code></pre>
 </div>
 </div>
 <div class="admonitionblock important">
@@ -209,18 +209,18 @@ E.g.: mv cluster-definition/sno-&lt;name&gt; cluster-definition/sno-1</code></pr
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Always replace <em>&lt;name&gt;</em> and <em>&lt;domain&gt;</em> by your assigned cluster.
+Always replace <em>&lt;clusterID&gt;</em> and <em>&lt;domain&gt;</em> by your assigned cluster.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Update from <em>cluster-definition/sno-&lt;name&gt;/cluster.json</em>:</p>
+<p>Update from <em>cluster-definition/sno-&lt;clusterID&gt;/cluster.json</em>:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;domain&gt; &#8594; Assigned domain cluster</strong></p>
@@ -230,7 +230,7 @@ Always replace <em>&lt;name&gt;</em> and <em>&lt;domain&gt;</em> by your assigne
 <div class="listingblock lines_7 console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
-vi cluster-definition/sno-&lt;name&gt;/cluster.json</code></pre>
+vi cluster-definition/sno-&lt;clusterID&gt;/cluster.json</code></pre>
 </div>
 </div>
 <div class="listingblock lines_7 console-output">
@@ -238,11 +238,11 @@ vi cluster-definition/sno-&lt;name&gt;/cluster.json</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">{
   "environment": "dev",
   "cloud": "aws",
-  "project": "project-sno-&lt;name&gt;",
+  "project": "project-sno-&lt;clusterID&gt;",
   "region": "eu-central-1",
   "cluster": {
-    "name": "sno-&lt;name&gt;",
-    "address": "https://api.sno-&lt;name&gt;.&lt;domain&gt;:6443"
+    "name": "sno-&lt;clusterID&gt;",
+    "address": "https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;:6443"
   }
 }</code></pre>
 </div>
@@ -256,7 +256,7 @@ vi cluster-definition/sno-&lt;name&gt;/cluster.json</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;your_user&gt; &#8594; Your GitHub user account</strong></p>
@@ -274,16 +274,16 @@ vi global-config/bootstrap-a/managed-setup.yaml</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: managed-setup-a-&lt;name&gt;
+  name: managed-setup-a-&lt;clusterID&gt;
   namespace: openshift-operators
 spec:
   destination:
     namespace: openshift-operators
     server: <a href="https://kubernetes.default.svc" class="bare">https://kubernetes.default.svc</a>
-  project: project-sno-&lt;name&gt;
+  project: project-sno-&lt;clusterID&gt;
   source:
     repoURL: <a href="https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git" class="bare">https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git</a>
-    targetRevision: sno-&lt;name&gt;-setup
+    targetRevision: sno-&lt;clusterID&gt;-setup
     path: cluster-addons/cluster-addons-as/
   syncPolicy:
     automated:
@@ -294,6 +294,9 @@ spec:
 <div class="paragraph">
 <p>The source path of this Application points to the ApplicationSet used.</p>
 </div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">What is an ApplicationSet?</div>
 <div class="paragraph">
 <p>ApplicationSet is a Custom Resource that can be used to generate Applications to multiple clusters from multiple origins. ApplicationSet controller is installed alongside ArgoCD even though it must be explicitly enabled.</p>
 </div>
@@ -319,9 +322,10 @@ spec:
 <div class="paragraph">
 <p>ApplicationSet uses generators to create Application with multiple origins and destinations using templating.</p>
 </div>
+</div>
+</div>
 <div class="paragraph">
-<p>Generator used may vary depending on your use case, in this example
-we are using <em>Git Files</em> generator so cluster definition values are used as parameters. In case we had <em>'N' cluster-definition</em> files, the ApplicationSet would generate <em>'N'</em> Applications automatically.</p>
+<p>The generator used may vary depending on your use case. In this example, we are using the <em>Git Files</em> generator so the cluster definition values are used as parameters. In case we had <em>'N' cluster-definition</em> files, the ApplicationSet would generate <em>'N'</em> Applications automatically.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -353,7 +357,7 @@ Find more about <a href="https://argo-cd.readthedocs.io/en/stable/operator-manua
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;your_user&gt; &#8594; Your GitHub user account</strong></p>
@@ -371,13 +375,13 @@ vi cluster-addons/cluster-addons-as/gitops-setup-sno-as.yaml</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: gitops-setup-sno-&lt;name&gt;
+  name: gitops-setup-sno-&lt;clusterID&gt;
   namespace: openshift-operators
 spec:
   generators:
   - git:
       repoURL: <a href="https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git" class="bare">https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git</a>
-      revision: sno-&lt;name&gt;-setup
+      revision: sno-&lt;clusterID&gt;-setup
       files:
       - path: "cluster-definition/**/cluster.json"
   template:
@@ -387,7 +391,7 @@ spec:
       project: '{{project}}'
       source:
         repoURL: <a href="https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git" class="bare">https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git</a>
-        targetRevision: sno-&lt;name&gt;-setup
+        targetRevision: sno-&lt;clusterID&gt;-setup
         path: cluster-addons/charts/gitops-setup
       destination:
         server: '{{cluster.address}}'
@@ -412,7 +416,7 @@ spec:
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;your_user&gt; &#8594; Your GitHub user account</strong></p>
@@ -430,13 +434,13 @@ vi cluster-addons/cluster-addons-as/bootstrap-sno-as.yaml</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: bootstrap-sno-&lt;name&gt;
+  name: bootstrap-sno-&lt;clusterID&gt;
   namespace: openshift-operators
 spec:
   generators:
   - git:
       repoURL: <a href="https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git" class="bare">https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git</a>
-      revision: sno-&lt;name&gt;-setup
+      revision: sno-&lt;clusterID&gt;-setup
       files:
       - path: "cluster-definition/**/cluster.json"
   template:
@@ -446,7 +450,7 @@ spec:
       project: '{{project}}'
       source:
         repoURL: <a href="https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git" class="bare">https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git</a>
-        targetRevision: sno-&lt;name&gt;-setup
+        targetRevision: sno-&lt;clusterID&gt;-setup
         path: cluster-addons/charts/bootstrap-app
       destination:
         server: '{{cluster.address}}'
@@ -462,7 +466,7 @@ spec:
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;your_user&gt; &#8594; Your GitHub user account</strong></p>
@@ -478,7 +482,7 @@ vi cluster-addons/charts/bootstrap-app/values.yaml</code></pre>
 <div class="listingblock lines_7 console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">clusters:
-  sno-&lt;name&gt;:
+  sno-&lt;clusterID&gt;:
     applicationNamespace: openshift-gitops
     namespace: ''
     destination: 'https://kubernetes.default.svc'
@@ -486,7 +490,7 @@ vi cluster-addons/charts/bootstrap-app/values.yaml</code></pre>
     code:
       repo: <a href="https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git" class="bare">https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git</a>
       path: cluster-addons/charts/bootstrap
-      target: sno-&lt;name&gt;-setup</code></pre>
+      target: sno-&lt;clusterID&gt;-setup</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -761,7 +765,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">...
     dex:
-      openShiftOAuth: true # 1
+      openShiftOAuth: true  <i class="conum" data-value="1"></i><b>(1)</b>
       resources:
         limits:
           cpu: 500m
@@ -770,10 +774,10 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
           cpu: 250m
           memory: 128Mi
     provider: dex
-  resourceTrackingMethod: annotation+label # 2
-  applicationSet: # 3
+  resourceTrackingMethod: annotation+label <i class="conum" data-value="2"></i><b>(2)</b>
+  applicationSet: <i class="conum" data-value="3"></i><b>(3)</b>
 ...
-  rbac: # 4
+  rbac: <i class="conum" data-value="4"></i><b>(4)</b>
     defaultPolicy: ''
     policy: |-
       g, {{ $.Values.argocd.group }}, role:admin
@@ -785,7 +789,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
       g, argo-dev-operators, role:operator-dev
     scopes: '[groups]'
 ...
-    sidecarContainers: # 5
+    sidecarContainers: <i class="conum" data-value="5"></i><b>(5)</b>
       - command:
           - /var/run/argocd/argocd-cmp-server
         image: 'quay.io/argoproj/argocd:v2.4.8'
@@ -815,14 +819,30 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
       - emptyDir: {}
         name: tmp-dir
 ...
-  configManagementPlugins: | # 6
+  configManagementPlugins: | <i class="conum" data-value="6"></i><b>(6)</b>
     - name: argocd-vault-plugin
       generate:
         command: ["argocd-vault-plugin"]
         args: ["generate", "./"]
-  resourceCustomizations: | # 7
-    operators.coreos.com/Subscription:
-      health.lua: |
+  resourceHealthChecks:  <i class="conum" data-value="7"></i><b>(7)</b>
+    - group: argoproj.io
+      kind: Application
+      check: |
+        hs = {}
+        hs.status = "Progressing"
+        hs.message = ""
+        if obj.status ~= nil then
+          if obj.status.health ~= nil then
+            hs.status = obj.status.health.status
+            if obj.status.health.message ~= nil then
+              hs.message = obj.status.health.message
+            end
+          end
+        end
+        return hs
+    - group: operators.coreos.com
+      kind: Subscription
+      check: |
         health_status = {}
         if obj.status ~= nil then
           if obj.status.conditions ~= nil then
@@ -833,9 +853,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
               msg = msg .. i .. ": " .. condition.type .. " | " .. condition.status .. "\n"
               if condition.type == "InstallPlanPending" and condition.status == "True" then
                 numPending = numPending + 1
-              elseif (condition.type == "InstallPlanMissing" and condition.reason ~= "ReferencedInstallPlanNotFound") then
-                numDegraded = numDegraded + 1
-              elseif (condition.type == "CatalogSourcesUnhealthy" or condition.type == "InstallPlanFailed" or condition.type == "ResolutionFailed") and condition.status == "True" then
+              elseif (condition.type == "CatalogSourcesUnhealthy" or condition.type == "InstallPlanMissing" or condition.type == "InstallPlanFailed" or condition.type == "ResolutionFailed") and condition.status == "True" then
                 numDegraded = numDegraded + 1
               end
             end
@@ -844,7 +862,11 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
               health_status.message = msg
               return health_status
             elseif numPending &gt; 0 and numDegraded == 0 then
-              health_status.status = "Progressing"
+              if obj.spec.installPlanApproval == "Manual" then
+                health_status.status = "Healthy"
+              else
+                health_status.status = "Progressing"
+              end
               health_status.message = "An install plan for a subscription is pending installation"
               return health_status
             else
@@ -862,33 +884,40 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
 <div class="paragraph">
 <p>Also see:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>1) Dex uses groups and users defined within Openshift by checking the Oauth server.</p>
-</li>
-<li>
-<p>2) Overrides default tracking method by label to annotation+label.</p>
-</li>
-<li>
-<p>3) Enable ApplicationSet controller.</p>
-</li>
-<li>
-<p>4) Configure argo RBAC.</p>
-</li>
-<li>
-<p>5) Configure vault plugin as a sidecar container.</p>
-</li>
-<li>
-<p>6) Configure new plugin for vault.</p>
-</li>
-<li>
-<p>7) Configure resource healthcheck for Subscription.</p>
-</li>
-</ul>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Dex uses groups and users defined within Openshift by checking the Oauth server.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Overrides default tracking method by label to annotation+label.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Enable ApplicationSet controller.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Configure argo RBAC.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Configure vault plugin as a sidecar container.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Configure new plugin for vault.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Configure resource health check for Subscription.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>As you may notice, this instance contains some parametes for configuring <em>Vault Plugin</em>, which we will discuss later, and <em>RBAC</em> model.</p>
+<p>As you may notice, this instance contains some parameters for configuring <em>Vault Plugin</em>, which we will discuss later, and <em>RBAC</em> model.</p>
 </div>
 <div class="paragraph">
 <p><strong><em>RBAC</em></strong> is defined on <em>cluster-addons/charts/bootstrap/templates/rbac/</em> folder and includes the basic configuration for Argo <em>RBAC</em> and projects.</p>
@@ -926,15 +955,15 @@ Find more in <a href="https://argo-cd.readthedocs.io/en/stable/operator-manual/r
 <div class="ulist">
 <ul>
 <li>
-<p>1) role:readonly - read-only access to all resources</p>
+<p>1) <code>role:readonly</code> - read-only access to all resources</p>
 </li>
 <li>
-<p>2) role:admin - unrestricted access to all resources</p>
+<p>2) <code>role:admin</code> - unrestricted access to all resources</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Additionally to the defined roles, it is possible to create some specific roles to allow <em>argo-operators</em> and <em>argo-dev-operators</em> group members manage applications in ArgoCD. See the groups in <em>cluster-addons/charts/bootstrap/values.yaml</em> values file:</p>
+<p>Additionally to the defined roles, it is possible to create some specific roles to allow <code>argo-operators</code> and <code>argo-dev-operators</code> group members manage applications in ArgoCD. See the groups in <em>cluster-addons/charts/bootstrap/values.yaml</em> values file:</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
@@ -960,7 +989,7 @@ vi cluster-addons/charts/bootstrap/values.yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Then if you navigate to <em>RBAC</em> folder you can see a <em>Group</em> and a <em>Role Binding</em> resource to give <em>cluster-admin</em> permissions on Argo to the admin user configured via <em>Htpasswd</em>.</p>
+<p>Then if you navigate to <em>RBAC</em> folder you can see a <em>Group</em> and a <em>Role Binding</em> resource to give <code>cluster-admin</code> permissions on Argo to the admin user configured via <em>Htpasswd</em>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -975,7 +1004,7 @@ vi cluster-addons/charts/bootstrap/values.yaml</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-For <em>RBAC</em> we need to differentiate between global configuration on <em>argocd-apps</em> intance and projects <em>RBAC</em>.
+For <em>RBAC</em> we need to differentiate between global configuration on <em>argocd-apps</em> instance and projects <em>RBAC</em>.
 </td>
 </tr>
 </table>
@@ -1006,8 +1035,19 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
 ...</code></pre>
 </div>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
 <div class="paragraph">
 <p>Policies starting with <em>'g'</em> assign roles to OpenShift local groups (they can be both Argo roles and OpenShift roles) and their users. While policies starting with <em>'p'</em> define specific policies for projects, resources, applications and their operations.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>The following sections collect the information around <em>ArgoCD Roles</em> and <em>ArgoCD permission</em> in the managed clusters. It is important to understand the functionality matrix and permission that the following sections try to implement:</p>
@@ -1039,7 +1079,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
 need to have <em>cluster-wide</em> privileges.</p>
 </div>
 <div class="paragraph">
-<p>Do not forget to <strong>push your changes to your working branch!</strong>, then we are going to deploy the <em>manage-setup-a-&lt;name&gt;</em> Application in order to <em>bootstrap</em> the <em>SNO</em>:</p>
+<p>Do not forget to <strong>push your changes to your working branch!</strong>, then we are going to deploy the <em>manage-setup-a-&lt;clusterID&gt;</em> Application in order to <em>bootstrap</em> the <em>SNO</em>:</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1048,7 +1088,7 @@ need to have <em>cluster-wide</em> privileges.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Make sure you are in the <em>sno-&lt;name&gt;-setup</em> branch.
+Make sure you are in the <em>sno-&lt;clusterID&gt;-setup</em> branch.
 </td>
 </tr>
 </table>
@@ -1058,7 +1098,7 @@ Make sure you are in the <em>sno-&lt;name&gt;-setup</em> branch.
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 git add .
 git commit -m "bootstrap application for SNO"
-git push origin sno-&lt;name&gt;-setup</code></pre>
+git push origin sno-&lt;clusterID&gt;-setup</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -1080,7 +1120,7 @@ git push origin sno-&lt;name&gt;-setup</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Hit <strong><em>my_htpasswd_provider</em></strong>.</p>
+<p>Hit <strong>Workshop Users</strong>.</p>
 </li>
 </ul>
 </div>
@@ -1131,7 +1171,7 @@ git push origin sno-&lt;name&gt;-setup</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;your_user&gt; &#8594; Your GitHub user account</strong></p>
@@ -1149,16 +1189,16 @@ vi global-config/bootstrap-a/managed-setup.yaml</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: managed-setup-a-&lt;name&gt;
+  name: managed-setup-a-&lt;clusterID&gt;
   namespace: openshift-operators
 spec:
   destination:
     namespace: openshift-operators
     server: <a href="https://kubernetes.default.svc" class="bare">https://kubernetes.default.svc</a>
-  project: project-sno-&lt;name&gt;
+  project: project-sno-&lt;clusterID&gt;
   source:
     repoURL: <a href="https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git" class="bare">https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git</a>
-    targetRevision: sno-&lt;name&gt;-setup
+    targetRevision: sno-&lt;clusterID&gt;-setup
     path: cluster-addons/cluster-addons-as/
   syncPolicy:
     automated:
@@ -1183,7 +1223,7 @@ spec:
 <div class="title">Figure 11. SNO bootstrap</div>
 </div>
 <div class="paragraph">
-<p>Deep dive on <strong><em>managed-setup-a-&lt;name&gt;</em></strong> Application to check all the resources created. Next go back to the initial view and see how the Applications rendered by ApplicationSet are created.</p>
+<p>Deep dive on <strong><em>managed-setup-a-&lt;clusterID&gt;</em></strong> Application to check all the resources created. Next go back to the initial view and see how the Applications rendered by ApplicationSet are created.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1272,7 +1312,7 @@ to verify your local permissions.</p>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Remember to use your &lt;name&gt; and &lt;domain&gt;.
+Remember to use your &lt;clusterID&gt; and &lt;domain&gt;.
 </td>
 </tr>
 </table>
@@ -1280,7 +1320,7 @@ Remember to use your &lt;name&gt; and &lt;domain&gt;.
 <div class="ulist">
 <ul>
 <li>
-<p>Open the OpenShift <em>SNO</em> console (E.g. <a href="https://console-openshift-console.apps.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com" class="bare">https://console-openshift-console.apps.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com</a>)</p>
+<p>Open the OpenShift <em>SNO</em> console (E.g. <a href="https://console-openshift-console.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com" class="bare">https://console-openshift-console.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com</a>)</p>
 </li>
 <li>
 <p>Hit <strong><em>my_htpasswd_provider</em></strong>.</p>
@@ -1325,7 +1365,7 @@ Remember to use your &lt;name&gt; and &lt;domain&gt;.
 <div class="ulist">
 <ul>
 <li>
-<p>3) Click <strong><em>Settings</em></strong> section  (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com/settings" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com/settings</a>)</p>
+<p>3) Click <strong><em>Settings</em></strong> section  (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com/settings" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com/settings</a>)</p>
 </li>
 </ul>
 </div>
@@ -1351,7 +1391,7 @@ Remember to use your &lt;name&gt; and &lt;domain&gt;.
 <div class="ulist">
 <ul>
 <li>
-<p>5) Follow the same steps to verify that <strong><em>argocd-apps</em></strong> (E.g. <a href="https://argocd-apps-server-openshift-operators.apps.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com/settings" class="bare">https://argocd-apps-server-openshift-operators.apps.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com/settings</a>) instance exists and is NOT <em>cluster-wide</em>.</p>
+<p>5) Follow the same steps to verify that <strong><em>argocd-apps</em></strong> (E.g. <a href="https://argocd-apps-server-openshift-operators.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com/settings" class="bare">https://argocd-apps-server-openshift-operators.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com/settings</a>) instance exists and is NOT <em>cluster-wide</em>.</p>
 </li>
 </ul>
 </div>
@@ -1399,7 +1439,7 @@ This app should be deployed as <strong>prerequisite</strong> of <strong><em>4.5 
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "initial commit for testing app"
-git push origin sno-&lt;name&gt;</code></pre>
+git push origin sno-&lt;clusterID&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1412,7 +1452,7 @@ git push origin sno-&lt;name&gt;</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-<strong>Insert the following Application with the changing <em>&lt;name&gt;</em> and &lt;your_user&gt;</strong>:
+<strong>Insert the following Application with the changing <em>&lt;clusterID&gt;</em> and &lt;your_user&gt;</strong>:
 </td>
 </tr>
 </table>
@@ -1423,7 +1463,7 @@ git push origin sno-&lt;name&gt;</code></pre>
 kind: Application
 metadata:
   namespace: openshift-operators
-  name: sno-&lt;name&gt;-vault
+  name: sno-&lt;clusterID&gt;-vault
 spec:
   destination:
     namespace: vault-secrets
@@ -1435,7 +1475,7 @@ spec:
           value: 'true'
     path: .
     repoURL: 'https://github.com/&lt;your_user&gt;/helm-infra-gitops-workshop.git'
-    targetRevision: sno-&lt;name&gt;
+    targetRevision: sno-&lt;clusterID&gt;
   project: dev
   syncPolicy:
     automated:
@@ -1447,11 +1487,11 @@ spec:
 <p>Then hit <strong><em>Save</em></strong> &#8594; <strong><em>Create</em></strong></p>
 </div>
 <div class="paragraph">
-<p>First log in the <em>SNO</em>, replace <strong><em>&lt;name&gt;</em></strong>, <strong><em>&lt;pass&gt;</em></strong> and <strong><em>&lt;domain&gt;</em></strong>:</p>
+<p>First log in the <em>SNO</em>, replace <strong><em>&lt;clusterID&gt;</em></strong>, <strong><em>&lt;pass&gt;</em></strong> and <strong><em>&lt;domain&gt;</em></strong>:</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc login -u admin -p &lt;pass&gt; <a href="https://api.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com:6443" class="bare">https://api.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com:6443</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc login -u admin -p &lt;pass&gt; <a href="https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com:6443" class="bare">https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com:6443</a></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1460,7 +1500,7 @@ spec:
 <div class="listingblock lines_7 console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get route vault -n vault-secrets
-curl vault-vault-secrets.apps.sno-&lt;name&gt;.&lt;domain&gt;.opentlc.com</code></pre>
+curl vault-vault-secrets.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;.opentlc.com</code></pre>
 </div>
 </div>
 <div class="listingblock lines_7 console-output">
