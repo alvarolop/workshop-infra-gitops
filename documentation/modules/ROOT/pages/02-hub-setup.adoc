@@ -232,7 +232,7 @@ image::argo-login-1.png[]
 .OpenShift credentials for argocd instance
 image::hub-login-1.png[]
 
-- Insert user _userXX_ and _<pass>_ provided by instructor and click *_Log in_* button.
+- Insert user _admin_ and _redhat_ provided by instructor and click *_Log in_* button.
 
 .ArgoCD instance log in
 image::hub-login-2.png[]

@@ -50,7 +50,7 @@ Now that you have the *_workshop-gitops-content-deploy_* repository forked in yo
 
 You will need to clone your repo using SSH keys in Git, if you haven't configured a ssh key pair you can take a look https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent[here].
 
-IMPORTANT: Replace *_<your_user>_* for your GitHub user account, and *_<name>_* for your assigned cluster in this workshop.
+IMPORTANT: Replace *_<your_user>_* for your GitHub user account, and *_<clusterId>_* for your assigned cluster in this workshop.
 
 [.lines_7]
 [.console-input]
@@ -60,7 +60,7 @@ cd ~
 git clone git@github.com:<your_user>/workshop-gitops-content-deploy.git
 
 cd ~/workshop-gitops-content-deploy
-git checkout -b sno-<name>-setup
+git checkout -b sno-<clusterId>-setup
 ----
 
 Do the same with the second repository.
@@ -73,7 +73,7 @@ image::fork-2.png[]
 
 Now you have the *_helm-infra-gitops-workshop_* repository forked in your GitHub account, let's clone it in local and create a new branch.
 
-IMPORTANT: Replace *_<your_user>_* for your GitHub user account, and *_<name>_* for your assigned cluster in this workshop.
+IMPORTANT: Replace *_<your_user>_* for your GitHub user account, and *_<clusterId>_* for your assigned cluster in this workshop.
 
 [.lines_7]
 [.console-input]
@@ -83,5 +83,5 @@ cd ~
 git clone git@github.com:<your_user>/helm-infra-gitops-workshop.git
 
 cd ~/helm-infra-gitops-workshop
-git checkout -b sno-<name>  
+git checkout -b sno-<clusterId>  
 ----  
