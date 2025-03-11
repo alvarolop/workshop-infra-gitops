@@ -5,7 +5,7 @@
 
 _Argo Hub_ Application has been already synced, so you just need to be focus on managing your Single Node OpenShift.
 
-Let's make some modifications in the code to start deploying _GitOps_ in the managed cluster. Open the _workshop-gitops-content-deploy_ folder and make sure all the changes are done in the correct branch _sno-<name>-setup_:
+Let's make some modifications in the code to start deploying _GitOps_ in the managed cluster. Open the _workshop-gitops-content-deploy_ folder and make sure all the changes are done in the correct branch _sno-<clusterID>-setup_:
 
 NOTE: What is https://www.redhat.com/en/topics/devops/what-is-gitops[GitOps]?
 
@@ -14,26 +14,26 @@ NOTE: What is https://www.redhat.com/en/topics/devops/what-is-gitops[GitOps]?
 [source, shell,subs="+macros,+attributes"]
 ----
 cd ~/workshop-gitops-content-deploy
-git checkout sno-<name>-setup
+git checkout sno-<clusterID>-setup
 ----
 
 As every user is deploying its own bootstrap file, they must have an unique name and they should be deployed on your scoped project where your user has privileges.
 
-IMPORTANT: Change *cluster-definition/sno-<name>* folder as your assigned cluster as this value will be used as a parameter for ApplicationSet.
+IMPORTANT: Change *cluster-definition/sno-<clusterID>* folder as your assigned cluster as this value will be used as a parameter for ApplicationSet.
 
 [.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
 cd ~/workshop-gitops-content-deploy
-E.g.: mv cluster-definition/sno-<name> cluster-definition/sno-1
+E.g.: mv cluster-definition/sno-<clusterID> cluster-definition/sno-22
 ----
 
-IMPORTANT: Always replace _<name>_ and _<domain>_ by your assigned cluster. 
+IMPORTANT: Always replace _<clusterID>_ and _<domain>_ by your assigned cluster. 
 
-Update from _cluster-definition/sno-<name>/cluster.json_:
+Update from _cluster-definition/sno-<clusterID>/cluster.json_:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<domain> -> Assigned domain cluster*
 
 [.lines_7]
@@ -41,7 +41,7 @@ Update from _cluster-definition/sno-<name>/cluster.json_:
 [source, shell,subs="+macros,+attributes"]
 ----
 cd ~/workshop-gitops-content-deploy
-vi cluster-definition/sno-<name>/cluster.json
+vi cluster-definition/sno-<clusterID>/cluster.json
 ----
 
 [.lines_7]
@@ -51,11 +51,11 @@ vi cluster-definition/sno-<name>/cluster.json
 {
   "environment": "dev",
   "cloud": "aws",
-  "project": "project-sno-<name>",
+  "project": "project-sno-<clusterID>",
   "region": "eu-central-1",
   "cluster": {
-    "name": "sno-<name>",
-    "address": "https://api.sno-<name>.<domain>:6443"
+    "name": "sno-<clusterID>",
+    "address": "https://api.sno-<clusterID>.<domain>:6443"
   }
 }
 ----
@@ -64,7 +64,7 @@ You must also update _global-config/bootstrap-a/managed-setup.yaml_. Note how th
 
 Update from _global-config/bootstrap-a/managed-setup.yaml_:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
 [.lines_7]
@@ -82,16 +82,16 @@ vi global-config/bootstrap-a/managed-setup.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: managed-setup-a-<name>
+  name: managed-setup-a-<clusterID>
   namespace: openshift-operators
 spec:
   destination:
     namespace: openshift-operators
     server: https://kubernetes.default.svc
-  project: project-sno-<name>
+  project: project-sno-<clusterID>
   source:
     repoURL: https://github.com/<your_user>/workshop-gitops-content-deploy.git
-    targetRevision: sno-<name>-setup
+    targetRevision: sno-<clusterID>-setup
     path: cluster-addons/cluster-addons-as/
   syncPolicy:
     automated:
@@ -101,6 +101,8 @@ spec:
 
 The source path of this Application points to the ApplicationSet used.
 
+.What is an ApplicationSet?
+****
 ApplicationSet is a Custom Resource that can be used to generate Applications to multiple clusters from multiple origins. ApplicationSet controller is installed alongside ArgoCD even though it must be explicitly enabled. 
 
 ApplicationSet is a helpful approach for multi cluster management, and it supplements ArgoCD by adding additional features in support of _cluster-administrator-focused_ scenarios. Some of those are:
@@ -114,9 +116,9 @@ ApplicationSet is a helpful approach for multi cluster management, and it supple
 - Improves ability of individual cluster tenants to deploy applications using ArgoCD (without needing to involve privileged cluster admin in enabling the destination servers).
 
 ApplicationSet uses generators to create Application with multiple origins and destinations using templating. 
+****
 
-Generator used may vary depending on your use case, in this example
-we are using _Git Files_ generator so cluster definition values are used as parameters. In case we had _'N' cluster-definition_ files, the ApplicationSet would generate _'N'_ Applications automatically.
+The generator used may vary depending on your use case. In this example, we are using the _Git Files_ generator so the cluster definition values are used as parameters. In case we had _'N' cluster-definition_ files, the ApplicationSet would generate _'N'_ Applications automatically.
 
 NOTE: Find more about https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators/[Generators]
 
@@ -129,7 +131,7 @@ The first ApplicationSet _cluster-addons/cluster-addons-as/gitops-setup-sno-as.y
 
 Update from _cluster-addons/cluster-addons-as/gitops-setup-sno-as.yaml_:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
 [.lines_7]
@@ -147,13 +149,13 @@ vi cluster-addons/cluster-addons-as/gitops-setup-sno-as.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: gitops-setup-sno-<name>
+  name: gitops-setup-sno-<clusterID>
   namespace: openshift-operators
 spec:
   generators:
   - git:
       repoURL: https://github.com/<your_user>/workshop-gitops-content-deploy.git
-      revision: sno-<name>-setup
+      revision: sno-<clusterID>-setup
       files:
       - path: "cluster-definition/**/cluster.json"
   template:
@@ -163,7 +165,7 @@ spec:
       project: '{{project}}'
       source:
         repoURL: https://github.com/<your_user>/workshop-gitops-content-deploy.git
-        targetRevision: sno-<name>-setup
+        targetRevision: sno-<clusterID>-setup
         path: cluster-addons/charts/gitops-setup 
       destination:
         server: '{{cluster.address}}'
@@ -180,7 +182,7 @@ image::diagram-4.png[]
 
 Update from _cluster-addons/cluster-addons-as/bootstrap-sno-as.yaml_:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
 [.lines_7]
@@ -198,13 +200,13 @@ vi cluster-addons/cluster-addons-as/bootstrap-sno-as.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: bootstrap-sno-<name>
+  name: bootstrap-sno-<clusterID>
   namespace: openshift-operators
 spec:
   generators:
   - git:
       repoURL: https://github.com/<your_user>/workshop-gitops-content-deploy.git
-      revision: sno-<name>-setup
+      revision: sno-<clusterID>-setup
       files:
       - path: "cluster-definition/**/cluster.json"
   template:
@@ -214,7 +216,7 @@ spec:
       project: '{{project}}'
       source:
         repoURL: https://github.com/<your_user>/workshop-gitops-content-deploy.git
-        targetRevision: sno-<name>-setup
+        targetRevision: sno-<clusterID>-setup
         path: cluster-addons/charts/bootstrap-app
       destination:
         server: '{{cluster.address}}'
@@ -226,7 +228,7 @@ spec:
 
 Then update _cluster-addons/charts/bootstrap-app/values.yaml_ file with your assigned data too:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
 [.lines_7]
@@ -242,7 +244,7 @@ vi cluster-addons/charts/bootstrap-app/values.yaml
 [source, shell,subs="+macros,+attributes"]
 ----
 clusters:
-  sno-<name>:
+  sno-<clusterID>:
     applicationNamespace: openshift-gitops
     namespace: ''
     destination: 'https://kubernetes.default.svc'
@@ -250,7 +252,7 @@ clusters:
     code:
       repo: https://github.com/<your_user>/workshop-gitops-content-deploy.git
       path: cluster-addons/charts/bootstrap
-      target: sno-<name>-setup
+      target: sno-<clusterID>-setup
 ----
 
 And finally replace values in bootstrap _cluster-addons/charts/bootstrap/values.yaml_:
@@ -454,7 +456,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml
 ----
 ...
     dex:  
-      openShiftOAuth: true # 1
+      openShiftOAuth: true  <1>
       resources:
         limits:
           cpu: 500m
@@ -463,10 +465,10 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml
           cpu: 250m 
           memory: 128Mi
     provider: dex
-  resourceTrackingMethod: annotation+label # 2
-  applicationSet: # 3
+  resourceTrackingMethod: annotation+label <2>
+  applicationSet: <3>
 ...
-  rbac: # 4
+  rbac: <4>
     defaultPolicy: ''
     policy: |-
       g, {{ $.Values.argocd.group }}, role:admin
@@ -478,7 +480,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml
       g, argo-dev-operators, role:operator-dev      
     scopes: '[groups]'
 ...
-    sidecarContainers: # 5
+    sidecarContainers: <5>
       - command:
           - /var/run/argocd/argocd-cmp-server
         image: 'quay.io/argoproj/argocd:v2.4.8'
@@ -508,14 +510,30 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml
       - emptyDir: {}
         name: tmp-dir                  
 ...              
-  configManagementPlugins: | # 6
+  configManagementPlugins: | <6>
     - name: argocd-vault-plugin
       generate:
         command: ["argocd-vault-plugin"]
         args: ["generate", "./"]      
-  resourceCustomizations: | # 7
-    operators.coreos.com/Subscription:
-      health.lua: |      
+  resourceHealthChecks:  <7>
+    - group: argoproj.io
+      kind: Application
+      check: |
+        hs = {}
+        hs.status = "Progressing"
+        hs.message = ""
+        if obj.status ~= nil then
+          if obj.status.health ~= nil then
+            hs.status = obj.status.health.status
+            if obj.status.health.message ~= nil then
+              hs.message = obj.status.health.message
+            end
+          end
+        end
+        return hs
+    - group: operators.coreos.com
+      kind: Subscription
+      check: |
         health_status = {}
         if obj.status ~= nil then
           if obj.status.conditions ~= nil then
@@ -526,9 +544,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml
               msg = msg .. i .. ": " .. condition.type .. " | " .. condition.status .. "\n"
               if condition.type == "InstallPlanPending" and condition.status == "True" then
                 numPending = numPending + 1
-              elseif (condition.type == "InstallPlanMissing" and condition.reason ~= "ReferencedInstallPlanNotFound") then
-                numDegraded = numDegraded + 1
-              elseif (condition.type == "CatalogSourcesUnhealthy" or condition.type == "InstallPlanFailed" or condition.type == "ResolutionFailed") and condition.status == "True" then
+              elseif (condition.type == "CatalogSourcesUnhealthy" or condition.type == "InstallPlanMissing" or condition.type == "InstallPlanFailed" or condition.type == "ResolutionFailed") and condition.status == "True" then
                 numDegraded = numDegraded + 1
               end
             end
@@ -537,7 +553,11 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml
               health_status.message = msg
               return health_status
             elseif numPending > 0 and numDegraded == 0 then
-              health_status.status = "Progressing"
+              if obj.spec.installPlanApproval == "Manual" then
+                health_status.status = "Healthy"
+              else
+                health_status.status = "Progressing"
+              end
               health_status.message = "An install plan for a subscription is pending installation"
               return health_status
             else
@@ -549,26 +569,26 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml
         end
         health_status.status = "Progressing"
         health_status.message = "An install plan for a subscription is pending installation"
-        return health_status   
+        return health_status 
 ----
 
 Also see:
 
-- 1) Dex uses groups and users defined within Openshift by checking the Oauth server.
+<1> Dex uses groups and users defined within Openshift by checking the Oauth server.
 
-- 2) Overrides default tracking method by label to annotation+label.
+<2> Overrides default tracking method by label to annotation+label.
 
-- 3) Enable ApplicationSet controller.
+<3> Enable ApplicationSet controller.
 
-- 4) Configure argo RBAC.
+<4> Configure argo RBAC.
 
-- 5) Configure vault plugin as a sidecar container.
+<5> Configure vault plugin as a sidecar container.
 
-- 6) Configure new plugin for vault.
+<6> Configure new plugin for vault.
 
-- 7) Configure resource healthcheck for Subscription.
+<7> Configure resource health check for Subscription.
 
-As you may notice, this instance contains some parametes for configuring _Vault Plugin_, which we will discuss later, and _RBAC_ model.
+As you may notice, this instance contains some parameters for configuring _Vault Plugin_, which we will discuss later, and _RBAC_ model.
 
 *_RBAC_* is defined on _cluster-addons/charts/bootstrap/templates/rbac/_ folder and includes the basic configuration for Argo _RBAC_ and projects.
 
@@ -589,11 +609,11 @@ NOTE: Find more in https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac
 
 ArgoCD has two pre-defined roles but _RBAC_ configuration allows defining roles and groups. See below:
 
-- 1) role:readonly - read-only access to all resources
+- 1) `role:readonly` - read-only access to all resources
 
-- 2) role:admin - unrestricted access to all resources
+- 2) `role:admin` - unrestricted access to all resources
 
-Additionally to the defined roles, it is possible to create some specific roles to allow _argo-operators_ and _argo-dev-operators_ group members manage applications in ArgoCD. See the groups in _cluster-addons/charts/bootstrap/values.yaml_ values file:
+Additionally to the defined roles, it is possible to create some specific roles to allow `argo-operators` and `argo-dev-operators` group members manage applications in ArgoCD. See the groups in _cluster-addons/charts/bootstrap/values.yaml_ values file:
 
 [.lines_7]
 [.console-input]
@@ -622,12 +642,12 @@ groups:
    user: admin # full admin
 ----
 
-Then if you navigate to _RBAC_ folder you can see a _Group_ and a _Role Binding_ resource to give _cluster-admin_ permissions on Argo to the admin user configured via _Htpasswd_.
+Then if you navigate to _RBAC_ folder you can see a _Group_ and a _Role Binding_ resource to give `cluster-admin` permissions on Argo to the admin user configured via _Htpasswd_.
 
 .RBAC folder
 image::workshop-content-deploy-folders-4.png[]
 
-NOTE: For _RBAC_ we need to differentiate between global configuration on _argocd-apps_ intance and projects _RBAC_.
+NOTE: For _RBAC_ we need to differentiate between global configuration on _argocd-apps_ instance and projects _RBAC_.
 
 If you navigate to rbac section on _argo-apps_ instance, you will see some _RBAC_ policies starting like *g*  and *p*:
 
@@ -658,7 +678,10 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml
 ...
 ----
 
+[TIP]
+====
 Policies starting with _'g'_ assign roles to OpenShift local groups (they can be both Argo roles and OpenShift roles) and their users. While policies starting with _'p'_ define specific policies for projects, resources, applications and their operations.
+====
 
 The following sections collect the information around _ArgoCD Roles_ and _ArgoCD permission_ in the managed clusters. It is important to understand the functionality matrix and permission that the following sections try to implement:
 
@@ -677,9 +700,9 @@ Then on *_AppProject_* we can define restrictions like _source repo_, _destinati
 Last but not least are *_Namespaces_*. _Namespaces_ are created as part of the bootstrap process by the _argo-infra_ instance in the _SNO_ so the operator in charge of managing apps lifecycle does not 
 need to have _cluster-wide_ privileges. 
 
-Do not forget to *push your changes to your working branch!*, then we are going to deploy the _manage-setup-a-<name>_ Application in order to _bootstrap_ the _SNO_:
+Do not forget to *push your changes to your working branch!*, then we are going to deploy the _manage-setup-a-<clusterID>_ Application in order to _bootstrap_ the _SNO_:
 
-NOTE: Make sure you are in the _sno-<name>-setup_ branch.
+NOTE: Make sure you are in the _sno-<clusterID>-setup_ branch.
 
 [.lines_7]
 [.console-input]
@@ -688,7 +711,7 @@ NOTE: Make sure you are in the _sno-<name>-setup_ branch.
 cd ~/workshop-gitops-content-deploy
 git add .
 git commit -m "bootstrap application for SNO"
-git push origin sno-<name>-setup
+git push origin sno-<clusterID>-setup
 ----
 
 - Now login to _argocd_ instance in _Argo Hub_ (https://argocd-server-openshift-operators.apps.argo-hub.<domain>.opentlc.com) 
@@ -698,7 +721,7 @@ git push origin sno-<name>-setup
 .Log in argocd console instance
 image::argo-login-1.png[]
 
-- Hit *_my_htpasswd_provider_*. 
+- Hit **Workshop Users**. 
 
 .OpenShift credentials for argocd instance
 image::hub-login-1.png[]
@@ -716,7 +739,7 @@ IMPORTANT: *Insert the following Application with the changes we previously push
 
 Update from _global-config/bootstrap-a/managed-setup.yaml_:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
 [.lines_7]
@@ -734,16 +757,16 @@ vi global-config/bootstrap-a/managed-setup.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: managed-setup-a-<name>
+  name: managed-setup-a-<clusterID>
   namespace: openshift-operators
 spec:
   destination:
     namespace: openshift-operators
     server: https://kubernetes.default.svc
-  project: project-sno-<name>
+  project: project-sno-<clusterID>
   source:
     repoURL: https://github.com/<your_user>/workshop-gitops-content-deploy.git
-    targetRevision: sno-<name>-setup
+    targetRevision: sno-<clusterID>-setup
     path: cluster-addons/cluster-addons-as/
   syncPolicy:
     automated:
@@ -758,7 +781,7 @@ At this point you should see some Applications on _Syncing_ status on your _argo
 .SNO bootstrap
 image::managed-setup.png[]
 
-Deep dive on *_managed-setup-a-<name>_* Application to check all the resources created. Next go back to the initial view and see how the Applications rendered by ApplicationSet are created.
+Deep dive on *_managed-setup-a-<clusterID>_* Application to check all the resources created. Next go back to the initial view and see how the Applications rendered by ApplicationSet are created.
 
 .ApplicationSet view
 image::managed-setup-a-name.png[]
@@ -797,9 +820,9 @@ image::projects-list.png[]
 
 Once this is completed login to you managed cluster, _SNO_, and verify:
 
-IMPORTANT: Remember to use your <name> and <domain>.
+IMPORTANT: Remember to use your <clusterID> and <domain>.
 
-- Open the OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<name>.<domain>.opentlc.com)
+- Open the OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<clusterID>.<domain>.opentlc.com)
 
 - Hit *_my_htpasswd_provider_*.
 
@@ -819,7 +842,7 @@ Verify that:
 
 Now Log in _argocd-infra_ instance using OpenShift credentials, with user _admin_ and <pass> provided by intructor.
 
-- 3) Click *_Settings_* section  (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>.opentlc.com/settings)
+- 3) Click *_Settings_* section  (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<clusterID>.<domain>.opentlc.com/settings)
 
 .Settings section
 image::settings-section-argocd.png[]
@@ -829,7 +852,7 @@ image::settings-section-argocd.png[]
 .General overview argocd-infra instance
 image::cluster-wide.png[]
 
-- 5) Follow the same steps to verify that *_argocd-apps_* (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<name>.<domain>.opentlc.com/settings) instance exists and is NOT _cluster-wide_.
+- 5) Follow the same steps to verify that *_argocd-apps_* (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<clusterID>.<domain>.opentlc.com/settings) instance exists and is NOT _cluster-wide_.
 
 .General overview argocd-apps instance
 image::argocd-apps-general-1.png[]
@@ -853,12 +876,12 @@ Make sure you push content to your working branch:
 cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "initial commit for testing app"
-git push origin sno-<name>
+git push origin sno-<clusterID>
 ----
 
 Click -> *_New app_* -> *_Edit as Yaml_* 
 
-IMPORTANT: *Insert the following Application with the changing _<name>_ and <your_user>*:
+IMPORTANT: *Insert the following Application with the changing _<clusterID>_ and <your_user>*:
 
 [.lines_7]
 [.console-output]
@@ -868,7 +891,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   namespace: openshift-operators
-  name: sno-<name>-vault
+  name: sno-<clusterID>-vault
 spec:
   destination:
     namespace: vault-secrets
@@ -880,7 +903,7 @@ spec:
           value: 'true'
     path: .
     repoURL: 'https://github.com/<your_user>/helm-infra-gitops-workshop.git'
-    targetRevision: sno-<name>
+    targetRevision: sno-<clusterID>
   project: dev
   syncPolicy:
     automated:
@@ -890,13 +913,13 @@ spec:
 
 Then hit *_Save_* -> *_Create_*
 
-First log in the _SNO_, replace *_<name>_*, *_<pass>_* and *_<domain>_*:
+First log in the _SNO_, replace *_<clusterID>_*, *_<pass>_* and *_<domain>_*:
 
 [.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
-oc login -u admin -p <pass> https://api.sno-<name>.<domain>.opentlc.com:6443
+oc login -u admin -p <pass> https://api.sno-<clusterID>.<domain>.opentlc.com:6443
 ----
 
 When the Application is created it deploys an app called _vault_ in namespace _vault-secrets_ that will encode a password and store it in _Vault_. If you access the application route you will not be able to see the password in plain text:
@@ -906,7 +929,7 @@ When the Application is created it deploys an app called _vault_ in namespace _v
 [source, shell,subs="+macros,+attributes"]
 ----
 oc get route vault -n vault-secrets 
-curl vault-vault-secrets.apps.sno-<name>.<domain>.opentlc.com
+curl vault-vault-secrets.apps.sno-<clusterID>.<domain>.opentlc.com
 ----
 
 [.lines_7]
