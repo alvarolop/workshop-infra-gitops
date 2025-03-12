@@ -13,7 +13,7 @@ Go to https://github.com/romerobu/helm-infra-gitops-workshop[helm-infra-gitops-w
 [source, shell,subs="+macros,+attributes"]
 ----
 cd ~/helm-infra-gitops-workshop    
-git checkout sno-<name>  
+git checkout sno-<clusterID>  
 ----  
 
 Take a look to the code, this repo contains Helm charts for configuring day 2 operations in our managed cluster. It contains several dependencies and its _Charts_ with some default _values_ 
@@ -83,11 +83,11 @@ You will now deploy applications to our _SNO_ Argo console by hand, and then at 
 
 - Log in *_argocd-infra_* instance using OpenShift credentials, with user _admin_ and <pass> provided by intructor. 
 
-NOTE: Replace *_<name>_* and *_<domain>_*. (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>)
+NOTE: Replace *_<clusterID>_* and *_<domain>_*. (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<clusterID>.<domain>)
 
 - If you try to deploy this Application on your cluster you will see it _syncs_, but it does not render objects as every value is disabled.
 
-IMPORTANT: Replace _<name>_ and _<your_user>_ in the following Application.
+IMPORTANT: Replace _<clusterID>_ and _<your_user>_ in the following Application.
 
 - Click on: -> *_New app_* -> *_Edit as Yaml_*
 
@@ -98,7 +98,7 @@ IMPORTANT: Replace _<name>_ and _<your_user>_ in the following Application.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: day-2-sno-<name>
+  name: day-2-sno-<clusterID>
   namespace: openshift-gitops
 spec:
   destination:
@@ -107,7 +107,7 @@ spec:
   source:
     path: .
     repoURL: 'https://github.com/<your_user>/helm-infra-gitops-workshop.git'
-    targetRevision: sno-<name>
+    targetRevision: sno-<clusterID>
   syncPolicy:
     automated:
       prune: true
@@ -121,7 +121,7 @@ image::day-2-sno-initial-app.png[]
 
 This is because dependencies include conditions for _enabling/disabling_ those Charts. As every _value_ is set to _false_ it does not apply anything.
 
-IMPORTANT: Once this subchapter is finished, delete the _day-2-sno-<name>_ Application.
+IMPORTANT: Once this subchapter is finished, delete the _day-2-sno-<clusterID>_ Application.
 
 [#identityproviders]
 == 4.1 Configure Identity Providers
@@ -152,7 +152,7 @@ vi values-oauth.yaml
 
 Insert the following configuration, replacing:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<domain> -> Assigned domain cluster*
 - *<ip> -> LDAP Server IP*
 - *<nodeport> -> LDAP Server Port*
@@ -165,8 +165,8 @@ Insert the following configuration, replacing:
 oauth:
   enabled: true # Enable dependency
   keycloak: # Update chart values
-    clientid: myclient-<name>
-    issuer: https://keycloak-keycloak.apps.argo-hub.<domain>/realms/myrealm-<name>
+    clientid: myclient-<clusterID>
+    issuer: https://keycloak-keycloak.apps.argo-hub.<domain>/realms/myrealm-<clusterID>
     data: <your_keycloak_secret_data>
   ldap:
     sync:
@@ -192,11 +192,11 @@ image::hub-login-1.png[]
 .Keycloack log in
 image::keycloack-login.png[]
 
-4) Navigate to your _realm-<name>_
+4) Navigate to your _realm-<clusterID>_
 
 image::realm-navbar.png[]
 
-5) Then go to your _myclient-<name>_ 
+5) Then go to your _myclient-<clusterID>_ 
 
 6) Click on _Credentials_ tab, you will see your client secret (_<your_keycloak_secret_data>_) there.
 
@@ -209,18 +209,18 @@ Once the _values-oauth.yaml_ exists in your repository, push it and create a new
 cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "identity providers"
-git push origin sno-<name>
+git push origin sno-<clusterID>
 ----
 
 Replace the following:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<domain> -> Assigned domain cluster*
 - *<your_user> -> Your GitHub user account*
 
-Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>)
+Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<clusterID>.<domain>)
 
-To create _sno-<name>-oauth_ Application, once logged in, click on:
+To create _sno-<clusterID>-oauth_ Application, once logged in, click on:
 
 - *_New app_* -> *_Edit as Yaml_* 
 
@@ -231,7 +231,7 @@ To create _sno-<name>-oauth_ Application, once logged in, click on:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno-<name>-oauth
+  name: sno-<clusterID>-oauth
   namespace: openshift-gitops
 spec:
   destination:
@@ -243,7 +243,7 @@ spec:
         - values-oauth.yaml
     path: .
     repoURL: 'https://github.com/<your_user>/helm-infra-gitops-workshop.git'
-    targetRevision: sno-<name>
+    targetRevision: sno-<clusterID>
   syncPolicy:
     automated:
       prune: true
@@ -330,13 +330,13 @@ oc get oauth cluster -o yaml
 
 It might take a while till authentication pods restart, if you see oauth is not progressing manually restart openshift-authentication pods.
 
-- _Log out_ and _Log in_ back (E.g. https://console-openshift-console.apps.sno-<name>.<domain>). 
+- _Log out_ and _Log in_ back (E.g. https://console-openshift-console.apps.sno-<clusterID>.<domain>). 
 
 - Then you should see new Identity Providers listed in your _SNO_.
 
 - You can try _Log in_ _Keycloack_ server with credentials: 
 
-  myuser-<name>/myuser-<name>
+  myuser-<clusterID>/myuser-<clusterID>
 
 NOTE: _LDAP pods_ can take some minutes to restart.
 
@@ -417,18 +417,18 @@ Once the _values-operators.yaml_ exists in your repository, push it and create a
 cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "operators"
-git push origin sno-<name>
+git push origin sno-<clusterID>
 ----
 
-Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>)
+Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<clusterID>.<domain>)
 
-To create _sno-<name>-operators_ Application, once logged in, click on:
+To create _sno-<clusterID>-operators_ Application, once logged in, click on:
 
 - *_New app_* -> *_Edit as Yaml_*
 
 Replace the following in the Application:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
 [.lines_7]
@@ -438,7 +438,7 @@ Replace the following in the Application:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno-<name>-operators
+  name: sno-<clusterID>-operators
   namespace: openshift-gitops
 spec:
   destination:
@@ -450,7 +450,7 @@ spec:
         - values-operators.yaml
     path: .
     repoURL: 'https://github.com/<your_user>/helm-infra-gitops-workshop.git'
-    targetRevision: sno-<name>
+    targetRevision: sno-<clusterID>
   syncPolicy:
     automated:
       prune: true
@@ -467,24 +467,24 @@ If _Sync Waves_ are not configured properly it will try to create resources whos
 
 Once operators are installed, you can view them as well with the _Install Plan_ managed by Argo:
 
-- Log in _argocd-infra_ instance console: (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>)
+- Log in _argocd-infra_ instance console: (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<clusterID>.<domain>)
 
-- Click on _sno-<name>-operators_ Application
+- Click on _sno-<clusterID>-operators_ Application
 
 .Installed operators view in argocd-infra instance
 image::operators-install-plan.png[]
 
 Then, deploy _Bookinfo_ app using _argocd-apps_ instance. You will realize you only need to deploy apps components as namespace is already managed by _argocd-infra_ instance:
 
-- Log in *_argocd-apps_* instance console: (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<name>.<domain>)
+- Log in *_argocd-apps_* instance console: (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<clusterID>.<domain>)
 
-Deploy the _sno-<name>-bookinfo_ Application, once logged in, click on:
+Deploy the _sno-<clusterID>-bookinfo_ Application, once logged in, click on:
 
 - *_New app_* -> *_Edit as Yaml_*
 
 Replace the following in the Application:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
 [.lines_7]
@@ -494,7 +494,7 @@ Replace the following in the Application:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno-<name>-bookinfo
+  name: sno-<clusterID>-bookinfo
   namespace: openshift-operators
 spec:
   destination:
@@ -507,7 +507,7 @@ spec:
           value: 'true'
     path: .
     repoURL: 'https://github.com/<your_user>/helm-infra-gitops-workshop.git'
-    targetRevision: sno-<name>
+    targetRevision: sno-<clusterID>
   syncPolicy:
     automated:
       prune: true
@@ -587,18 +587,18 @@ Once the _values-namespace.yaml_ exists in your repository, push it and create a
 cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "namespace configuration"
-git push origin sno-<name>
+git push origin sno-<clusterID>
 ----
 
-Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>)
+Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<clusterID>.<domain>)
 
-To create _sno-<name>-namespace_ Application, once logged in, click on:
+To create _sno-<clusterID>-namespace_ Application, once logged in, click on:
 
 - *_New app_* -> *_Edit as Yaml_*
 
 Replace the following in the Application:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
 [.lines_7]
@@ -608,7 +608,7 @@ Replace the following in the Application:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno-<name>-namespace
+  name: sno-<clusterID>-namespace
   namespace: openshift-gitops
 spec:
   destination:
@@ -620,7 +620,7 @@ spec:
         - values-namespace.yaml 
     path: .
     repoURL: 'https://github.com/<your_user>/helm-infra-gitops-workshop.git'
-    targetRevision: sno-<name>
+    targetRevision: sno-<clusterID>
   syncPolicy:
     automated:
       prune: true
@@ -629,15 +629,15 @@ spec:
 
 - Then hit *_Save_* -> *_Create_*
 
-Then deploy an _example-app_ on *_argocd-apps_* instance (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<name>.<domain>)
+Then deploy an _example-app_ on *_argocd-apps_* instance (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<clusterID>.<domain>)
 
-Deploy the _sno-<name>-app_ Application, once logged in, click on:
+Deploy the _sno-<clusterID>-app_ Application, once logged in, click on:
 
 - *_New app_* -> *_Edit as Yaml_*
 
 Replace the following in the Application:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
 [.lines_7]
@@ -647,7 +647,7 @@ Replace the following in the Application:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno-<name>-app
+  name: sno-<clusterID>-app
   namespace: openshift-operators
 spec:
   destination:
@@ -660,7 +660,7 @@ spec:
           value: 'true' 
     path: .
     repoURL: 'https://github.com/<your_user>/helm-infra-gitops-workshop.git'
-    targetRevision: sno-<name>
+    targetRevision: sno-<clusterID>
   syncPolicy:
     automated:
       prune: true
@@ -696,7 +696,7 @@ app:
 cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "replicas scaled up"
-git push origin sno-<name>
+git push origin sno-<clusterID>
 ----
 
 Once you update the replicas in the _Deployment_ you should see _4 of 5 pods_:
@@ -731,12 +731,12 @@ app:
 cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "replicas scaled down"
-git push origin sno-<name>
+git push origin sno-<clusterID>
 ----
 
 Then if you try to navigate to _app_ route you will see you are not allowed:
 
-IMPORTANT: Replace <name> and <domain> when needed.
+IMPORTANT: Replace <clusterID> and <domain> when needed.
 
 [.lines_7]
 [.console-input]
@@ -777,7 +777,7 @@ namespace:
 cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "network policy disabled"
-git push origin sno-<name>
+git push origin sno-<clusterID>
 
 oc get route back-springboot -n app
 ----
@@ -823,18 +823,18 @@ Once the _values-monitoring.yaml_ exists in your repository, push it and create 
 cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "monitoring"
-git push origin sno-<name>
+git push origin sno-<clusterID>
 ----
 
-Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<name>.<domain>)
+Log in the _argocd-infra_ instance (E.g. https://argocd-infra-server-openshift-gitops.apps.sno-<clusterID>.<domain>)
 
-To create _sno-<name>-monitoring_ Application, once logged in, click on:
+To create _sno-<clusterID>-monitoring_ Application, once logged in, click on:
 
 - *_New app_* -> *_Edit as Yaml_*
 
 Replace the following in the Application:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
 [.lines_7]
@@ -844,7 +844,7 @@ Replace the following in the Application:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno-<name>-monitoring
+  name: sno-<clusterID>-monitoring
   namespace: openshift-gitops
 spec:
   destination:
@@ -856,7 +856,7 @@ spec:
         - values-monitoring.yaml
     path: .
     repoURL: 'https://github.com/<your_user>/helm-infra-gitops-workshop.git'
-    targetRevision: sno-<name>
+    targetRevision: sno-<clusterID>
   syncPolicy:
     automated:
       prune: true
@@ -867,7 +867,7 @@ spec:
 
 Configuring the monitoring application is quite straightforward since it does not have any direct dependencies on other objects. As such, you do not need to worry about setting up _Sync Waves_, which are typically used to manage the order in which objects are deployed to avoid issues with dependencies.
 
-Then navigate to OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<name>.<domain>) to verify those objects deployed in the _argocd-infra_ instance exist on the _SNO_ and if _Service Monitor_ is scraping your metrics properly:
+Then navigate to OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<clusterID>.<domain>) to verify those objects deployed in the _argocd-infra_ instance exist on the _SNO_ and if _Service Monitor_ is scraping your metrics properly:
 
 Once the _Service Monitor_ is created, the respective metrics should be found in the _SNO_ OpenShift Console (*_Observe_* -> *_Metrics_*). For example, it is possible to find the *_tomcat_sessions_active_current_sessions metric_*:
 
@@ -908,7 +908,7 @@ ConfigMap *_cmp-plugin_* defines the plugin that will be mounted in the sidecar 
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
-oc login -u admin -p <pass> https://api.sno-<name>.<domain>:6443
+oc login -u admin -p <pass> https://api.sno-<clusterID>.<domain>:6443
 oc get -n openshift-operators configmap cmp-plugin -o yaml 
 ----  
 
@@ -985,7 +985,7 @@ Then it is necessary to configure using this plugin on ArgoCD:
 
 IMPORTANT: In this case, this configuration is already running on your cluster. 
 
-Take a look to the configuration applied by the Application _sno-<name>-bootstrap on your sno  _argocd-infra_ instance where those resources have been already created as part of _bootstrapping_. Do not make any change.
+Take a look to the configuration applied by the Application _sno-<clusterID>-bootstrap on your sno  _argocd-infra_ instance where those resources have been already created as part of _bootstrapping_. Do not make any change.
 
 [.lines_7]
 [.console-output]
@@ -1109,7 +1109,7 @@ cat charts/vault/values.yaml
 
 If you take a look to the existing secret in _vault-secrets_ namespace, as we are telling Application not to use Vault plugin, it is *NOT* replacing the sensitive information:
 
-- Log in OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<name>.<domain>)
+- Log in OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<clusterID>.<domain>)
 
 - Hit *_Workshop Users_*. 
 
@@ -1120,11 +1120,11 @@ If you take a look to the existing secret in _vault-secrets_ namespace, as we ar
 .Vault plugin secret
 image::secret-vault.png[]
 
-So we need to modify existing Application _sno-<name>-vault_ in _argocd-apps_ instance (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<name>.<domain>) to use *plugin*. 
+So we need to modify existing Application _sno-<clusterID>-vault_ in _argocd-apps_ instance (E.g. https://argocd-apps-server-openshift-operators.apps.sno-<clusterID>.<domain>) to use *plugin*. 
 
 NOTE: This modification applies to *Vault application* deployed at the end of *_3.2 Helm Charts subsection_*.
 
-- Click *_sno-<name>-vault_* -> *_App details_* -> *_Manifest_* -> then *_Edit_*, and add:
+- Click *_sno-<clusterID>-vault_* -> *_App details_* -> *_Manifest_* -> then *_Edit_*, and add:
 
 IMPORTANT: Replace only the plugin section. And change _<your_user>_ for your GitHub user account.
 
@@ -1136,7 +1136,7 @@ IMPORTANT: Replace only the plugin section. And change _<your_user>_ for your Gi
   source:
     repoURL: 'https://github.com/<your_user>/helm-infra-gitops-workshop.git'
     path: .
-    targetRevision: sno-<name>
+    targetRevision: sno-<clusterID>
     plugin:
       env:
         - name: HELM_VALUES
@@ -1159,7 +1159,7 @@ You can try to delete it and see how it is created.
 ----
 
 oc get route vault -n vault-secrets 
-curl vault-vault-secrets.apps.sno-<name>.<domain>
+curl vault-vault-secrets.apps.sno-<clusterID>.<domain>
 ----
 
 [.lines_7]
@@ -1194,7 +1194,7 @@ Navigate to the ApplicationSet folder and take a look to the newly added day2-sn
 
 Replace the following in the ApplicationSet and save it:
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
 [.lines_7]
@@ -1213,13 +1213,13 @@ vi cluster-addons/cluster-addons-as/day2-sno-as.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: day2-sno-<name>
+  name: day2-sno-<clusterID>
   namespace: openshift-operators
 spec:
   generators:
   - git:
       repoURL: https://github.com/<your_user>/workshop-gitops-content-deploy.git
-      revision: sno-<name>-setup
+      revision: sno-<clusterID>-setup
       files:
       - path: "cluster-definition/**/cluster.json"
   template:
@@ -1229,7 +1229,7 @@ spec:
       project: '{{project}}'
       source:
         repoURL: https://github.com/<your_user>/workshop-gitops-content-deploy.git
-        targetRevision: sno-<name>-setup
+        targetRevision: sno-<clusterID>-setup
         path: cluster-addons/day2-as
       destination:
         server: '{{cluster.address}}'
@@ -1261,18 +1261,18 @@ git add .
 git commit -m "wip"
 ----  
 
-Go back to your working branch *_sno-<name>-setup_* and merge it with *main-day2* branch. 
+Go back to your working branch *_sno-<clusterID>-setup_* and merge it with *main-day2* branch. 
 
 [.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
 cd ~/workshop-gitops-content-deploy
-git checkout sno-<name>-setup
+git checkout sno-<clusterID>-setup
 git merge main-day2
 ----  
 
-IMPORTANT: As part of this *merge* action you will find file conflicts that has to be solved by hand. Take a look at them carefully and solve them one by one, make sure your workshop data like *_<your_user>_*, *_<name>_*, *_<domain>_*, folder *cluster-definition/sno-<name>* are properly replaced. 
+IMPORTANT: As part of this *merge* action you will find file conflicts that has to be solved by hand. Take a look at them carefully and solve them one by one, make sure your workshop data like *_<your_user>_*, *_<clusterID>_*, *_<domain>_*, folder *cluster-definition/sno-<clusterID>* are properly replaced. 
 
 NOTE: Tools as _Visual Code Studio_ can make this step easier, if you are not already using it at this point of the workshop.
 
@@ -1281,11 +1281,11 @@ Now, you must see this extra ApplicationSet in *_~/workshop-gitops-content-deplo
 .Day-2 extra folder and ApplicationSet
 image::day2-folder-structure-1.png[]
 
-If you take a look to this ApplicationSet which will be created in _argocd-infra_ instance on destination cluster _SNO_, you will see that *_generators_* label iterates over _config-definition_ folder on root directory and uses every child folder name (day 2 operators) to name the Application template and it takes the values file from the *_cluster-definition/sno-<name>/config.json_* file:
+If you take a look to this ApplicationSet which will be created in _argocd-infra_ instance on destination cluster _SNO_, you will see that *_generators_* label iterates over _config-definition_ folder on root directory and uses every child folder name (day 2 operators) to name the Application template and it takes the values file from the *_cluster-definition/sno-<clusterID>/config.json_* file:
 
 Remember to replace with your cluster configuration data as required.
 
-- *<name> -> Assigned cluster*
+- *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
 [.lines_7]
@@ -1303,23 +1303,23 @@ vi cluster-addons/day2-as/application-set-day2.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: day2-as-sno-<name>
+  name: day2-as-sno-<clusterID>
   namespace: openshift-gitops
 spec:
   generators:
   - git:
       repoURL: https://github.com/<your_user>/workshop-gitops-content-deploy.git
-      revision: sno-<name>-setup
+      revision: sno-<clusterID>-setup
       files:
       - path: "config-definition/**/config.json" 
   template:
     metadata:
-      name: 'sno-<name>-{{path.basename}}'
+      name: 'sno-<clusterID>-{{path.basename}}'
     spec:
       project: default
       source:
         repoURL: https://github.com/<your_user>/helm-infra-gitops-workshop.git
-        targetRevision: sno-<name>
+        targetRevision: sno-<clusterID>
         path: .
         helm:
           valueFiles:
@@ -1333,7 +1333,7 @@ spec:
           selfHeal: true 
 ----  
 
-Then push to your changes to working branch *_sno-<name>-setup_*.
+Then push to your changes to working branch *_sno-<clusterID>-setup_*.
 
 [.lines_7]
 [.console-input]
@@ -1342,12 +1342,12 @@ Then push to your changes to working branch *_sno-<name>-setup_*.
 cd ~/workshop-gitops-content-deploy
 git add .
 git commit -m "day 2 with ApplicationSet"
-git push origin sno-<name>-setup
+git push origin sno-<clusterID>-setup
 ----  
 
 Finally, navigate to _Argo Hub_ *_argocd_* instance and see the recently created ApplicationSet, then navigate to *_argocd-infra_* instance on _SNO_ and see the Applications managed by the Application generated by ApplicationSet.
 
-It might take a while till it syncs all the resources affected by the changes. Once everything is synced, you can try deleting _sno-<name>-monitoring_ Application on argocd-infra instance to verify ApplicationSet recreates it.
+It might take a while till it syncs all the resources affected by the changes. Once everything is synced, you can try deleting _sno-<clusterID>-monitoring_ Application on argocd-infra instance to verify ApplicationSet recreates it.
 
 .Complete view of GitOps approach for infraestructure and application deployment
 image::diagram-8.png[]
