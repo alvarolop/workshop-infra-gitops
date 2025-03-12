@@ -163,7 +163,7 @@
 to our single scoped cluster.</p>
 </div>
 <div class="paragraph">
-<p>Go to <a href="https://github.com/romerobu/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and checkout to your working branch.</p>
+<p>Go to <a href="https://github.com/alvarolop/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and checkout to your working branch.</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
@@ -358,7 +358,7 @@ Once this subchapter is finished, delete the <em>day-2-sno-&lt;clusterID&gt;</em
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Learn more about <a href="https://docs.openshift.com/container-platform/4.12/authentication/identity_providers/configuring-htpasswd-identity-provider.html">Configuring an htpasswd identity provider</a>.
+Learn more about <a href="https://docs.openshift.com/container-platform/4.17/authentication/understanding-identity-provider.html">Configuring identity providers in OpenShift</a>.
 </td>
 </tr>
 </table>
@@ -385,7 +385,7 @@ Learn more about <a href="https://docs.openshift.com/container-platform/4.12/aut
 <p>First we need to take a look to <em>charts/oauth/values.yaml</em>. As you can see, you need to define some missing <em>values</em> for each managed cluster. You can do this by setting those on this Chart values file, setting them as parametes or defining a new <em>values.yaml file</em> for your deployment. We will follow the second approach.</p>
 </div>
 <div class="paragraph">
-<p>Go to your working branch in the <a href="https://github.com/romerobu/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and create a file called <strong>values-oauth.yaml</strong>:</p>
+<p>Go to your working branch in the <a href="https://github.com/alvarolop/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and create a file called <strong>values-oauth.yaml</strong>:</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
@@ -767,7 +767,7 @@ storage                                    4.17.19   True        False         F
 <p>We are going to deploy <strong>Tekton</strong>, <strong>Kiali</strong>, <strong>Jaeger</strong>, <strong>Service Mesh</strong> and <strong>Nmstate</strong> operators. Furthermore we are going to deploy <strong><em>Service Mesh Control Plane</em></strong> and <strong><em>Service Mesh Member Roll</em></strong> instances and an example application called <em>Bookinfo</em> for Service Mesh.</p>
 </div>
 <div class="paragraph">
-<p>Go to your working branch in the <a href="https://github.com/romerobu/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and create a file called <strong>values-operators.yaml</strong>:</p>
+<p>Go to your working branch in the <a href="https://github.com/alvarolop/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and create a file called <strong>values-operators.yaml</strong>:</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
@@ -1003,7 +1003,7 @@ spec:
 <p>The previous <strong><em>Network Policy</em></strong> blocks all incoming traffic by selecting all pods in the namespace and denying all ingress traffic. This is controlled by the <strong><em>networkpolicy.enabled</em></strong> value in the <strong><em>values-namespace.yaml</em></strong> file we are going to create bellow.</p>
 </div>
 <div class="paragraph">
-<p>Go to your working branch in the <a href="https://github.com/romerobu/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and create a file called <strong>values-namespace.yaml</strong>:</p>
+<p>Go to your working branch in the <a href="https://github.com/alvarolop/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and create a file called <strong>values-namespace.yaml</strong>:</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
@@ -1283,7 +1283,7 @@ oc get route back-springboot -n app</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Take a look to the <a href="https://docs.openshift.com/container-platform/4.12/monitoring/enabling-monitoring-for-user-defined-projects.html">Monitoring documentation</a>.
+Take a look to the <a href="https://docs.openshift.com/container-platform/4.17/observability/monitoring/about-ocp-monitoring/monitoring-stack-architecture.html">Monitoring documentation</a>.
 </td>
 </tr>
 </table>
@@ -1292,7 +1292,7 @@ Take a look to the <a href="https://docs.openshift.com/container-platform/4.12/m
 <p>In the first place, we are going to enable <em>user-defined</em> projects monitoring. Then we will create an <strong><em>example-app</em></strong>, with a <em>Service Monitor</em> and a custom <em>Prometheus Rule</em> in order to gather metrics from the <em>example-app</em> application and trigger an alarm based on an specific metric value.</p>
 </div>
 <div class="paragraph">
-<p>Go to your working branch in the <a href="https://github.com/romerobu/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and create a file called <strong>values-monitoring.yaml</strong>:</p>
+<p>Go to your working branch in the <a href="https://github.com/alvarolop/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and create a file called <strong>values-monitoring.yaml</strong>:</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
@@ -1670,7 +1670,7 @@ In this case, this configuration is already running on your cluster.
 <p>So the next step is testing this actually works!</p>
 </div>
 <div class="paragraph">
-<p>In the <a href="https://github.com/romerobu/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository, you can find a <em>secret</em> using a Vault placeholder in <em>charts/vault/values.yaml</em>:</p>
+<p>In the <a href="https://github.com/alvarolop/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository, you can find a <em>secret</em> using a Vault placeholder in <em>charts/vault/values.yaml</em>:</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
@@ -1811,7 +1811,7 @@ curl vault-vault-secrets.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</code></pre>
 <p>Until now, you have applied day 2 operations by creating single Applications by hand. However there is an easier way to render those apps using ApplicationSets.</p>
 </div>
 <div class="paragraph">
-<p>Checkout to <strong>main-day2</strong> branch in this <a href="https://github.com/romerobu/workshop-gitops-content-deploy">workshop-gitops-content-deploy</a> repository to take a look:</p>
+<p>Checkout to <strong>main-day2</strong> branch in this <a href="https://github.com/alvarolop/workshop-gitops-content-deploy">workshop-gitops-content-deploy</a> repository to take a look:</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
