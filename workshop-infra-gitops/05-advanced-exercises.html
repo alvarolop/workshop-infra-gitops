@@ -217,6 +217,62 @@
 </li>
 </ul>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Please, try to do some research before keep reading!!
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Ok, maybe it was too difficult, as I didn&#8217;t give you any code example, so let&#8217;s try to split this task in small pieces.</p>
+</div>
+<div class="sect2">
+<h3 id="_hint_1_the_operator"><a class="anchor" href="#_hint_1_the_operator"></a>Hint 1: The operator</h3>
+<div class="paragraph">
+<p>As there could be some version dependencies in the cluster and you only want to install the operator once, but use it from several application or teams, it is a common practice to centralize the installation of operators in a different application. That is the reason why we have the <code>sno-XX-operators</code> application.</p>
+</div>
+<div class="paragraph">
+<p>Please, add the cert-manager operator to the Helm Chart and make sure that the operator is installed after syncing the app again!!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hint_2_the_cert_manager_files"><a class="anchor" href="#_hint_2_the_cert_manager_files"></a>Hint 2: The cert-manager files</h3>
+<div class="paragraph">
+<p>Once you have the operator installed, you will need to add several configuration files to the <code>helm-infra-gitops-workshop</code>. Best practice is to create a new ArgoCD application, a new folder and a new values file. So let&#8217;s do it!!</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The folder should be named <code>cert-manager</code> and contain the structure of a Helm Chart. Inside the <code>templates</code> folder you will have the files from the next hints. Yo can keep it empty now.</p>
+</li>
+<li>
+<p>Create a <code>values-cert-manager.yaml</code> file with a boilerplate content like:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">cert-manager:
+  enabled: true</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Push it</p>
+</li>
+<li>
+<p>Create an ArgoCD application pointing to that path and check that the Application is Healthy, despite is doesn&#8217;t create any new resource on the cluster.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hint_3"><a class="anchor" href="#_hint_3"></a>Hint 3:</h3>
+
+</div>
 </div>
 </div>
 <nav class="pagination">
