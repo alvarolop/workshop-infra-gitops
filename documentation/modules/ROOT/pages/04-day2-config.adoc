@@ -178,7 +178,7 @@ IMPORTANT: *How to get _Keycloack_ secret*:
 
 1) Login to _Argo Hub_ OpenShift console (E.g. https://console-openshift-console.apps.argo-hub.<domain>/)
 
-- Hit *_my_htpasswd_provider_*. 
+- Hit *_Workshop Users_*. 
 
 .Log in Argo Hub OpenShift console
 image::hub-login-1.png[]
@@ -1111,7 +1111,7 @@ If you take a look to the existing secret in _vault-secrets_ namespace, as we ar
 
 - Log in OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<name>.<domain>)
 
-- Hit *_my_htpasswd_provider_*. 
+- Hit *_Workshop Users_*. 
 
 - Insert _admin_ and _<pass>_ provided by instructor and click *_Log in_* button.
 

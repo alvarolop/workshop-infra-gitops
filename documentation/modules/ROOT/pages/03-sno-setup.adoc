@@ -824,7 +824,7 @@ IMPORTANT: Remember to use your <clusterID> and <domain>.
 
 - Open the OpenShift _SNO_ console (E.g. https://console-openshift-console.apps.sno-<clusterID>.<domain>)
 
-- Hit *_my_htpasswd_provider_*.
+- Hit *_Workshop Users_*.
 
 .SNO log in
 image::hub-login-1.png[]
