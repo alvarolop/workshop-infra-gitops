@@ -161,22 +161,10 @@
 <h2 id="managedconfiguration"><a class="anchor" href="#managedconfiguration"></a>3.1 Managed Cluster Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><em>Argo Hub</em> Application has been already synced, so you just need to be focus on managing your Single Node OpenShift.</p>
+<p>The <em>Argo Hub</em> application has been already synced and has already created the second instance of ArgoCD. Therefore, in this chapter 3 we will focus on configuring ArgoCD from the <code>argo-hub</code> OCP environment to control our Single Node OpenShift. The idea behind this configuration is that everything will be configured as GitOps. You can check this link to know what is <a href="https://www.redhat.com/en/topics/devops/what-is-gitops">GitOps</a>?</p>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s make some modifications in the code to start deploying <em>GitOps</em> in the managed cluster. Open the <em>workshop-gitops-content-deploy</em> folder and make sure all the changes are done in the correct branch <em>sno-&lt;clusterID&gt;-setup</em>:</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-What is <a href="https://www.redhat.com/en/topics/devops/what-is-gitops">GitOps</a>?
-</td>
-</tr>
-</table>
+<p>Let&#8217;s make some modifications in the code to start deploying <em>GitOps</em> in the managed cluster. Open the <code>workshop-gitops-content-deploy</code> folder and make sure all the changes are done in the correct branch <em>sno-&lt;clusterID&gt;-setup</em>.</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
@@ -185,7 +173,64 @@ git checkout sno-&lt;clusterID&gt;-setup</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>As every user is deploying its own bootstrap file, they must have an unique name and they should be deployed on your scoped project where your user has privileges.</p>
+<p>Let&#8217;s summarize what we are going to configure in this section:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>We will create an application <code>managed-setup-a-XX</code> that will be the origin of all the configuration of our cluster. This will be done at the end of the chapter.</p>
+</li>
+<li>
+<p>That application will point to two applicationSets that will use a <strong>JSON</strong> file to know the relevant information to deploy on the correct SNO.</p>
+</li>
+<li>
+<p>The applicationSets need to point to our Git repository, so we will need to also modify them in the repository.</p>
+</li>
+</ol>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">What is an ApplicationSet?</div>
+<div class="paragraph">
+<p>ApplicationSet is a Custom Resource that can be used to generate Applications to multiple clusters from multiple origins. ApplicationSet controller is installed alongside ArgoCD even though it must be explicitly enabled.</p>
+</div>
+<div class="paragraph">
+<p>ApplicationSet is a helpful approach for multi cluster management, and it supplements ArgoCD by adding additional features in support of <em>cluster-administrator-focused</em> scenarios. Some of those are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ability to use a single Kubernetes manifest to target multiple Kubernetes clusters with ArgoCD.</p>
+</li>
+<li>
+<p>Ability to use a single Kubernetes manifest to deploy multiple applications from one or multiple Git repositories with ArgoCD.</p>
+</li>
+<li>
+<p>Improved support for monorepos (multiple ArgoCD Application resources defined within a single Git repository).</p>
+</li>
+<li>
+<p>Improves ability of individual cluster tenants to deploy applications using ArgoCD (without needing to involve privileged cluster admin in enabling the destination servers).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>ApplicationSet uses generators to create Application with multiple origins and destinations using templating.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The following diagram shows an example of the output of Chapter 3, where you should specially check how the AppSet generates Applications based on the JSON.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/managed-setup-a-name.png" alt="managed setup a name">
+</div>
+<div class="title">Figure 1. ApplicationSet view</div>
+</div>
+<div class="sect2">
+<h3 id="_3_1_1_configure_the_appset_json"><a class="anchor" href="#_3_1_1_configure_the_appset_json"></a>3.1.1 Configure the AppSet JSON</h3>
+<div class="paragraph">
+<p>As every user is deploying its own bootstrap file, they must have a unique name and they should be deployed on your scoped project where your user has privileges.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -194,7 +239,7 @@ git checkout sno-&lt;clusterID&gt;-setup</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Change <strong>cluster-definition/sno-&lt;clusterID&gt;</strong> folder as your assigned cluster as this value will be used as a parameter for ApplicationSet.
+Change <strong>cluster-definition/sno-XX</strong> folder as your assigned cluster as this value will be used as a parameter for ApplicationSet.
 </td>
 </tr>
 </table>
@@ -202,7 +247,7 @@ Change <strong>cluster-definition/sno-&lt;clusterID&gt;</strong> folder as your 
 <div class="listingblock lines_7 console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
-E.g.: mv cluster-definition/sno-&lt;clusterID&gt; cluster-definition/sno-22</code></pre>
+E.g.: mv cluster-definition/sno-XX cluster-definition/sno-22</code></pre>
 </div>
 </div>
 <div class="admonitionblock important">
@@ -238,18 +283,21 @@ vi cluster-definition/sno-&lt;clusterID&gt;/cluster.json</code></pre>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">{
-  "environment": "dev",
-  "cloud": "aws",
-  "project": "project-sno-&lt;clusterID&gt;",
-  "region": "eu-central-1",
-  "cluster": {
-    "name": "sno-&lt;clusterID&gt;",
-    "address": "https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;:6443"
-  }
-}</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">  {
+    "environment": "dev",
+    "cloud": "aws",
+    "project": "project-sno-&lt;clusterID&gt;",
+    "region": "eu-central-1",
+    "cluster": {
+      "name": "sno-&lt;clusterID&gt;",
+      "address": "https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;:6443"
+    }
+  }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_3_1_2_configure_the_managed_setup_application"><a class="anchor" href="#_3_1_2_configure_the_managed_setup_application"></a>3.1.2 Configure the Managed Setup application</h3>
 <div class="paragraph">
 <p>You must also update <em>global-config/bootstrap-a/managed-setup.yaml</em>. Note how this application deploys to a different namespace and argo instance compared to <em>hub-setup</em> application.</p>
 </div>
@@ -272,7 +320,7 @@ vi cluster-definition/sno-&lt;clusterID&gt;/cluster.json</code></pre>
 vi global-config/bootstrap-a/managed-setup.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock lines_7 console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -297,36 +345,9 @@ spec:
 <div class="paragraph">
 <p>The source path of this Application points to the ApplicationSet used.</p>
 </div>
-<div class="sidebarblock">
-<div class="content">
-<div class="title">What is an ApplicationSet?</div>
-<div class="paragraph">
-<p>ApplicationSet is a Custom Resource that can be used to generate Applications to multiple clusters from multiple origins. ApplicationSet controller is installed alongside ArgoCD even though it must be explicitly enabled.</p>
 </div>
-<div class="paragraph">
-<p>ApplicationSet is a helpful approach for multi cluster management, and it supplements ArgoCD by adding additional features in support of <em>cluster-administrator-focused</em> scenarios. Some of those are:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Ability to use a single Kubernetes manifest to target multiple Kubernetes clusters with ArgoCD.</p>
-</li>
-<li>
-<p>Ability to use a single Kubernetes manifest to deploy multiple applications from one or multiple Git repositories with ArgoCD.</p>
-</li>
-<li>
-<p>Improved support for monorepos (multiple ArgoCD Application resources defined within a single Git repository).</p>
-</li>
-<li>
-<p>Improves ability of individual cluster tenants to deploy applications using ArgoCD (without needing to involve privileged cluster admin in enabling the destination servers).</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>ApplicationSet uses generators to create Application with multiple origins and destinations using templating.</p>
-</div>
-</div>
-</div>
+<div class="sect2">
+<h3 id="_3_1_3_configure_the_appsets_source_of_configuration"><a class="anchor" href="#_3_1_3_configure_the_appsets_source_of_configuration"></a>3.1.3 Configure the AppSets source of configuration</h3>
 <div class="paragraph">
 <p>The generator used may vary depending on your use case. In this example, we are using the <em>Git Files</em> generator so the cluster definition values are used as parameters. In case we had <em>'N' cluster-definition</em> files, the ApplicationSet would generate <em>'N'</em> Applications automatically.</p>
 </div>
@@ -349,7 +370,7 @@ Find more about <a href="https://argo-cd.readthedocs.io/en/stable/operator-manua
 <div class="content">
 <img src="_images/workshop-content-deploy-folders-1.png" alt="workshop content deploy folders 1">
 </div>
-<div class="title">Figure 1. Folder structure</div>
+<div class="title">Figure 2. Folder structure</div>
 </div>
 <div class="paragraph">
 <p>The first ApplicationSet <em>cluster-addons/cluster-addons-as/gitops-setup-sno-as.yaml</em> deploys the <em>openshift-gitops</em> operator and an initial non default <em>cluster wide</em> instance for infrastructure operations.</p>
@@ -411,7 +432,7 @@ spec:
 <div class="content">
 <img src="_images/diagram-4.png" alt="diagram 4">
 </div>
-<div class="title">Figure 2. sno-setup Application</div>
+<div class="title">Figure 3. sno-setup Application</div>
 </div>
 <div class="paragraph">
 <p>Update from <em>cluster-addons/cluster-addons-as/bootstrap-sno-as.yaml</em>:</p>
@@ -463,6 +484,9 @@ spec:
           selfHeal: true</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_3_1_4_update_the_bootstrap_and_bootstrap_app_chart_values"><a class="anchor" href="#_3_1_4_update_the_bootstrap_and_bootstrap_app_chart_values"></a>3.1.4 Update the bootstrap and bootstrap-app chart values</h3>
 <div class="paragraph">
 <p>Then update <em>cluster-addons/charts/bootstrap-app/values.yaml</em> file with your assigned data too:</p>
 </div>
@@ -531,7 +555,7 @@ vault:
 <div class="content">
 <img src="_images/workshop-content-deploy-folders-2.png" alt="workshop content deploy folders 2">
 </div>
-<div class="title">Figure 3. GitOps Helm Charts</div>
+<div class="title">Figure 4. GitOps Helm Charts</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -544,6 +568,7 @@ ApplicationSet controller is not enabled by default and must be configured on Ar
 </td>
 </tr>
 </table>
+</div>
 </div>
 </div>
 </div>
@@ -622,7 +647,7 @@ you need to change this configuration to make the instance <em>cluster wide</em>
 <div class="content">
 <img src="_images/cluster-wide-role-binding.png" alt="cluster wide role binding">
 </div>
-<div class="title">Figure 4. Cluster Role Binding</div>
+<div class="title">Figure 5. Cluster Role Binding</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -741,7 +766,7 @@ spec:
 <div class="content">
 <img src="_images/workshop-content-deploy-folders-3.png" alt="workshop content deploy folders 3">
 </div>
-<div class="title">Figure 5. Bootstrap resources</div>
+<div class="title">Figure 6. Bootstrap resources</div>
 </div>
 <div class="paragraph">
 <p>The <em>argocd-apps</em> instance definition in <em>cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</em> is slightly similar to <em>argocd-infra</em> but it has some special customization, let´s take a look:</p>
@@ -934,7 +959,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
 <div class="content">
 <img src="_images/workshop-content-deploy-folders-4.png" alt="workshop content deploy folders 4">
 </div>
-<div class="title">Figure 6. RBAC folder</div>
+<div class="title">Figure 7. RBAC folder</div>
 </div>
 <div class="paragraph">
 <p>The <strong><em>RBAC</em></strong> feature enables restriction of access to ArgoCD resources. ArgoCD does not have its own user management system and has only one <em>built-in</em> user called <em>admin</em>.
@@ -998,7 +1023,7 @@ vi cluster-addons/charts/bootstrap/values.yaml</code></pre>
 <div class="content">
 <img src="_images/workshop-content-deploy-folders-4.png" alt="workshop content deploy folders 4">
 </div>
-<div class="title">Figure 7. RBAC folder</div>
+<div class="title">Figure 8. RBAC folder</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1118,7 +1143,7 @@ git push origin sno-&lt;clusterID&gt;-setup</code></pre>
 <div class="content">
 <img src="_images/argo-login-1.png" alt="argo login 1">
 </div>
-<div class="title">Figure 8. Log in argocd console instance</div>
+<div class="title">Figure 9. Log in argocd console instance</div>
 </div>
 <div class="ulist">
 <ul>
@@ -1131,7 +1156,7 @@ git push origin sno-&lt;clusterID&gt;-setup</code></pre>
 <div class="content">
 <img src="_images/hub-login-1.png" alt="hub login 1">
 </div>
-<div class="title">Figure 9. OpenShift credentials for argocd instance</div>
+<div class="title">Figure 10. OpenShift credentials for argocd instance</div>
 </div>
 <div class="ulist">
 <ul>
@@ -1144,7 +1169,7 @@ git push origin sno-&lt;clusterID&gt;-setup</code></pre>
 <div class="content">
 <img src="_images/hub-login-2.png" alt="hub login 2">
 </div>
-<div class="title">Figure 10. argocd instance log in</div>
+<div class="title">Figure 11. argocd instance log in</div>
 </div>
 <div class="paragraph">
 <p>To create bootstrap application, once logged in, click on:</p>
@@ -1223,7 +1248,7 @@ spec:
 <div class="content">
 <img src="_images/managed-setup.png" alt="managed setup">
 </div>
-<div class="title">Figure 11. SNO bootstrap</div>
+<div class="title">Figure 12. SNO bootstrap</div>
 </div>
 <div class="paragraph">
 <p>Deep dive on <strong><em>managed-setup-a-&lt;clusterID&gt;</em></strong> Application to check all the resources created. Next go back to the initial view and see how the Applications rendered by ApplicationSet are created.</p>
@@ -1232,7 +1257,7 @@ spec:
 <div class="content">
 <img src="_images/managed-setup-a-name.png" alt="managed setup a name">
 </div>
-<div class="title">Figure 12. ApplicationSet view</div>
+<div class="title">Figure 13. ApplicationSet view</div>
 </div>
 <div class="paragraph">
 <p>Verify in <em>Argo Hub</em> console (E.g. <a href="https://console-openshift-console.apps.argo-hub.&lt;domain&gt;/" class="bare">https://console-openshift-console.apps.argo-hub.&lt;domain&gt;/</a>) using your user with view role.</p>
@@ -1261,7 +1286,7 @@ spec:
 <div class="content">
 <img src="_images/argocd-instance-view-1.png" alt="argocd instance view 1">
 </div>
-<div class="title">Figure 13. argocd view</div>
+<div class="title">Figure 14. argocd view</div>
 </div>
 <div class="paragraph">
 <p>Take a look to global <em>RBAC</em> policies and then navigate to <strong><em>AppProject</em></strong>
@@ -1277,7 +1302,7 @@ to verify your local permissions.</p>
 <div class="content">
 <img src="_images/settings-section-argocd.png" alt="settings section argocd">
 </div>
-<div class="title">Figure 14. Settings section</div>
+<div class="title">Figure 15. Settings section</div>
 </div>
 <div class="ulist">
 <ul>
@@ -1290,7 +1315,7 @@ to verify your local permissions.</p>
 <div class="content">
 <img src="_images/clusters-list.png" alt="clusters list">
 </div>
-<div class="title">Figure 15. argocd clusters</div>
+<div class="title">Figure 16. argocd clusters</div>
 </div>
 <div class="ulist">
 <ul>
@@ -1303,7 +1328,7 @@ to verify your local permissions.</p>
 <div class="content">
 <img src="_images/projects-list.png" alt="projects list">
 </div>
-<div class="title">Figure 16. argocd projects</div>
+<div class="title">Figure 17. argocd projects</div>
 </div>
 <div class="paragraph">
 <p>Once this is completed login to you managed cluster, <em>SNO</em>, and verify:</p>
@@ -1334,7 +1359,7 @@ Remember to use your &lt;clusterID&gt; and &lt;domain&gt;.
 <div class="content">
 <img src="_images/hub-login-1.png" alt="hub login 1">
 </div>
-<div class="title">Figure 17. SNO log in</div>
+<div class="title">Figure 18. SNO log in</div>
 </div>
 <div class="ulist">
 <ul>
@@ -1347,7 +1372,7 @@ Remember to use your &lt;clusterID&gt; and &lt;domain&gt;.
 <div class="content">
 <img src="_images/hub-login-2.png" alt="hub login 2">
 </div>
-<div class="title">Figure 18. Insert SNO crentials to log in</div>
+<div class="title">Figure 19. Insert SNO crentials to log in</div>
 </div>
 <div class="paragraph">
 <p>Verify that:</p>
@@ -1358,7 +1383,7 @@ Remember to use your &lt;clusterID&gt; and &lt;domain&gt;.
 <p>1) <strong><em>OpenShift GitOps</em></strong> operator is installed.</p>
 </li>
 <li>
-<p>2) <strong><em>argo-infra</em></strong> instance exists as <em>ArgoCD</em> object and is <em>cluster-wide</em>.</p>
+<p>2) <strong><em>argocd-infra</em></strong> instance exists as <em>ArgoCD</em> object and is <em>cluster-wide</em>.</p>
 </li>
 </ul>
 </div>
@@ -1376,7 +1401,7 @@ Remember to use your &lt;clusterID&gt; and &lt;domain&gt;.
 <div class="content">
 <img src="_images/settings-section-argocd.png" alt="settings section argocd">
 </div>
-<div class="title">Figure 19. Settings section</div>
+<div class="title">Figure 20. Settings section</div>
 </div>
 <div class="ulist">
 <ul>
@@ -1389,7 +1414,7 @@ Remember to use your &lt;clusterID&gt; and &lt;domain&gt;.
 <div class="content">
 <img src="_images/cluster-wide.png" alt="cluster wide">
 </div>
-<div class="title">Figure 20. General overview argocd-infra instance</div>
+<div class="title">Figure 21. General overview argocd-infra instance</div>
 </div>
 <div class="ulist">
 <ul>
@@ -1402,7 +1427,7 @@ Remember to use your &lt;clusterID&gt; and &lt;domain&gt;.
 <div class="content">
 <img src="_images/argocd-apps-general-1.png" alt="argocd apps general 1">
 </div>
-<div class="title">Figure 21. General overview argocd-apps instance</div>
+<div class="title">Figure 22. General overview argocd-apps instance</div>
 </div>
 <div class="ulist">
 <ul>
