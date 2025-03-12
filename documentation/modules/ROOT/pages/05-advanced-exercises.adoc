@@ -1,0 +1,28 @@
+= 5. Advanced Exercises
+
+If you found the proposed exercises in this workshop too straightforward or relied too heavily on copy-paste steps, you're in luck. These advanced exercises require you to work independently to achieve the desired outcomes.
+
+== 5.1 Certificates with cert-manager
+
+By now, you may have noticed a significant difference between the `argo-hub` cluster and the `sno-XX` clusters regarding certificates. The `argo-hub` cluster uses certificates with a proper Certificate Authority (CA) chain issued by Let's Encrypt, while the `sno-XX` clusters rely on default self-signed certificates from the installation process. This approach is not suitable for production environments, as it can raise concerns about potential Man-in-the-Middle (MitM) attacks.
+
+In this exercise, you will explore the benefits of using the cert-manager operator. You will configure it to automatically generate and manage two types of certificates, integrating them into your OpenShift GitOps configuration:
+
+* **API Certificate**: This certificate will provide secure access to your cluster's API, ensuring that all communication between clients and the API server is encrypted and authenticated. This is crucial for maintaining the integrity and confidentiality of cluster operations.
+
+* **Ingress Certificate**: This certificate will be used for securing ingress traffic to your cluster. It will be a wildcard certificate, meaning it can secure multiple subdomains under a single domain (e.g., *.example.com). This allows you to manage a single certificate for multiple services or applications hosted within your cluster, simplifying certificate management and ensuring that all incoming traffic is encrypted.
+
+
+**Steps to Complete**
+
+1. Install cert-manager: Deploy the cert-manager operator in your cluster.
+2. Configure Certificate Issuers: Set up certificate issuers for Let's Encrypt or another preferred CA.
+3. Create Certificate Requests: Define certificate requests for both the API and Ingress certificates.
+4. Integrate with OpenShift GitOps: Configure your GitOps setup to use these certificates for secure API and ingress traffic.
+
+This exercise will help you understand how to automate certificate management in a production-ready environment, enhancing the security and reliability of your OpenShift cluster.
+
+If you want to look for information, I recommend you to get inspired by the following sources of information:
+
+* Documentation https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/security_and_compliance/cert-manager-operator-for-red-hat-openshift#cert-manager-operator-about[cert-manager Operator for Red Hat OpenShift].
+* GitHub repository https://github.com/alvarolop/ocp-secured-integration?tab=readme-ov-file#2-cert-manager[alvarolop/ocp-secured-integration].

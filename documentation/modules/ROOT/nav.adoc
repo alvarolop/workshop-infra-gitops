@@ -23,3 +23,5 @@
 ** xref:04-day2-config.adoc#vault[4.5 Vault Configuration]
 ** xref:04-day2-config.adoc#appset[4.6 Day 2 with ApplicationSet]
 ** xref:04-day2-config.adoc#summary[4.7 Summary]
+
+* xref:05-advanced-exercises.adoc[5. Advanced Exercises]

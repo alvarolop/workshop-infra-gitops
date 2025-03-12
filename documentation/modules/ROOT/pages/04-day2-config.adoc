@@ -881,7 +881,7 @@ image::promethus-alert-1.png[]
 
 In this case, it is possible to see that this alarm is firing because the metric *tomcat_sessions_alive_max_seconds* is equal to *0*.
 
-NOTE: Please pay special attention to alerting best practices included in the following https://docs.openshift.com/container-platform/4.11/monitoring/managing-alerts.html#Optimizing-alerting-for-user-defined-projects_managing-alerts[link].
+NOTE: Please pay special attention to alerting best practices included in the following https://docs.openshift.com/container-platform/4.17/observability/monitoring/about-ocp-monitoring/key-concepts.html#tips-for-optimizing-alerting-rules-for-core-platform-monitoring_key-concepts[link].
 
 [#vault]
 == 4.5 Vault Configuration
@@ -1031,7 +1031,7 @@ Take a look to the configuration applied by the Application _sno-<clusterID>-boo
     sidecarContainers: # sidecar container running plugin 
       - command:
           - /var/run/argocd/argocd-cmp-server
-        image: 'quay.io/argoproj/argocd:v2.4.8'
+        image: 'quay.io/argoproj/argocd:v2.13.5'
         name: avp-helm              
         volumeMounts:
           - mountPath: /var/run/argocd
@@ -1069,7 +1069,7 @@ Take a look to the configuration applied by the Application _sno-<clusterID>-boo
           - '-c'
         env:
           - name: AVP_VERSION
-            value: 1.14.0
+            value: 1.18.1
         image: 'alpine:3.8'
         name: download-tools
         volumeMounts:
