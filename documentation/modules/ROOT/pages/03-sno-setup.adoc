@@ -318,10 +318,14 @@ image::workshop-content-deploy-folders-2.png[]
 
 
 
+
+
+
 [#helmcharts]
 == 3.2 Helm Charts
 
 A *Helm chart* is a set of _YAML_ manifests and templates that describes Kubernetes resources (Deployments, Secrets, _CRDs_, etc.) and defined configurations needed for the Kubernetes application.
+
 
 
 === 3.2.1 GitOps Setup Chart
@@ -463,6 +467,11 @@ spec:
       selfHeal: true
 {{- end }}      
 ----
+
+
+=== 3.2.3 Bootstrap Chart
+
+
 
 Then on _cluster-addons/charts/bootstrap_ folder you can find resources for deploying the second _argocd-apps_ instance in the managed cluster, _namespaces_, _vault_ and _RBAC_ configuration. 
 
