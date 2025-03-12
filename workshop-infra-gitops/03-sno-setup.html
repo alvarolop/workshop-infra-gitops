@@ -283,7 +283,7 @@ vi cluster-definition/sno-&lt;clusterID&gt;/cluster.json</code></pre>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">  {
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">  {
     "environment": "dev",
     "cloud": "aws",
     "project": "project-sno-&lt;clusterID&gt;",
@@ -322,7 +322,7 @@ vi global-config/bootstrap-a/managed-setup.yaml</code></pre>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: managed-setup-a-&lt;clusterID&gt;
@@ -396,7 +396,7 @@ vi cluster-addons/cluster-addons-as/gitops-setup-sno-as.yaml</code></pre>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: gitops-setup-sno-&lt;clusterID&gt;
@@ -455,7 +455,7 @@ vi cluster-addons/cluster-addons-as/bootstrap-sno-as.yaml</code></pre>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: bootstrap-sno-&lt;clusterID&gt;
@@ -508,7 +508,7 @@ vi cluster-addons/charts/bootstrap-app/values.yaml</code></pre>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">clusters:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">clusters:
   sno-&lt;clusterID&gt;:
     applicationNamespace: openshift-gitops
     namespace: ''
@@ -538,11 +538,11 @@ vi cluster-addons/charts/bootstrap/values.yaml</code></pre>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">...
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
 vault:
   vault_addr: "http://vault-vault.apps.argo-hub.&lt;domain&gt;"
   avp_type: vault
-...</code></pre>
+# ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -557,18 +557,6 @@ vault:
 </div>
 <div class="title">Figure 4. GitOps Helm Charts</div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-ApplicationSet controller is not enabled by default and must be configured on ArgoCD instance.
-</td>
-</tr>
-</table>
-</div>
 </div>
 </div>
 </div>
@@ -578,6 +566,8 @@ ApplicationSet controller is not enabled by default and must be configured on Ar
 <div class="paragraph">
 <p>A <strong>Helm chart</strong> is a set of <em>YAML</em> manifests and templates that describes Kubernetes resources (Deployments, Secrets, <em>CRDs</em>, etc.) and defined configurations needed for the Kubernetes application.</p>
 </div>
+<div class="sect2">
+<h3 id="_3_2_1_gitops_setup_chart"><a class="anchor" href="#_3_2_1_gitops_setup_chart"></a>3.2.1 GitOps Setup Chart</h3>
 <div class="paragraph">
 <p>In the <em>argocd</em> instance of <em>Argo Hub</em>, the first Helm chart is <strong><em>gitops-setup</em></strong>, which deploys <em>openshift-gitops</em> operator on managed clusters. This chart is intented to deploy any kind of operator, even though in this case we are only deploying <em>openshift-gitops</em> operator.</p>
 </div>
@@ -592,9 +582,8 @@ cat cluster-addons/charts/gitops-setup/templates/operators/subscription.yaml</co
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">{{- range $key, $val := $.Values.operators }}
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">{{- range $key, $val := $.Values.operators }}
 {{- if $val.enabled }}
----
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
@@ -671,11 +660,11 @@ and <a href="https://docs.openshift.com/gitops/1.15/declarative_clusterconfig/co
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">...
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "-5"
-...</code></pre>
+# ...</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -717,6 +706,9 @@ A <strong><em>Resource Healthcheck</em></strong> is defined in the <em>argocd</e
 </tr>
 </table>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_3_2_2_bootstrap_app_chart"><a class="anchor" href="#_3_2_2_bootstrap_app_chart"></a>3.2.2 Bootstrap App Chart</h3>
 <div class="paragraph">
 <p>Next chart to take a look is <em>cluster-addons/charts/bootstrap-app</em>. This chart deploys an Application on the managed cluster <em>argocd-infra</em> instance to apply <em>bootstrap</em> chart.</p>
 </div>
@@ -728,7 +720,7 @@ cat cluster-addons/charts/bootstrap-app/templates/application.yaml</code></pre>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">{{- range $key, $val := $.Values.clusters }}
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">{{- range $key, $val := $.Values.clusters }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -791,7 +783,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">...
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
     dex:
       openShiftOAuth: true  <i class="conum" data-value="1"></i><b>(1)</b>
       resources:
@@ -804,7 +796,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
     provider: dex
   resourceTrackingMethod: annotation+label <i class="conum" data-value="2"></i><b>(2)</b>
   applicationSet: <i class="conum" data-value="3"></i><b>(3)</b>
-...
+# ...
   rbac: <i class="conum" data-value="4"></i><b>(4)</b>
     defaultPolicy: ''
     policy: |-
@@ -816,7 +808,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
       g, argo-operators, role:operator
       g, argo-dev-operators, role:operator-dev
     scopes: '[groups]'
-...
+# ...
     sidecarContainers: <i class="conum" data-value="5"></i><b>(5)</b>
       - command:
           - /var/run/argocd/argocd-cmp-server
@@ -846,7 +838,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
         name: custom-tools
       - emptyDir: {}
         name: tmp-dir
-...
+# ...
   configManagementPlugins: | <i class="conum" data-value="6"></i><b>(6)</b>
     - name: argocd-vault-plugin
       generate:
@@ -1001,7 +993,7 @@ vi cluster-addons/charts/bootstrap/values.yaml</code></pre>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">groups:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">groups:
  argo-admins:
    user: user01 #  Admin permissions in ALL projects and applications
  argo-readers:
@@ -1048,7 +1040,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">...
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
   rbac:
     defaultPolicy: ''
     policy: |-
@@ -1060,7 +1052,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
       g, argo-operators, role:operator
       g, argo-dev-operators, role:operator-dev
     scopes: '[groups]'
-...</code></pre>
+# ...</code></pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -1214,7 +1206,7 @@ vi global-config/bootstrap-a/managed-setup.yaml</code></pre>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: managed-setup-a-&lt;clusterID&gt;
@@ -1487,7 +1479,7 @@ git push origin sno-&lt;clusterID&gt;</code></pre>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   namespace: openshift-operators
@@ -1542,12 +1534,13 @@ curl vault-vault-secrets.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Login in the <em>argocd-apps</em> instance as user user04 and &lt;pass&gt; (argo-dev-operators) with role <em>operator-dev</em> and verify you can <em>'get'</em> and <em>'sync'</em> apps on <em>'dev'</em> project.</p>
+<p>Login in the <em>argocd-apps</em> instance as user <code>user04</code> and <code>&lt;pass&gt;</code> (argo-dev-operators) with role <em>operator-dev</em> and verify you can <em>'get'</em> and <em>'sync'</em> apps on <em>'dev'</em> project.</p>
 </li>
 <li>
-<p>Login the <em>argocd-apps</em> instance as user apimanager01 and &lt;pass&gt; (api-manager) and verify you do not have permissions to see apps on <em>'dev'</em> project.</p>
+<p>Login the <em>argocd-apps</em> instance as user <code>apimanager01</code> and <code>&lt;pass&gt;</code> (api-manager) and verify you do not have permissions to see apps on <em>'dev'</em> project.</p>
 </li>
 </ul>
+</div>
 </div>
 </div>
 </div>
