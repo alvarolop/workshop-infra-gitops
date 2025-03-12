@@ -168,7 +168,7 @@ to our single scoped cluster.</p>
 <div class="listingblock lines_7 console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
-git checkout sno-&lt;name&gt;</code></pre>
+git checkout sno-&lt;clusterID&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -260,7 +260,7 @@ Each time you create a <em>values-example.yaml</em> file in the following sectio
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Replace <strong><em>&lt;name&gt;</em></strong> and <strong><em>&lt;domain&gt;</em></strong>. (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>)
+Replace <strong><em>&lt;clusterID&gt;</em></strong> and <strong><em>&lt;domain&gt;</em></strong>. (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>)
 </td>
 </tr>
 </table>
@@ -279,7 +279,7 @@ Replace <strong><em>&lt;name&gt;</em></strong> and <strong><em>&lt;domain&gt;</e
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Replace <em>&lt;name&gt;</em> and <em>&lt;your_user&gt;</em> in the following Application.
+Replace <em>&lt;clusterID&gt;</em> and <em>&lt;your_user&gt;</em> in the following Application.
 </td>
 </tr>
 </table>
@@ -296,7 +296,7 @@ Replace <em>&lt;name&gt;</em> and <em>&lt;your_user&gt;</em> in the following Ap
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: day-2-sno-&lt;name&gt;
+  name: day-2-sno-&lt;clusterID&gt;
   namespace: openshift-gitops
 spec:
   destination:
@@ -305,7 +305,7 @@ spec:
   source:
     path: .
     repoURL: 'https://github.com/&lt;your_user&gt;/helm-infra-gitops-workshop.git'
-    targetRevision: sno-&lt;name&gt;
+    targetRevision: sno-&lt;clusterID&gt;
   syncPolicy:
     automated:
       prune: true
@@ -335,7 +335,7 @@ spec:
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Once this subchapter is finished, delete the <em>day-2-sno-&lt;name&gt;</em> Application.
+Once this subchapter is finished, delete the <em>day-2-sno-&lt;clusterID&gt;</em> Application.
 </td>
 </tr>
 </table>
@@ -399,7 +399,7 @@ vi values-oauth.yaml</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;domain&gt; &#8594; Assigned domain cluster</strong></p>
@@ -420,8 +420,8 @@ vi values-oauth.yaml</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oauth:
   enabled: true # Enable dependency
   keycloak: # Update chart values
-    clientid: myclient-&lt;name&gt;
-    issuer: <a href="https://keycloak-keycloak.apps.argo-hub.&lt;domain&gt;/realms/myrealm-&lt;name&gt" class="bare">https://keycloak-keycloak.apps.argo-hub.&lt;domain&gt;/realms/myrealm-&lt;name&gt</a>;
+    clientid: myclient-&lt;clusterID&gt;
+    issuer: <a href="https://keycloak-keycloak.apps.argo-hub.&lt;domain&gt;/realms/myrealm-&lt;clusterID&gt" class="bare">https://keycloak-keycloak.apps.argo-hub.&lt;domain&gt;/realms/myrealm-&lt;clusterID&gt</a>;
     data: &lt;your_keycloak_secret_data&gt;
   ldap:
     sync:
@@ -476,7 +476,7 @@ vi values-oauth.yaml</code></pre>
 <div class="title">Figure 4. Keycloack log in</div>
 </div>
 <div class="paragraph">
-<p>4) Navigate to your <em>realm-&lt;name&gt;</em></p>
+<p>4) Navigate to your <em>realm-&lt;clusterID&gt;</em></p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -484,7 +484,7 @@ vi values-oauth.yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>5) Then go to your <em>myclient-&lt;name&gt;</em></p>
+<p>5) Then go to your <em>myclient-&lt;clusterID&gt;</em></p>
 </div>
 <div class="paragraph">
 <p>6) Click on <em>Credentials</em> tab, you will see your client secret (<em>&lt;your_keycloak_secret_data&gt;</em>) there.</p>
@@ -497,7 +497,7 @@ vi values-oauth.yaml</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "identity providers"
-git push origin sno-&lt;name&gt;</code></pre>
+git push origin sno-&lt;clusterID&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -506,7 +506,7 @@ git push origin sno-&lt;name&gt;</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;domain&gt; &#8594; Assigned domain cluster</strong></p>
@@ -517,10 +517,10 @@ git push origin sno-&lt;name&gt;</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>Log in the <em>argocd-infra</em> instance (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>)</p>
+<p>Log in the <em>argocd-infra</em> instance (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>)</p>
 </div>
 <div class="paragraph">
-<p>To create <em>sno-&lt;name&gt;-oauth</em> Application, once logged in, click on:</p>
+<p>To create <em>sno-&lt;clusterID&gt;-oauth</em> Application, once logged in, click on:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -534,7 +534,7 @@ git push origin sno-&lt;name&gt;</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno-&lt;name&gt;-oauth
+  name: sno-&lt;clusterID&gt;-oauth
   namespace: openshift-gitops
 spec:
   destination:
@@ -546,7 +546,7 @@ spec:
         - values-oauth.yaml
     path: .
     repoURL: 'https://github.com/&lt;your_user&gt;/helm-infra-gitops-workshop.git'
-    targetRevision: sno-&lt;name&gt;
+    targetRevision: sno-&lt;clusterID&gt;
   syncPolicy:
     automated:
       prune: true
@@ -668,7 +668,7 @@ storage                                    4.17.19   True        False         F
 <div class="ulist">
 <ul>
 <li>
-<p><em>Log out</em> and <em>Log in</em> back (E.g. <a href="https://console-openshift-console.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://console-openshift-console.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>).</p>
+<p><em>Log out</em> and <em>Log in</em> back (E.g. <a href="https://console-openshift-console.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://console-openshift-console.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>).</p>
 </li>
 <li>
 <p>Then you should see new Identity Providers listed in your <em>SNO</em>.</p>
@@ -677,7 +677,7 @@ storage                                    4.17.19   True        False         F
 <p>You can try <em>Log in</em> <em>Keycloack</em> server with credentials:</p>
 <div class="literalblock">
 <div class="content">
-<pre>myuser-&lt;name&gt;/myuser-&lt;name&gt;</pre>
+<pre>myuser-&lt;clusterID&gt;/myuser-&lt;clusterID&gt;</pre>
 </div>
 </div>
 </li>
@@ -804,14 +804,14 @@ vi values-operators.yaml</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "operators"
-git push origin sno-&lt;name&gt;</code></pre>
+git push origin sno-&lt;clusterID&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Log in the <em>argocd-infra</em> instance (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>)</p>
+<p>Log in the <em>argocd-infra</em> instance (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>)</p>
 </div>
 <div class="paragraph">
-<p>To create <em>sno-&lt;name&gt;-operators</em> Application, once logged in, click on:</p>
+<p>To create <em>sno-&lt;clusterID&gt;-operators</em> Application, once logged in, click on:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -826,7 +826,7 @@ git push origin sno-&lt;name&gt;</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;your_user&gt; &#8594; Your GitHub user account</strong></p>
@@ -838,7 +838,7 @@ git push origin sno-&lt;name&gt;</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno-&lt;name&gt;-operators
+  name: sno-&lt;clusterID&gt;-operators
   namespace: openshift-gitops
 spec:
   destination:
@@ -850,7 +850,7 @@ spec:
         - values-operators.yaml
     path: .
     repoURL: 'https://github.com/&lt;your_user&gt;/helm-infra-gitops-workshop.git'
-    targetRevision: sno-&lt;name&gt;
+    targetRevision: sno-&lt;clusterID&gt;
   syncPolicy:
     automated:
       prune: true
@@ -879,10 +879,10 @@ spec:
 <div class="ulist">
 <ul>
 <li>
-<p>Log in <em>argocd-infra</em> instance console: (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>)</p>
+<p>Log in <em>argocd-infra</em> instance console: (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>)</p>
 </li>
 <li>
-<p>Click on <em>sno-&lt;name&gt;-operators</em> Application</p>
+<p>Click on <em>sno-&lt;clusterID&gt;-operators</em> Application</p>
 </li>
 </ul>
 </div>
@@ -898,12 +898,12 @@ spec:
 <div class="ulist">
 <ul>
 <li>
-<p>Log in <strong><em>argocd-apps</em></strong> instance console: (E.g. <a href="https://argocd-apps-server-openshift-operators.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://argocd-apps-server-openshift-operators.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>)</p>
+<p>Log in <strong><em>argocd-apps</em></strong> instance console: (E.g. <a href="https://argocd-apps-server-openshift-operators.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://argocd-apps-server-openshift-operators.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>)</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Deploy the <em>sno-&lt;name&gt;-bookinfo</em> Application, once logged in, click on:</p>
+<p>Deploy the <em>sno-&lt;clusterID&gt;-bookinfo</em> Application, once logged in, click on:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -918,7 +918,7 @@ spec:
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;your_user&gt; &#8594; Your GitHub user account</strong></p>
@@ -930,7 +930,7 @@ spec:
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno-&lt;name&gt;-bookinfo
+  name: sno-&lt;clusterID&gt;-bookinfo
   namespace: openshift-operators
 spec:
   destination:
@@ -943,7 +943,7 @@ spec:
           value: 'true'
     path: .
     repoURL: 'https://github.com/&lt;your_user&gt;/helm-infra-gitops-workshop.git'
-    targetRevision: sno-&lt;name&gt;
+    targetRevision: sno-&lt;clusterID&gt;
   syncPolicy:
     automated:
       prune: true
@@ -1027,14 +1027,14 @@ vi values-namespace.yaml</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "namespace configuration"
-git push origin sno-&lt;name&gt;</code></pre>
+git push origin sno-&lt;clusterID&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Log in the <em>argocd-infra</em> instance (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>)</p>
+<p>Log in the <em>argocd-infra</em> instance (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>)</p>
 </div>
 <div class="paragraph">
-<p>To create <em>sno-&lt;name&gt;-namespace</em> Application, once logged in, click on:</p>
+<p>To create <em>sno-&lt;clusterID&gt;-namespace</em> Application, once logged in, click on:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1049,7 +1049,7 @@ git push origin sno-&lt;name&gt;</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;your_user&gt; &#8594; Your GitHub user account</strong></p>
@@ -1061,7 +1061,7 @@ git push origin sno-&lt;name&gt;</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno-&lt;name&gt;-namespace
+  name: sno-&lt;clusterID&gt;-namespace
   namespace: openshift-gitops
 spec:
   destination:
@@ -1073,7 +1073,7 @@ spec:
         - values-namespace.yaml
     path: .
     repoURL: 'https://github.com/&lt;your_user&gt;/helm-infra-gitops-workshop.git'
-    targetRevision: sno-&lt;name&gt;
+    targetRevision: sno-&lt;clusterID&gt;
   syncPolicy:
     automated:
       prune: true
@@ -1088,10 +1088,10 @@ spec:
 </ul>
 </div>
 <div class="paragraph">
-<p>Then deploy an <em>example-app</em> on <strong><em>argocd-apps</em></strong> instance (E.g. <a href="https://argocd-apps-server-openshift-operators.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://argocd-apps-server-openshift-operators.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>)</p>
+<p>Then deploy an <em>example-app</em> on <strong><em>argocd-apps</em></strong> instance (E.g. <a href="https://argocd-apps-server-openshift-operators.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://argocd-apps-server-openshift-operators.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>)</p>
 </div>
 <div class="paragraph">
-<p>Deploy the <em>sno-&lt;name&gt;-app</em> Application, once logged in, click on:</p>
+<p>Deploy the <em>sno-&lt;clusterID&gt;-app</em> Application, once logged in, click on:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1106,7 +1106,7 @@ spec:
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;your_user&gt; &#8594; Your GitHub user account</strong></p>
@@ -1118,7 +1118,7 @@ spec:
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno-&lt;name&gt;-app
+  name: sno-&lt;clusterID&gt;-app
   namespace: openshift-operators
 spec:
   destination:
@@ -1131,7 +1131,7 @@ spec:
           value: 'true'
     path: .
     repoURL: 'https://github.com/&lt;your_user&gt;/helm-infra-gitops-workshop.git'
-    targetRevision: sno-&lt;name&gt;
+    targetRevision: sno-&lt;clusterID&gt;
   syncPolicy:
     automated:
       prune: true
@@ -1167,7 +1167,7 @@ vi charts/app/values.yaml</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "replicas scaled up"
-git push origin sno-&lt;name&gt;</code></pre>
+git push origin sno-&lt;clusterID&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1201,7 +1201,7 @@ vi charts/app/values.yaml</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "replicas scaled down"
-git push origin sno-&lt;name&gt;</code></pre>
+git push origin sno-&lt;clusterID&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1214,7 +1214,7 @@ git push origin sno-&lt;name&gt;</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Replace &lt;name&gt; and &lt;domain&gt; when needed.
+Replace &lt;clusterID&gt; and &lt;domain&gt; when needed.
 </td>
 </tr>
 </table>
@@ -1254,7 +1254,7 @@ namespace:
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "network policy disabled"
-git push origin sno-&lt;name&gt;
+git push origin sno-&lt;clusterID&gt;
 
 oc get route back-springboot -n app</code></pre>
 </div>
@@ -1314,14 +1314,14 @@ vi values-monitoring.yaml</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
 git commit -m "monitoring"
-git push origin sno-&lt;name&gt;</code></pre>
+git push origin sno-&lt;clusterID&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Log in the <em>argocd-infra</em> instance (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>)</p>
+<p>Log in the <em>argocd-infra</em> instance (E.g. <a href="https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://argocd-infra-server-openshift-gitops.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>)</p>
 </div>
 <div class="paragraph">
-<p>To create <em>sno-&lt;name&gt;-monitoring</em> Application, once logged in, click on:</p>
+<p>To create <em>sno-&lt;clusterID&gt;-monitoring</em> Application, once logged in, click on:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1336,7 +1336,7 @@ git push origin sno-&lt;name&gt;</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;your_user&gt; &#8594; Your GitHub user account</strong></p>
@@ -1348,7 +1348,7 @@ git push origin sno-&lt;name&gt;</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno-&lt;name&gt;-monitoring
+  name: sno-&lt;clusterID&gt;-monitoring
   namespace: openshift-gitops
 spec:
   destination:
@@ -1360,7 +1360,7 @@ spec:
         - values-monitoring.yaml
     path: .
     repoURL: 'https://github.com/&lt;your_user&gt;/helm-infra-gitops-workshop.git'
-    targetRevision: sno-&lt;name&gt;
+    targetRevision: sno-&lt;clusterID&gt;
   syncPolicy:
     automated:
       prune: true
@@ -1378,7 +1378,7 @@ spec:
 <p>Configuring the monitoring application is quite straightforward since it does not have any direct dependencies on other objects. As such, you do not need to worry about setting up <em>Sync Waves</em>, which are typically used to manage the order in which objects are deployed to avoid issues with dependencies.</p>
 </div>
 <div class="paragraph">
-<p>Then navigate to OpenShift <em>SNO</em> console (E.g. <a href="https://console-openshift-console.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://console-openshift-console.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>) to verify those objects deployed in the <em>argocd-infra</em> instance exist on the <em>SNO</em> and if <em>Service Monitor</em> is scraping your metrics properly:</p>
+<p>Then navigate to OpenShift <em>SNO</em> console (E.g. <a href="https://console-openshift-console.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://console-openshift-console.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>) to verify those objects deployed in the <em>argocd-infra</em> instance exist on the <em>SNO</em> and if <em>Service Monitor</em> is scraping your metrics properly:</p>
 </div>
 <div class="paragraph">
 <p>Once the <em>Service Monitor</em> is created, the respective metrics should be found in the <em>SNO</em> OpenShift Console (<strong><em>Observe</em></strong> &#8594; <strong><em>Metrics</em></strong>). For example, it is possible to find the <strong><em>tomcat_sessions_active_current_sessions metric</em></strong>:</p>
@@ -1474,7 +1474,7 @@ As prerequisite make sure you have deployed the <strong>Vault application</stron
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc login -u admin -p &lt;pass&gt; <a href="https://api.sno-&lt;name&gt;.&lt;domain&gt;:6443" class="bare">https://api.sno-&lt;name&gt;.&lt;domain&gt;:6443</a>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc login -u admin -p &lt;pass&gt; <a href="https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;:6443" class="bare">https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;:6443</a>
 oc get -n openshift-operators configmap cmp-plugin -o yaml</code></pre>
 </div>
 </div>
@@ -1568,7 +1568,7 @@ In this case, this configuration is already running on your cluster.
 </table>
 </div>
 <div class="paragraph">
-<p>Take a look to the configuration applied by the Application <em>sno-&lt;name&gt;-bootstrap on your sno  _argocd-infra</em> instance where those resources have been already created as part of <em>bootstrapping</em>. Do not make any change.</p>
+<p>Take a look to the configuration applied by the Application <em>sno-&lt;clusterID&gt;-bootstrap on your sno  _argocd-infra</em> instance where those resources have been already created as part of <em>bootstrapping</em>. Do not make any change.</p>
 </div>
 <div class="listingblock lines_7 console-output">
 <div class="content">
@@ -1692,7 +1692,7 @@ cat charts/vault/values.yaml</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Log in OpenShift <em>SNO</em> console (E.g. <a href="https://console-openshift-console.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://console-openshift-console.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>)</p>
+<p>Log in OpenShift <em>SNO</em> console (E.g. <a href="https://console-openshift-console.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://console-openshift-console.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>)</p>
 </li>
 <li>
 <p>Hit <strong><em>Workshop Users</em></strong>.</p>
@@ -1712,7 +1712,7 @@ cat charts/vault/values.yaml</code></pre>
 <div class="title">Figure 13. Vault plugin secret</div>
 </div>
 <div class="paragraph">
-<p>So we need to modify existing Application <em>sno-&lt;name&gt;-vault</em> in <em>argocd-apps</em> instance (E.g. <a href="https://argocd-apps-server-openshift-operators.apps.sno-&lt;name&gt;.&lt;domain&gt;" class="bare">https://argocd-apps-server-openshift-operators.apps.sno-&lt;name&gt;.&lt;domain&gt;</a>) to use <strong>plugin</strong>.</p>
+<p>So we need to modify existing Application <em>sno-&lt;clusterID&gt;-vault</em> in <em>argocd-apps</em> instance (E.g. <a href="https://argocd-apps-server-openshift-operators.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;" class="bare">https://argocd-apps-server-openshift-operators.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</a>) to use <strong>plugin</strong>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1729,7 +1729,7 @@ This modification applies to <strong>Vault application</strong> deployed at the 
 <div class="ulist">
 <ul>
 <li>
-<p>Click <strong><em>sno-&lt;name&gt;-vault</em></strong> &#8594; <strong><em>App details</em></strong> &#8594; <strong><em>Manifest</em></strong> &#8594; then <strong><em>Edit</em></strong>, and add:</p>
+<p>Click <strong><em>sno-&lt;clusterID&gt;-vault</em></strong> &#8594; <strong><em>App details</em></strong> &#8594; <strong><em>Manifest</em></strong> &#8594; then <strong><em>Edit</em></strong>, and add:</p>
 </li>
 </ul>
 </div>
@@ -1751,7 +1751,7 @@ Replace only the plugin section. And change <em>&lt;your_user&gt;</em> for your 
   source:
     repoURL: 'https://github.com/&lt;your_user&gt;/helm-infra-gitops-workshop.git'
     path: .
-    targetRevision: sno-&lt;name&gt;
+    targetRevision: sno-&lt;clusterID&gt;
     plugin:
       env:
         - name: HELM_VALUES
@@ -1783,7 +1783,7 @@ You can try to delete it and see how it is created.</p>
 <div class="listingblock lines_7 console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get route vault -n vault-secrets
-curl vault-vault-secrets.apps.sno-&lt;name&gt;.&lt;domain&gt;</code></pre>
+curl vault-vault-secrets.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock lines_7 console-output">
@@ -1828,7 +1828,7 @@ git checkout main-day2</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;your_user&gt; &#8594; Your GitHub user account</strong></p>
@@ -1847,13 +1847,13 @@ vi cluster-addons/cluster-addons-as/day2-sno-as.yaml</code></pre>
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: day2-sno-&lt;name&gt;
+  name: day2-sno-&lt;clusterID&gt;
   namespace: openshift-operators
 spec:
   generators:
   - git:
       repoURL: <a href="https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git" class="bare">https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git</a>
-      revision: sno-&lt;name&gt;-setup
+      revision: sno-&lt;clusterID&gt;-setup
       files:
       - path: "cluster-definition/**/cluster.json"
   template:
@@ -1863,7 +1863,7 @@ spec:
       project: '{{project}}'
       source:
         repoURL: <a href="https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git" class="bare">https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git</a>
-        targetRevision: sno-&lt;name&gt;-setup
+        targetRevision: sno-&lt;clusterID&gt;-setup
         path: cluster-addons/day2-as
       destination:
         server: '{{cluster.address}}'
@@ -1904,12 +1904,12 @@ git commit -m "wip"</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Go back to your working branch <strong><em>sno-&lt;name&gt;-setup</em></strong> and merge it with <strong>main-day2</strong> branch.</p>
+<p>Go back to your working branch <strong><em>sno-&lt;clusterID&gt;-setup</em></strong> and merge it with <strong>main-day2</strong> branch.</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
-git checkout sno-&lt;name&gt;-setup
+git checkout sno-&lt;clusterID&gt;-setup
 git merge main-day2</code></pre>
 </div>
 </div>
@@ -1920,7 +1920,7 @@ git merge main-day2</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-As part of this <strong>merge</strong> action you will find file conflicts that has to be solved by hand. Take a look at them carefully and solve them one by one, make sure your workshop data like <strong><em>&lt;your_user&gt;</em></strong>, <strong><em>&lt;name&gt;</em></strong>, <strong><em>&lt;domain&gt;</em></strong>, folder <strong>cluster-definition/sno-&lt;name&gt;</strong> are properly replaced.
+As part of this <strong>merge</strong> action you will find file conflicts that has to be solved by hand. Take a look at them carefully and solve them one by one, make sure your workshop data like <strong><em>&lt;your_user&gt;</em></strong>, <strong><em>&lt;clusterID&gt;</em></strong>, <strong><em>&lt;domain&gt;</em></strong>, folder <strong>cluster-definition/sno-&lt;clusterID&gt;</strong> are properly replaced.
 </td>
 </tr>
 </table>
@@ -1947,7 +1947,7 @@ Tools as <em>Visual Code Studio</em> can make this step easier, if you are not a
 <div class="title">Figure 16. Day-2 extra folder and ApplicationSet</div>
 </div>
 <div class="paragraph">
-<p>If you take a look to this ApplicationSet which will be created in <em>argocd-infra</em> instance on destination cluster <em>SNO</em>, you will see that <strong><em>generators</em></strong> label iterates over <em>config-definition</em> folder on root directory and uses every child folder name (day 2 operators) to name the Application template and it takes the values file from the <strong><em>cluster-definition/sno-&lt;name&gt;/config.json</em></strong> file:</p>
+<p>If you take a look to this ApplicationSet which will be created in <em>argocd-infra</em> instance on destination cluster <em>SNO</em>, you will see that <strong><em>generators</em></strong> label iterates over <em>config-definition</em> folder on root directory and uses every child folder name (day 2 operators) to name the Application template and it takes the values file from the <strong><em>cluster-definition/sno-&lt;clusterID&gt;/config.json</em></strong> file:</p>
 </div>
 <div class="paragraph">
 <p>Remember to replace with your cluster configuration data as required.</p>
@@ -1955,7 +1955,7 @@ Tools as <em>Visual Code Studio</em> can make this step easier, if you are not a
 <div class="ulist">
 <ul>
 <li>
-<p><strong>&lt;name&gt; &#8594; Assigned cluster</strong></p>
+<p><strong>&lt;clusterID&gt; &#8594; Assigned cluster</strong></p>
 </li>
 <li>
 <p><strong>&lt;your_user&gt; &#8594; Your GitHub user account</strong></p>
@@ -1973,23 +1973,23 @@ vi cluster-addons/day2-as/application-set-day2.yaml</code></pre>
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: day2-as-sno-&lt;name&gt;
+  name: day2-as-sno-&lt;clusterID&gt;
   namespace: openshift-gitops
 spec:
   generators:
   - git:
       repoURL: <a href="https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git" class="bare">https://github.com/&lt;your_user&gt;/workshop-gitops-content-deploy.git</a>
-      revision: sno-&lt;name&gt;-setup
+      revision: sno-&lt;clusterID&gt;-setup
       files:
       - path: "config-definition/**/config.json"
   template:
     metadata:
-      name: 'sno-&lt;name&gt;-{{path.basename}}'
+      name: 'sno-&lt;clusterID&gt;-{{path.basename}}'
     spec:
       project: default
       source:
         repoURL: <a href="https://github.com/&lt;your_user&gt;/helm-infra-gitops-workshop.git" class="bare">https://github.com/&lt;your_user&gt;/helm-infra-gitops-workshop.git</a>
-        targetRevision: sno-&lt;name&gt;
+        targetRevision: sno-&lt;clusterID&gt;
         path: .
         helm:
           valueFiles:
@@ -2004,21 +2004,21 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Then push to your changes to working branch <strong><em>sno-&lt;name&gt;-setup</em></strong>.</p>
+<p>Then push to your changes to working branch <strong><em>sno-&lt;clusterID&gt;-setup</em></strong>.</p>
 </div>
 <div class="listingblock lines_7 console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 git add .
 git commit -m "day 2 with ApplicationSet"
-git push origin sno-&lt;name&gt;-setup</code></pre>
+git push origin sno-&lt;clusterID&gt;-setup</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Finally, navigate to <em>Argo Hub</em> <strong><em>argocd</em></strong> instance and see the recently created ApplicationSet, then navigate to <strong><em>argocd-infra</em></strong> instance on <em>SNO</em> and see the Applications managed by the Application generated by ApplicationSet.</p>
 </div>
 <div class="paragraph">
-<p>It might take a while till it syncs all the resources affected by the changes. Once everything is synced, you can try deleting <em>sno-&lt;name&gt;-monitoring</em> Application on argocd-infra instance to verify ApplicationSet recreates it.</p>
+<p>It might take a while till it syncs all the resources affected by the changes. Once everything is synced, you can try deleting <em>sno-&lt;clusterID&gt;-monitoring</em> Application on argocd-infra instance to verify ApplicationSet recreates it.</p>
 </div>
 <div class="imageblock">
 <div class="content">
