@@ -60,7 +60,6 @@ Replace XX values of the *_OCP_USER_*, *_OCP_SNO_API_*, and *_OCP_SNO_CONSOLE_* 
 ----
 OCP_USER=userXX
 OCP_PASS=redhat
-OCP_PASS=redhat
 DOMAIN=sandbox2414.opentlc.com
 OCP_HUB_API=https://api.argo-hub.sandbox2414.opentlc.com:6443
 OCP_HUB_CONSOLE=https://console-openshift-console.apps.argo-hub.sandbox2414.opentlc.com
