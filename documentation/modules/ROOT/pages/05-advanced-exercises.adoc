@@ -26,3 +26,35 @@ If you want to look for information, I recommend you to get inspired by the foll
 
 * Documentation https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/security_and_compliance/cert-manager-operator-for-red-hat-openshift#cert-manager-operator-about[cert-manager Operator for Red Hat OpenShift].
 * GitHub repository https://github.com/alvarolop/ocp-secured-integration?tab=readme-ov-file#2-cert-manager[alvarolop/ocp-secured-integration].
+
+IMPORTANT: Please, try to do some research before keep reading!!
+
+Ok, maybe it was too difficult, as I didn't give you any code example, so let's try to split this task in small pieces.
+
+
+=== Hint 1: The operator
+
+As there could be some version dependencies in the cluster and you only want to install the operator once, but use it from several application or teams, it is a common practice to centralize the installation of operators in a different application. That is the reason why we have the `sno-XX-operators` application. 
+
+Please, add the cert-manager operator to the Helm Chart and make sure that the operator is installed after syncing the app again!!
+
+
+=== Hint 2: The cert-manager files
+
+
+Once you have the operator installed, you will need to add several configuration files to the `helm-infra-gitops-workshop`. Best practice is to create a new ArgoCD application, a new folder and a new values file. So let's do it!!
+
+* The folder should be named `cert-manager` and contain the structure of a Helm Chart. Inside the `templates` folder you will have the files from the next hints. Yo can keep it empty now.
+* Create a `values-cert-manager.yaml` file with a boilerplate content like:
++
+[source, yaml]
+----
+cert-manager:
+  enabled: true
+----
++
+* Push it
+* Create an ArgoCD application pointing to that path and check that the Application is Healthy, despite is doesn't create any new resource on the cluster.
+
+
+=== Hint 3: 
