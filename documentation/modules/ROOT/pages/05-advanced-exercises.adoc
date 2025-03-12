@@ -57,4 +57,8 @@ cert-manager:
 * Create an ArgoCD application pointing to that path and check that the Application is Healthy, despite is doesn't create any new resource on the cluster.
 
 
-=== Hint 3: 
+=== Hint 3: The cert-manager configuration
+
+Now, it's time to actually add the cert-manager configuration, which can be split in a few steps:
+
+* 

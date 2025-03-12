@@ -3,11 +3,9 @@
 [#managedconfiguration]
 == 3.1 Managed Cluster Configuration
 
-_Argo Hub_ Application has been already synced, so you just need to be focus on managing your Single Node OpenShift.
+The _Argo Hub_ application has been already synced and has already created the second instance of ArgoCD. Therefore, in this chapter 3 we will focus on configuring ArgoCD from the `argo-hub` OCP environment to control our Single Node OpenShift. The idea behind this configuration is that everything will be configured as GitOps. You can check this link to know what is https://www.redhat.com/en/topics/devops/what-is-gitops[GitOps]?
 
-Let's make some modifications in the code to start deploying _GitOps_ in the managed cluster. Open the _workshop-gitops-content-deploy_ folder and make sure all the changes are done in the correct branch _sno-<clusterID>-setup_:
-
-NOTE: What is https://www.redhat.com/en/topics/devops/what-is-gitops[GitOps]?
+Let's make some modifications in the code to start deploying _GitOps_ in the managed cluster. Open the `workshop-gitops-content-deploy` folder and make sure all the changes are done in the correct branch _sno-<clusterID>-setup_.
 
 [.lines_7]
 [.console-input]
@@ -17,16 +15,53 @@ cd ~/workshop-gitops-content-deploy
 git checkout sno-<clusterID>-setup
 ----
 
-As every user is deploying its own bootstrap file, they must have an unique name and they should be deployed on your scoped project where your user has privileges.
 
-IMPORTANT: Change *cluster-definition/sno-<clusterID>* folder as your assigned cluster as this value will be used as a parameter for ApplicationSet.
+Let's summarize what we are going to configure in this section:
+
+1. We will create an application `managed-setup-a-XX` that will be the origin of all the configuration of our cluster. This will be done at the end of the chapter.
+2. That application will point to two applicationSets that will use a *JSON* file to know the relevant information to deploy on the correct SNO.
+3. The applicationSets need to point to our Git repository, so we will need to also modify them in the repository.
+
+
+.What is an ApplicationSet?
+****
+ApplicationSet is a Custom Resource that can be used to generate Applications to multiple clusters from multiple origins. ApplicationSet controller is installed alongside ArgoCD even though it must be explicitly enabled. 
+
+ApplicationSet is a helpful approach for multi cluster management, and it supplements ArgoCD by adding additional features in support of _cluster-administrator-focused_ scenarios. Some of those are:
+
+- Ability to use a single Kubernetes manifest to target multiple Kubernetes clusters with ArgoCD.
+
+- Ability to use a single Kubernetes manifest to deploy multiple applications from one or multiple Git repositories with ArgoCD.
+
+- Improved support for monorepos (multiple ArgoCD Application resources defined within a single Git repository).
+
+- Improves ability of individual cluster tenants to deploy applications using ArgoCD (without needing to involve privileged cluster admin in enabling the destination servers).
+
+ApplicationSet uses generators to create Application with multiple origins and destinations using templating. 
+****
+
+The following diagram shows an example of the output of Chapter 3, where you should specially check how the AppSet generates Applications based on the JSON.
+
+.ApplicationSet view
+image::managed-setup-a-name.png[]
+
+
+
+
+
+=== 3.1.1 Configure the AppSet JSON
+
+
+As every user is deploying its own bootstrap file, they must have a unique name and they should be deployed on your scoped project where your user has privileges.
+
+IMPORTANT: Change *cluster-definition/sno-XX* folder as your assigned cluster as this value will be used as a parameter for ApplicationSet.
 
 [.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
 cd ~/workshop-gitops-content-deploy
-E.g.: mv cluster-definition/sno-<clusterID> cluster-definition/sno-22
+E.g.: mv cluster-definition/sno-XX cluster-definition/sno-22
 ----
 
 IMPORTANT: Always replace _<clusterID>_ and _<domain>_ by your assigned cluster. 
@@ -48,17 +83,21 @@ vi cluster-definition/sno-<clusterID>/cluster.json
 [.console-output]
 [source, shell,subs="+macros,+attributes"]
 ----
-{
-  "environment": "dev",
-  "cloud": "aws",
-  "project": "project-sno-<clusterID>",
-  "region": "eu-central-1",
-  "cluster": {
-    "name": "sno-<clusterID>",
-    "address": "https://api.sno-<clusterID>.<domain>:6443"
+  {
+    "environment": "dev",
+    "cloud": "aws",
+    "project": "project-sno-<clusterID>",
+    "region": "eu-central-1",
+    "cluster": {
+      "name": "sno-<clusterID>",
+      "address": "https://api.sno-<clusterID>.<domain>:6443"
+    }
   }
-}
 ----
+
+
+=== 3.1.2 Configure the Managed Setup application
+
 
 You must also update _global-config/bootstrap-a/managed-setup.yaml_. Note how this application deploys to a different namespace and argo instance compared to _hub-setup_ application.
 
@@ -76,7 +115,7 @@ vi global-config/bootstrap-a/managed-setup.yaml
 ----
 
 [.lines_7]
-[.console-output]
+[.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
 apiVersion: argoproj.io/v1alpha1
@@ -97,26 +136,13 @@ spec:
     automated:
       prune: true
       selfHeal: true
-----      
+----
 
 The source path of this Application points to the ApplicationSet used.
 
-.What is an ApplicationSet?
-****
-ApplicationSet is a Custom Resource that can be used to generate Applications to multiple clusters from multiple origins. ApplicationSet controller is installed alongside ArgoCD even though it must be explicitly enabled. 
 
-ApplicationSet is a helpful approach for multi cluster management, and it supplements ArgoCD by adding additional features in support of _cluster-administrator-focused_ scenarios. Some of those are:
+=== 3.1.3 Configure the AppSets source of configuration
 
-- Ability to use a single Kubernetes manifest to target multiple Kubernetes clusters with ArgoCD.
-
-- Ability to use a single Kubernetes manifest to deploy multiple applications from one or multiple Git repositories with ArgoCD.
-
-- Improved support for monorepos (multiple ArgoCD Application resources defined within a single Git repository).
-
-- Improves ability of individual cluster tenants to deploy applications using ArgoCD (without needing to involve privileged cluster admin in enabling the destination servers).
-
-ApplicationSet uses generators to create Application with multiple origins and destinations using templating. 
-****
 
 The generator used may vary depending on your use case. In this example, we are using the _Git Files_ generator so the cluster definition values are used as parameters. In case we had _'N' cluster-definition_ files, the ApplicationSet would generate _'N'_ Applications automatically.
 
@@ -173,7 +199,7 @@ spec:
         automated:
           prune: true
           selfHeal: true       
-----    
+----
 
 The second ApplicationSet _cluster-addons/cluster-addons-as/bootstrap-sno-as.yaml_ deploys an Application in the _argocd-infra_ instance on manged cluster, called _sno-setup_, with configuration like: _RBAC_, a second _argocd-apps_ instance, namespaces and vault.
 
@@ -224,7 +250,10 @@ spec:
         automated:
           prune: true
           selfHeal: true       
-----     
+----
+
+
+=== 3.1.4 Update the bootstrap and bootstrap-app chart values
 
 Then update _cluster-addons/charts/bootstrap-app/values.yaml_ file with your assigned data too:
 
@@ -286,6 +315,11 @@ Then navigate under source path to take a look to the Helm charts used for deplo
 image::workshop-content-deploy-folders-2.png[]
 
 NOTE: ApplicationSet controller is not enabled by default and must be configured on ArgoCD instance.
+
+
+
+
+
 
 [#helmcharts]
 == 3.2 Helm Charts
@@ -838,7 +872,7 @@ Verify that:
 
 - 1) *_OpenShift GitOps_* operator is installed.
 
-- 2) *_argo-infra_* instance exists as _ArgoCD_ object and is _cluster-wide_.
+- 2) *_argocd-infra_* instance exists as _ArgoCD_ object and is _cluster-wide_.
 
 Now, log in to the _argocd-infra_ instance using OpenShift credentials, with user _admin_ and <pass> provided by intructor.
 

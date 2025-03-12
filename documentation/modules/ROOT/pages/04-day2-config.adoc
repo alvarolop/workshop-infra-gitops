@@ -166,7 +166,7 @@ oauth:
   enabled: true # Enable dependency
   keycloak: # Update chart values
     clientid: myclient-<clusterID>
-    issuer: https://keycloak-keycloak.apps.argo-hub.<domain>/realms/myrealm-<clusterID>
+    issuer: https://keycloak-ingress-keycloak.apps.argo-hub.<domain>/realms/myrealm-<clusterID>
     data: <your_keycloak_secret_data>
   ldap:
     sync:
