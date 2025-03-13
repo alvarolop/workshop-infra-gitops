@@ -7,7 +7,6 @@ The _Argo Hub_ application has been already synced and has already created the s
 
 Let's make some modifications in the code to start deploying _GitOps_ in the managed cluster. Open the `workshop-gitops-content-deploy` folder and make sure all the changes are done in the correct branch _sno-<clusterID>-setup_.
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -56,7 +55,6 @@ As every user is deploying its own bootstrap file, they must have a unique name 
 
 IMPORTANT: Change *cluster-definition/sno-XX* folder as your assigned cluster as this value will be used as a parameter for ApplicationSet.
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -71,7 +69,6 @@ Update from _cluster-definition/sno-<clusterID>/cluster.json_:
 - *<clusterID> -> Assigned cluster*
 - *<domain> -> Assigned domain cluster*
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -79,7 +76,6 @@ cd ~/workshop-gitops-content-deploy
 vi cluster-definition/sno-<clusterID>/cluster.json
 ----
 
-[.lines_7]
 [.console-output]
 [source, json,subs="+macros,+attributes"]
 ----
@@ -106,7 +102,6 @@ Update from _global-config/bootstrap-a/managed-setup.yaml_:
 - *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -114,7 +109,6 @@ cd ~/workshop-gitops-content-deploy
 vi global-config/bootstrap-a/managed-setup.yaml
 ----
 
-[.lines_7]
 [.console-input]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -160,7 +154,6 @@ Update from _cluster-addons/cluster-addons-as/gitops-setup-sno-as.yaml_:
 - *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -168,7 +161,6 @@ cd ~/workshop-gitops-content-deploy
 vi cluster-addons/cluster-addons-as/gitops-setup-sno-as.yaml
 ----
 
-[.lines_7]
 [.console-output]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -211,7 +203,6 @@ Update from _cluster-addons/cluster-addons-as/bootstrap-sno-as.yaml_:
 - *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -219,7 +210,6 @@ cd ~/workshop-gitops-content-deploy
 vi cluster-addons/cluster-addons-as/bootstrap-sno-as.yaml
 ----
 
-[.lines_7]
 [.console-output]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -260,7 +250,6 @@ Then update _cluster-addons/charts/bootstrap-app/values.yaml_ file with your ass
 - *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -268,7 +257,6 @@ cd ~/workshop-gitops-content-deploy
 vi cluster-addons/charts/bootstrap-app/values.yaml
 ----
 
-[.lines_7]
 [.console-output]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -288,7 +276,6 @@ And finally replace values in bootstrap _cluster-addons/charts/bootstrap/values.
 
 - *<domain> -> Assigned domain cluster*
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -296,7 +283,6 @@ cd ~/workshop-gitops-content-deploy
 vi cluster-addons/charts/bootstrap/values.yaml
 ----
 
-[.lines_7]
 [.console-output]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -334,7 +320,6 @@ In the _argocd_ instance of _Argo Hub_, the first Helm chart is *_gitops-setup_*
 
 If you navigate to _cluster-addons/charts/gitops-setup/templates/operators/subscription.yaml_ resource you will see there is a global value for applying _env_ variables for _GitOps_. 
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -342,7 +327,6 @@ cd ~/workshop-gitops-content-deploy
 cat cluster-addons/charts/gitops-setup/templates/operators/subscription.yaml
 ----
 
-[.lines_7]
 [.console-output]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -384,7 +368,6 @@ You can either create a custom _Role Binding_ or labelling any managed namespace
 
 After setting this global variable you can see a new _Cluster Role Binding_ for this _ServiceAccount_ and this configuration on _Argo Hub_ console in _openshift-operators_ namespace.
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -404,7 +387,6 @@ Once the _openshift-gitops_ operator is running, we need to deploy the ArgoCD in
 
 *_Sync Waves_* are defined on each resource as annotations, and they tell Argo the order in which resources should be applied once the previous resource is already in healthy status.
 
-[.lines_7]
 [.console-output]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -430,7 +412,6 @@ NOTE: A *_Resource Healthcheck_* is defined in the _argocd_ instace of _Argo Hub
 
 Next chart to take a look is _cluster-addons/charts/bootstrap-app_. This chart deploys an Application on the managed cluster _argocd-infra_ instance to apply _bootstrap_ chart.
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -438,7 +419,6 @@ cd ~/workshop-gitops-content-deploy
 cat cluster-addons/charts/bootstrap-app/templates/application.yaml
 ----
 
-[.lines_7]
 [.console-output]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -475,7 +455,6 @@ spec:
 
 Then on _cluster-addons/charts/bootstrap_ folder you can find resources for deploying the second _argocd-apps_ instance in the managed cluster, _namespaces_, _vault_ and _RBAC_ configuration. 
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -489,7 +468,6 @@ The _argocd-apps_ instance definition in _cluster-addons/charts/bootstrap/templa
 
 NOTE: Take a look to the *_resourceCustomizations_* section to review the _Custom Healthcheck_.
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -497,7 +475,6 @@ cd ~/workshop-gitops-content-deploy
 cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml
 ----
 
-[.lines_7]
 [.console-output]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -639,7 +616,6 @@ As you may notice, this instance contains some parameters for configuring _Vault
 
 *_RBAC_* is defined on _cluster-addons/charts/bootstrap/templates/rbac/_ folder and includes the basic configuration for Argo _RBAC_ and projects.
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -662,7 +638,6 @@ ArgoCD has two pre-defined roles but _RBAC_ configuration allows defining roles 
 
 Additionally to the defined roles, it is possible to create some specific roles to allow `argo-operators` and `argo-dev-operators` group members manage applications in ArgoCD. See the groups in _cluster-addons/charts/bootstrap/values.yaml_ values file:
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -670,7 +645,6 @@ cd ~/workshop-gitops-content-deploy
 vi cluster-addons/charts/bootstrap/values.yaml
 ----
 
-[.lines_7]
 [.console-output]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -698,7 +672,6 @@ NOTE: For _RBAC_ we need to differentiate between global configuration on _argoc
 
 If you navigate to rbac section on _argo-apps_ instance, you will see some _RBAC_ policies starting like *g*  and *p*:
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -706,7 +679,6 @@ cd ~/workshop-gitops-content-deploy
 cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml
 ----
 
-[.lines_7]
 [.console-output]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -751,7 +723,6 @@ Do not forget to *push your changes to your working branch!*, then we are going 
 
 NOTE: Make sure you are in the _sno-<clusterID>-setup_ branch.
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -796,7 +767,6 @@ Update from _global-config/bootstrap-a/managed-setup.yaml_:
 - *<clusterID> -> Assigned cluster*
 - *<your_user> -> Your GitHub user account*
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -804,7 +774,6 @@ cd ~/workshop-gitops-content-deploy
 vi global-config/bootstrap-a/managed-setup.yaml
 ----
 
-[.lines_7]
 [.console-output]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -929,7 +898,6 @@ IMPORTANT: This app should be deployed as *prerequisite* of *_4.5 Vault Configur
 
 Make sure you push content to your working branch:
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -943,7 +911,6 @@ Click -> *_New app_* -> *_Edit as Yaml_*
 
 IMPORTANT: *Insert the following Application with the changing _<clusterID>_ and <your_user>*:
 
-[.lines_7]
 [.console-output]
 [source, yaml,subs="+macros,+attributes"]
 ----
@@ -975,7 +942,6 @@ Then hit *_Save_* -> *_Create_*
 
 First log in the _SNO_, replace *_<clusterID>_*, *_<pass>_* and *_<domain>_*:
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -984,7 +950,6 @@ oc login -u admin -p <pass> https://api.sno-<clusterID>.<domain>:6443
 
 When the Application is created it deploys an app called _vault_ in namespace _vault-secrets_ that will encode a password and store it in _Vault_. If you access the application route you will not be able to see the password in plain text:
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -992,7 +957,6 @@ oc get route vault -n vault-secrets
 curl vault-vault-secrets.apps.sno-<clusterID>.<domain>
 ----
 
-[.lines_7]
 [.console-output]
 [source, shell,subs="+macros,+attributes"]
 ----

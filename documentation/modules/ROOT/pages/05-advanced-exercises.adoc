@@ -61,4 +61,128 @@ cert-manager:
 
 Now, it's time to actually add the cert-manager configuration, which can be split in a few steps:
 
-* 
+1. Use the **CredentialsRequest** from the OpenShift Cloud Credential Operator to request specific tailored AWS credentials to list DNS records:
++
+[.console-input]
+[source, yaml, subs="+macros,+attributes"]
+----
+apiVersion: cloudcredential.openshift.io/v1
+kind: CredentialsRequest
+metadata:
+  name: cert-manager
+  namespace: openshift-cloud-credential-operator
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  providerSpec:
+    apiVersion: cloudcredential.openshift.io/v1
+    kind: AWSProviderSpec
+    statementEntries:
+    - action:
+      - "route53:GetChange"
+      effect: Allow
+      resource: "arn:aws:route53:::change/*"
+    - action:
+      - "route53:ChangeResourceRecordSets"
+      - "route53:ListResourceRecordSets"
+      effect: Allow
+      resource: "arn:aws:route53:::hostedzone/*"
+    - action:
+      - "route53:ListHostedZonesByName"
+      effect: Allow
+      resource: "*"
+  secretRef:
+    name: aws-creds
+    namespace: cert-manager
+  serviceAccountNames:
+  - cert-manager
+----
++
+2. Create a **CertManager** instance to initialize the operator configuration:
++
+[.console-input]
+[source, yaml, subs="+macros,+attributes"]
+----
+apiVersion: operator.openshift.io/v1alpha1
+kind: CertManager
+metadata:
+  name: cluster
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "05"
+spec:
+  logLevel: Normal
+  managementState: Managed
+  observedConfig: null
+  operatorLogLevel: Normal
+  unsupportedConfigOverrides: null
+  controllerConfig:                                
+    overrideArgs:
+      - '--dns01-recursive-nameservers-only'       
+      - '--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53'
+      - '--enable-certificate-owner-ref' # Deleting a TLS secret automatically upon Certificate removal
+----
++
+3. Create a **ClusterIssuer**, which will provide the configuration to the Certificate Authority:
++
+[.console-input]
+[source, yaml, subs="+macros,+attributes"]
+----
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "05"
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # email: mail@example.com # Replace with your email
+    # skipTLSVerify: true
+    privateKeySecretRef:
+      name: letsencrypt-key
+    solvers:
+    - dns01:
+        route53:
+          accessKeyIDSecretRef:
+            name: aws-creds
+            key: aws_access_key_id
+          region: eu-west-1
+          secretAccessKeySecretRef:
+            name: aws-creds
+            key: aws_secret_access_key
+----
+
+=== Hint 4: The Certificates
+
+Create the **Certificate** CR to issue a certificate against a ClusterIssuer:
+
+[.console-input]
+[source, yaml, subs="+macros,+attributes"]
+----
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ocp-api
+  namespace: openshift-config
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  isCA: false
+  commonName: "api.{{ .Values.clusterDomain }}" 
+  dnsNames:
+  - "api.{{ .Values.clusterDomain }}" 
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+    group: cert-manager.io
+  secretName: api-certs
+----
+
+
+We hope you enjoyed this extra DIY section, where we provided a less structured path for you to explore and adapt your GitOps repository in a way that best suits your needs. 
+
+Thank you for joining us, and we look forward to seeing you in our next workshop! 👋👋

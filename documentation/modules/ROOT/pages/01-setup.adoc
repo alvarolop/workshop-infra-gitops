@@ -52,7 +52,6 @@ You will need to clone your repo using SSH keys in Git, if you haven't configure
 
 IMPORTANT: Replace *_<your_user>_* for your GitHub user account, and *_<clusterId>_* for your assigned cluster in this workshop.
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -75,7 +74,6 @@ Now you have the *_helm-infra-gitops-workshop_* repository forked in your GitHub
 
 IMPORTANT: Replace *_<your_user>_* for your GitHub user account, and *_<clusterId>_* for your assigned cluster in this workshop.
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----

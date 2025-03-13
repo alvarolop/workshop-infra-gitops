@@ -54,17 +54,16 @@ You have access to two clusters: *_Argo Hub_* and your own *_SNO_*:
 
 Replace XX values of the *_OCP_USER_*, *_OCP_SNO_API_*, and *_OCP_SNO_CONSOLE_* with the values provided by the instructor at the beginning of this workshop. After that, keep those variables at hand and present every time that you execute commands in your terminal.
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
 OCP_USER=userXX
 OCP_PASS=redhat
-DOMAIN=sandbox2414.opentlc.com
-OCP_HUB_API=https://api.argo-hub.sandbox2414.opentlc.com:6443
-OCP_HUB_CONSOLE=https://console-openshift-console.apps.argo-hub.sandbox2414.opentlc.com
-OCP_SNO_API=https://api.sno-XX.sandbox2414.opentlc.com:6443
-OCP_SNO_CONSOLE=https://console-openshift-console.apps.sno-XX.sandbox2414.opentlc.com
+DOMAIN=sandboxXXXX.opentlc.com
+OCP_HUB_API=https://api.argo-hub.sandboxXXXX.opentlc.com:6443
+OCP_HUB_CONSOLE=https://console-openshift-console.apps.argo-hub.sandboxXXXX.opentlc.com
+OCP_SNO_API=https://api.sno-XX.sandboxXXXX.opentlc.com:6443
+OCP_SNO_CONSOLE=https://console-openshift-console.apps.sno-XX.sandboxXXXX.opentlc.com
 ----
 
 [NOTE]
@@ -83,7 +82,6 @@ Make sure to use the correct values for *_OCP_USER_*, *_OCP_PASS_*, *_OCP_HUB_AP
 
 Let's start logging in to *_Argo Hub_* cluster API:
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -166,7 +164,6 @@ IMPORTANT: As this configuration is already deployed you do not need to make any
 
 - Go to your _workshop-gitops-content-deploy_ repository, navigate to the _hub-setup_ Application code and see how this sets up env configuration on _in-cluster_ (https://kubernetes.default.svc):
 
-[.lines_7]
 [.console-input]
 [source, shell,subs="+macros,+attributes"]
 ----
@@ -175,9 +172,8 @@ git checkout setup-sno
 cat global-config/bootstrap-a/hub-setup-a.yaml
 ----
 
-[.lines_7]
 [.console-output]
-[source, shell,subs="+macros,+attributes"]
+[source, yaml,subs="+macros,+attributes"]
 ----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
