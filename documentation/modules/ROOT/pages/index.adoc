@@ -26,6 +26,8 @@ A Red Hat GitOps infrastructure configuration approach workshop.
 * xref:03-sno-setup.adoc[3. Deploy Managed Cluster Setup]
 ** xref:03-sno-setup.adoc#managedconfiguration[3.1. Managed Cluster Configuration]
 ** xref:03-sno-setup.adoc#helmcharts[3.2. Helm Charts]
+** xref:03-sno-setup.adoc#triggergitops[3.3 Trigger the GitOps configuration]
+** xref:03-sno-setup.adoc#vaultapp[3.4 Creating your first ArgoCD Apps application]
 
 [.tile]
 * xref:04-day2-config.adoc#daytwooperations[4. Day 2 Operations]
@@ -39,5 +41,3 @@ A Red Hat GitOps infrastructure configuration approach workshop.
 
 [.tile]
 * xref:05-advanced-exercises.adoc[5. Advanced Exercises]
-
-

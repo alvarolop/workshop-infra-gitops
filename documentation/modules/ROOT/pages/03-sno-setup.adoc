@@ -761,7 +761,14 @@ git commit -m "bootstrap application for SNO"
 git push origin sno-<clusterID>-setup
 ----
 
-- Now login to _argocd_ instance in _Argo Hub_ (https://argocd-server-openshift-operators.apps.argo-hub.<domain>) 
+
+
+
+[#triggergitops]
+== 3.3 Trigger the GitOps configuration
+
+Login to _argocd_ instance in _Argo Hub_ (https://argocd-server-openshift-operators.apps.argo-hub.<domain>) 
+
 
 - Click *_LOG IN VIA OPENSHIFT_*.
 
@@ -778,7 +785,7 @@ image::hub-login-1.png[]
 .argocd instance log in
 image::hub-login-2.png[]
 
-To create bootstrap application, once logged in, click on:
+To create the bootstrap application, click on:
 
 - *_New app_* -> *_Edit as Yaml_* 
 
@@ -910,7 +917,13 @@ Click on Projects on the left menu:
 
 image::projects.png[]
 
-Verify you can create apliations on _'Dev'_ project for _argocd-apps_ instance.
+
+
+
+[#vaultapp]
+== 3.4 Creating your first ArgoCD Apps application
+
+Verify you can create applications on _'Dev'_ project for _argocd-apps_ instance.
 
 IMPORTANT: This app should be deployed as *prerequisite* of *_4.5 Vault Configuration subsection_*.
 
