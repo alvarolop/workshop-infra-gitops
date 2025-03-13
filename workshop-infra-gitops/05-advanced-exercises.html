@@ -280,8 +280,137 @@ Please, try to do some research before keep reading!!
 <div class="paragraph">
 <p>Now, it&#8217;s time to actually add the cert-manager configuration, which can be split in a few steps:</p>
 </div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Use the <strong>CredentialsRequest</strong> from the OpenShift Cloud Credential Operator to request specific tailored AWS credentials to list DNS records:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: cloudcredential.openshift.io/v1
+kind: CredentialsRequest
+metadata:
+  name: cert-manager
+  namespace: openshift-cloud-credential-operator
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  providerSpec:
+    apiVersion: cloudcredential.openshift.io/v1
+    kind: AWSProviderSpec
+    statementEntries:
+    - action:
+      - "route53:GetChange"
+      effect: Allow
+      resource: "arn:aws:route53:::change/*"
+    - action:
+      - "route53:ChangeResourceRecordSets"
+      - "route53:ListResourceRecordSets"
+      effect: Allow
+      resource: "arn:aws:route53:::hostedzone/*"
+    - action:
+      - "route53:ListHostedZonesByName"
+      effect: Allow
+      resource: "*"
+  secretRef:
+    name: aws-creds
+    namespace: cert-manager
+  serviceAccountNames:
+  - cert-manager</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create a <strong>CertManager</strong> instance to initialize the operator configuration:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: operator.openshift.io/v1alpha1
+kind: CertManager
+metadata:
+  name: cluster
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "05"
+spec:
+  logLevel: Normal
+  managementState: Managed
+  observedConfig: null
+  operatorLogLevel: Normal
+  unsupportedConfigOverrides: null
+  controllerConfig:
+    overrideArgs:
+      - '--dns01-recursive-nameservers-only'
+      - '--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53'
+      - '--enable-certificate-owner-ref' # Deleting a TLS secret automatically upon Certificate removal</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create a <strong>ClusterIssuer</strong>, which will provide the configuration to the Certificate Authority:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "05"
+spec:
+  acme:
+    server: <a href="https://acme-v02.api.letsencrypt.org/directory" class="bare">https://acme-v02.api.letsencrypt.org/directory</a>
+    # email: <a href="mailto:mail@example.com">mail@example.com</a> # Replace with your email
+    # skipTLSVerify: true
+    privateKeySecretRef:
+      name: letsencrypt-key
+    solvers:
+    - dns01:
+        route53:
+          accessKeyIDSecretRef:
+            name: aws-creds
+            key: aws_access_key_id
+          region: eu-west-1
+          secretAccessKeySecretRef:
+            name: aws-creds
+            key: aws_secret_access_key</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hint_4_the_certificates"><a class="anchor" href="#_hint_4_the_certificates"></a>Hint 4: The Certificates</h3>
 <div class="paragraph">
-<p>*</p>
+<p>Create the <strong>Certificate</strong> CR to issue a certificate against a ClusterIssuer:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ocp-api
+  namespace: openshift-config
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  isCA: false
+  commonName: "api.{{ .Values.clusterDomain }}"
+  dnsNames:
+  - "api.{{ .Values.clusterDomain }}"
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+    group: cert-manager.io
+  secretName: api-certs</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We hope you enjoyed this extra DIY section, where we provided a less structured path for you to explore and adapt your GitOps repository in a way that best suits your needs.</p>
+</div>
+<div class="paragraph">
+<p>Thank you for joining us, and we look forward to seeing you in our next workshop! 👋👋</p>
 </div>
 </div>
 </div>

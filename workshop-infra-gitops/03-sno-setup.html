@@ -172,7 +172,7 @@
 <div class="paragraph">
 <p>Let&#8217;s make some modifications in the code to start deploying <em>GitOps</em> in the managed cluster. Open the <code>workshop-gitops-content-deploy</code> folder and make sure all the changes are done in the correct branch <em>sno-&lt;clusterID&gt;-setup</em>.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 git checkout sno-&lt;clusterID&gt;-setup</code></pre>
@@ -250,7 +250,7 @@ Change <strong>cluster-definition/sno-XX</strong> folder as your assigned cluste
 </tr>
 </table>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 E.g.: mv cluster-definition/sno-XX cluster-definition/sno-22</code></pre>
@@ -281,13 +281,13 @@ Always replace <em>&lt;clusterID&gt;</em> and <em>&lt;domain&gt;</em> by your as
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 vi cluster-definition/sno-&lt;clusterID&gt;/cluster.json</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">  {
     "environment": "dev",
@@ -320,13 +320,13 @@ vi cluster-definition/sno-&lt;clusterID&gt;/cluster.json</code></pre>
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 vi global-config/bootstrap-a/managed-setup.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -394,13 +394,13 @@ Find more about <a href="https://argo-cd.readthedocs.io/en/stable/operator-manua
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 vi cluster-addons/cluster-addons-as/gitops-setup-sno-as.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
@@ -453,13 +453,13 @@ spec:
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 vi cluster-addons/cluster-addons-as/bootstrap-sno-as.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
@@ -506,13 +506,13 @@ spec:
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 vi cluster-addons/charts/bootstrap-app/values.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">clusters:
   sno-&lt;clusterID&gt;:
@@ -536,13 +536,13 @@ vi cluster-addons/charts/bootstrap-app/values.yaml</code></pre>
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 vi cluster-addons/charts/bootstrap/values.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
 vault:
@@ -580,13 +580,13 @@ vault:
 <div class="paragraph">
 <p>If you navigate to <em>cluster-addons/charts/gitops-setup/templates/operators/subscription.yaml</em> resource you will see there is a global value for applying <em>env</em> variables for <em>GitOps</em>.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 cat cluster-addons/charts/gitops-setup/templates/operators/subscription.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">{{- range $key, $val := $.Values.operators }}
 {{- if $val.enabled }}
@@ -630,7 +630,7 @@ you need to change this configuration to make the instance <em>cluster wide</em>
 <div class="paragraph">
 <p>After setting this global variable you can see a new <em>Cluster Role Binding</em> for this <em>ServiceAccount</em> and this configuration on <em>Argo Hub</em> console in <em>openshift-operators</em> namespace.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get clusterrolebinding openshift-gitops-openshift-gitops-argocd-application-controller -n openshift-operators -o yaml</code></pre>
 </div>
@@ -664,7 +664,7 @@ and <a href="https://docs.openshift.com/gitops/1.15/declarative_clusterconfig/co
 <div class="paragraph">
 <p><strong><em>Sync Waves</em></strong> are defined on each resource as annotations, and they tell Argo the order in which resources should be applied once the previous resource is already in healthy status.</p>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
 metadata:
@@ -718,13 +718,13 @@ A <strong><em>Resource Healthcheck</em></strong> is defined in the <em>argocd</e
 <div class="paragraph">
 <p>Next chart to take a look is <em>cluster-addons/charts/bootstrap-app</em>. This chart deploys an Application on the managed cluster <em>argocd-infra</em> instance to apply <em>bootstrap</em> chart.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 cat cluster-addons/charts/bootstrap-app/templates/application.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">{{- range $key, $val := $.Values.clusters }}
 ---
@@ -758,7 +758,7 @@ spec:
 <div class="paragraph">
 <p>Then on <em>cluster-addons/charts/bootstrap</em> folder you can find resources for deploying the second <em>argocd-apps</em> instance in the managed cluster, <em>namespaces</em>, <em>vault</em> and <em>RBAC</em> configuration.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy/cluster-addons/charts/bootstrap/templates/</code></pre>
 </div>
@@ -784,13 +784,13 @@ Take a look to the <strong><em>resourceCustomizations</em></strong> section to r
 </tr>
 </table>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
     dex:
@@ -951,7 +951,7 @@ cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
 <div class="paragraph">
 <p><strong><em>RBAC</em></strong> is defined on <em>cluster-addons/charts/bootstrap/templates/rbac/</em> folder and includes the basic configuration for Argo <em>RBAC</em> and projects.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy/cluster-addons/charts/bootstrap/templates/rbac/</code></pre>
 </div>
@@ -994,13 +994,13 @@ Find more in <a href="https://argo-cd.readthedocs.io/en/stable/operator-manual/r
 <div class="paragraph">
 <p>Additionally to the defined roles, it is possible to create some specific roles to allow <code>argo-operators</code> and <code>argo-dev-operators</code> group members manage applications in ArgoCD. See the groups in <em>cluster-addons/charts/bootstrap/values.yaml</em> values file:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 vi cluster-addons/charts/bootstrap/values.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">groups:
  argo-admins:
@@ -1041,13 +1041,13 @@ For <em>RBAC</em> we need to differentiate between global configuration on <em>a
 <div class="paragraph">
 <p>If you navigate to rbac section on <em>argo-apps</em> instance, you will see some <em>RBAC</em> policies starting like <strong>g</strong>  and <strong>p</strong>:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 cat cluster-addons/charts/bootstrap/templates/argocd/argocd.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
   rbac:
@@ -1122,7 +1122,7 @@ Make sure you are in the <em>sno-&lt;clusterID&gt;-setup</em> branch.
 </tr>
 </table>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 git add .
@@ -1213,13 +1213,13 @@ git push origin sno-&lt;clusterID&gt;-setup</code></pre>
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 vi global-config/bootstrap-a/managed-setup.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -1474,7 +1474,7 @@ This app should be deployed as <strong>prerequisite</strong> of <strong><em>4.5 
 <div class="paragraph">
 <p>Make sure you push content to your working branch:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
@@ -1497,7 +1497,7 @@ git push origin sno-&lt;clusterID&gt;</code></pre>
 </tr>
 </table>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -1529,7 +1529,7 @@ spec:
 <div class="paragraph">
 <p>First log in the <em>SNO</em>, replace <strong><em>&lt;clusterID&gt;</em></strong>, <strong><em>&lt;pass&gt;</em></strong> and <strong><em>&lt;domain&gt;</em></strong>:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc login -u admin -p &lt;pass&gt; <a href="https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;:6443" class="bare">https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;:6443</a></code></pre>
 </div>
@@ -1537,13 +1537,13 @@ spec:
 <div class="paragraph">
 <p>When the Application is created it deploys an app called <em>vault</em> in namespace <em>vault-secrets</em> that will encode a password and store it in <em>Vault</em>. If you access the application route you will not be able to see the password in plain text:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get route vault -n vault-secrets
 curl vault-vault-secrets.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">The password value is: &lt;password | base64encode&gt;</code></pre>
 </div>

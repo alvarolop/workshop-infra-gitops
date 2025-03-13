@@ -175,7 +175,7 @@ to our single scoped cluster.</p>
 <div class="paragraph">
 <p>Go to <a href="https://github.com/alvarolop/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and checkout to your working branch.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git checkout sno-&lt;clusterID&gt;</code></pre>
@@ -194,20 +194,20 @@ that you might override by creating your own <em>values</em> file.</p>
 <div class="paragraph">
 <p>At this point of the workshop, you will only have <em>values.yaml</em>. Try to render it, if you look at the <em>values.yaml</em> file all the not <em>global</em> fields are set to <em>false</em>, so you will be getting an empty output.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 helm template .</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cat values.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oauth:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">oauth:
   enabled: false
 bookinfo:
   enabled: false
@@ -245,7 +245,7 @@ Each time you create a <em>values-example.yaml</em> file in the following sectio
 <div class="paragraph">
 <p>E.g:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">helm template . -f values-example.yaml</code></pre>
 </div>
@@ -301,9 +301,9 @@ Replace <em>&lt;clusterID&gt;</em> and <em>&lt;your_user&gt;</em> in the followi
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: day-2-sno-&lt;clusterID&gt;
@@ -397,7 +397,7 @@ Learn more about <a href="https://docs.openshift.com/container-platform/4.17/aut
 <div class="paragraph">
 <p>Go to your working branch in the <a href="https://github.com/alvarolop/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and create a file called <strong>values-oauth.yaml</strong>:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 vi values-oauth.yaml</code></pre>
@@ -425,9 +425,9 @@ vi values-oauth.yaml</code></pre>
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oauth:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">oauth:
   enabled: true # Enable dependency
   keycloak: # Update chart values
     clientid: myclient-&lt;clusterID&gt;
@@ -502,7 +502,7 @@ vi values-oauth.yaml</code></pre>
 <div class="paragraph">
 <p>Once the <em>values-oauth.yaml</em> exists in your repository, push it and create a new Application in the <em>argocd-infra</em> instance:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
@@ -539,9 +539,9 @@ git push origin sno-&lt;clusterID&gt;</code></pre>
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: sno-&lt;clusterID&gt;-oauth
@@ -621,12 +621,12 @@ Learn more about <a href="https://argo-cd.readthedocs.io/en/stable/user-guide/re
 <div class="paragraph">
 <p>Once every resource is deployed, verify <em>authentication cluster operator</em> is <em>OK</em>:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get co</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">NAME                                       VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
 authentication                             4.17.19   True        False         False      2d7h
@@ -667,7 +667,7 @@ storage                                    4.17.19   True        False         F
 <div class="paragraph">
 <p>Take a look also to the <em>YAML</em> definition:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get oauth cluster -o yaml</code></pre>
 </div>
@@ -761,16 +761,19 @@ storage                                    4.17.19   True        False         F
 <div class="paragraph">
 <p>Once authentication is configured, we are going to deploy some operators. Operators Helm charts use <em>range values</em> so we can define as many operators as we want on <em>values</em> section.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cat ~/helm-infra-gitops-workshop/charts/operators/templates/operators/subscription.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="paragraph">
+<p>You should see a <code>range</code> loop like this:</p>
+</div>
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">...
-{{- range $key, $val := $.Values.operators }}
-...</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
+  {{- range $key, $val := $.Values.operators }}
+# ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -779,15 +782,15 @@ storage                                    4.17.19   True        False         F
 <div class="paragraph">
 <p>Go to your working branch in the <a href="https://github.com/alvarolop/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and create a file called <strong>values-operators.yaml</strong>:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 vi values-operators.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">operators:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">operators:
   enabled: true
   operators:
     tekton:
@@ -809,7 +812,7 @@ vi values-operators.yaml</code></pre>
 <div class="paragraph">
 <p>Once the <em>values-operators.yaml</em> exists in your repository, push it and create a new Application in the <em>argocd-infra</em> instance:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
@@ -843,9 +846,9 @@ git push origin sno-&lt;clusterID&gt;</code></pre>
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: sno-&lt;clusterID&gt;-operators
@@ -935,9 +938,9 @@ spec:
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: sno-&lt;clusterID&gt;-bookinfo
@@ -987,15 +990,15 @@ spec:
 <div class="paragraph">
 <p>Take a look to the <em>Network Policy</em> Helm chart:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 cat charts/namespace/templates/app/network-policy.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">{{- if $.Values.global.render -}}
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">{{- if $.Values.global.render -}}
 {{- if $.Values.networkpolicy.enabled -}}
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
@@ -1015,15 +1018,15 @@ spec:
 <div class="paragraph">
 <p>Go to your working branch in the <a href="https://github.com/alvarolop/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and create a file called <strong>values-namespace.yaml</strong>:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 vi values-namespace.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">namespace:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">namespace:
   enabled: true #Enable dependency
   networkpolicy:
     enabled: true</code></pre>
@@ -1032,7 +1035,7 @@ vi values-namespace.yaml</code></pre>
 <div class="paragraph">
 <p>Once the <em>values-namespace.yaml</em> exists in your repository, push it and create a new Application in the <em>argocd-infra</em> instance:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
@@ -1066,9 +1069,9 @@ git push origin sno-&lt;clusterID&gt;</code></pre>
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: sno-&lt;clusterID&gt;-namespace
@@ -1123,9 +1126,9 @@ spec:
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: sno-&lt;clusterID&gt;-app
@@ -1158,21 +1161,21 @@ spec:
 <div class="paragraph">
 <p>Once you update the Application you want be able to create more than <em>4 pods</em> in namespace <em>app</em>. Try to update replicas to <em>5</em> in <em>Deployment</em> to see if <em>quota</em> has been correctly applied by Argo.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 vi charts/app/values.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">app:
-...
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">app:
+# ...
   replicas: 5
-...</code></pre>
+# ...</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
@@ -1192,21 +1195,21 @@ git push origin sno-&lt;clusterID&gt;</code></pre>
 <div class="paragraph">
 <p>Deployment never progess to <em>5 replicas</em>, and Argo stays in <em>Progressing</em> trying to reconcile a not allowed values of replicas. Finally <strong>set it back to <em>1 replica</em></strong>.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 vi charts/app/values.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">app:
-...
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">app:
+# ...
   replicas: 1
-...</code></pre>
+# ...</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
@@ -1229,7 +1232,7 @@ Replace &lt;clusterID&gt; and &lt;domain&gt; when needed.
 </tr>
 </table>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get route back-springboot -n app</code></pre>
 </div>
@@ -1243,23 +1246,23 @@ Replace &lt;clusterID&gt; and &lt;domain&gt; when needed.
 <div class="paragraph">
 <p>Then disable <em>Network Policy</em> and verify how you have traffic access:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 vi values-namespace.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">...
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
 namespace:
-  enabled: true #Enable dependency
+  enabled: true # Enable dependency
   networkpolicy:
     enabled: false
-...</code></pre>
+# ...</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
@@ -1304,22 +1307,22 @@ Take a look to the <a href="https://docs.openshift.com/container-platform/4.17/o
 <div class="paragraph">
 <p>Go to your working branch in the <a href="https://github.com/alvarolop/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository and create a file called <strong>values-monitoring.yaml</strong>:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 vi values-monitoring.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">monitoring:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">monitoring:
   enabled: true #Enable dependency</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Once the <em>values-monitoring.yaml</em> exists in your repository, push it and create a new Application in the <em>argocd-infra</em> instance:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 git add .
@@ -1353,9 +1356,9 @@ git push origin sno-&lt;clusterID&gt;</code></pre>
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: sno-&lt;clusterID&gt;-monitoring
@@ -1435,7 +1438,7 @@ Please pay special attention to alerting best practices included in the followin
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-As prerequisite make sure you have deployed the <strong>Vault application</strong> listed at the end of <strong><em>3.2 Helm Charts subsection</em></strong>.
+As prerequisite make sure you have deployed the <strong>Vault application</strong> listed in section <strong><em>3.4 Creating your first ArgoCD Apps application</em></strong>.
 </td>
 </tr>
 </table>
@@ -1482,15 +1485,15 @@ As prerequisite make sure you have deployed the <strong>Vault application</stron
 <div class="paragraph">
 <p>ConfigMap <strong><em>cmp-plugin</em></strong> defines the plugin that will be mounted in the sidecar container:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc login -u admin -p &lt;pass&gt; <a href="https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;:6443" class="bare">https://api.sno-&lt;clusterID&gt;.&lt;domain&gt;:6443</a>
 oc get -n openshift-operators configmap cmp-plugin -o yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: v1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cmp-plugin #To be defined parameters
@@ -1529,14 +1532,14 @@ data:
 <div class="paragraph">
 <p>Secret <strong><em>argocd-vault-plugin-credentials</em></strong> defines Vault Server address, authentication type (<em>approle</em>) and role credentials:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get -n openshift-operators secret argocd-vault-plugin-credentials -o yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">kind: Secret
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">kind: Secret
 apiVersion: v1
 metadata:
   name: argocd-vault-plugin-credentials #To be defined parameters
@@ -1563,7 +1566,7 @@ Here you can take a look to several <a href="https://developer.hashicorp.com/vau
 </table>
 </div>
 <div class="paragraph">
-<p>Then it is necessary to configure using this plugin on ArgoCD:</p>
+<p>Then, it is necessary to configure using this plugin on ArgoCD:</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -1580,9 +1583,9 @@ In this case, this configuration is already running on your cluster.
 <div class="paragraph">
 <p>Take a look to the configuration applied by the Application <em>sno-&lt;clusterID&gt;-bootstrap on your sno  _argocd-infra</em> instance where those resources have been already created as part of <em>bootstrapping</em>. Do not make any change.</p>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">...
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
   repo:
     resources:
       limits:
@@ -1652,7 +1655,7 @@ In this case, this configuration is already running on your cluster.
       - args:
           - &gt;-
             wget -O /custom-tools/argocd-vault-plugin
-            <a href="https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64" class="bare">https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64</a>
+            <a href="https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v$AVP_VERSION/argocd-vault-plugin_$AVP_VERSION_linux_amd64" class="bare">https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v$AVP_VERSION/argocd-vault-plugin_$AVP_VERSION_linux_amd64</a>
             &amp;&amp; chmod +x /custom-tools/argocd-vault-plugin &amp;&amp; ls -la
             /custom-tools/
         command:
@@ -1673,7 +1676,7 @@ In this case, this configuration is already running on your cluster.
       generate:
         command: ["argocd-vault-plugin"]
         args: ["generate", "./"]
-...</code></pre>
+# ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1682,18 +1685,18 @@ In this case, this configuration is already running on your cluster.
 <div class="paragraph">
 <p>In the <a href="https://github.com/alvarolop/helm-infra-gitops-workshop">helm-infra-gitops-workshop</a> repository, you can find a <em>secret</em> using a Vault placeholder in <em>charts/vault/values.yaml</em>:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/helm-infra-gitops-workshop
 cat charts/vault/values.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">...
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
   placeholder: "&lt;password | base64encode&gt;"
   path: "kv-v2/data/demo"
-...</code></pre>
+# ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1731,7 +1734,7 @@ cat charts/vault/values.yaml</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This modification applies to <strong>Vault application</strong> deployed at the end of <strong><em>3.2 Helm Charts subsection</em></strong>.
+This modification applies to <strong>Vault application</strong> deployed at the end of <strong><em>3.4 Creating your first ArgoCD Apps application</em></strong>.
 </td>
 </tr>
 </table>
@@ -1755,9 +1758,9 @@ Replace only the plugin section. And change <em>&lt;your_user&gt;</em> for your 
 </tr>
 </table>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">...
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
   source:
     repoURL: 'https://github.com/&lt;your_user&gt;/helm-infra-gitops-workshop.git'
     path: .
@@ -1767,7 +1770,7 @@ Replace only the plugin section. And change <em>&lt;your_user&gt;</em> for your 
         - name: HELM_VALUES
           value: &gt;-
             --set vault.enabled=true
-...</code></pre>
+# ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1790,13 +1793,13 @@ If you do not need to pass any values you can simply invoke <strong>"plugin: {}"
 <p>After applying this new application, it will be <em>Out of Sync</em> for some seconds. Once it is <em>Synced</em>, navigate to your OpenShift <em>SNO</em> and verify Vault has replaced secret data properly.
 You can try to delete it and see how it is created.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get route vault -n vault-secrets
 curl vault-vault-secrets.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">The password value is: cGFzc3dvcmQxMjM=</code></pre>
 </div>
@@ -1823,7 +1826,7 @@ curl vault-vault-secrets.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</code></pre>
 <div class="paragraph">
 <p>Checkout to <strong>main-day2</strong> branch in this <a href="https://github.com/alvarolop/workshop-gitops-content-deploy">workshop-gitops-content-deploy</a> repository to take a look:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 git checkout main-day2</code></pre>
@@ -1845,16 +1848,15 @@ git checkout main-day2</code></pre>
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 vi cluster-addons/cluster-addons-as/day2-sno-as.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">---
-apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: day2-sno-&lt;clusterID&gt;
@@ -1907,7 +1909,7 @@ spec:
 <div class="paragraph">
 <p>Save and commit your last changes:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">git add .
 git commit -m "wip"</code></pre>
@@ -1916,7 +1918,7 @@ git commit -m "wip"</code></pre>
 <div class="paragraph">
 <p>Go back to your working branch <strong><em>sno-&lt;clusterID&gt;-setup</em></strong> and merge it with <strong>main-day2</strong> branch.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 git checkout sno-&lt;clusterID&gt;-setup
@@ -1972,15 +1974,15 @@ Tools as <em>Visual Code Studio</em> can make this step easier, if you are not a
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 vi cluster-addons/day2-as/application-set-day2.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: day2-as-sno-&lt;clusterID&gt;
@@ -2016,7 +2018,7 @@ spec:
 <div class="paragraph">
 <p>Then push to your changes to working branch <strong><em>sno-&lt;clusterID&gt;-setup</em></strong>.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 git add .

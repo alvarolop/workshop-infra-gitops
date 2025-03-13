@@ -250,15 +250,15 @@ You will be able to connect to both <em>Argo Hub</em> and <em>managed</em> clust
 <div class="paragraph">
 <p>Replace XX values of the <strong><em>OCP_USER</em></strong>, <strong><em>OCP_SNO_API</em></strong>, and <strong><em>OCP_SNO_CONSOLE</em></strong> with the values provided by the instructor at the beginning of this workshop. After that, keep those variables at hand and present every time that you execute commands in your terminal.</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">OCP_USER=userXX
 OCP_PASS=redhat
-DOMAIN=sandbox2414.opentlc.com
-OCP_HUB_API=https://api.argo-hub.sandbox2414.opentlc.com:6443
-OCP_HUB_CONSOLE=https://console-openshift-console.apps.argo-hub.sandbox2414.opentlc.com
-OCP_SNO_API=https://api.sno-XX.sandbox2414.opentlc.com:6443
-OCP_SNO_CONSOLE=https://console-openshift-console.apps.sno-XX.sandbox2414.opentlc.com</code></pre>
+DOMAIN=sandboxXXXX.opentlc.com
+OCP_HUB_API=https://api.argo-hub.sandboxXXXX.opentlc.com:6443
+OCP_HUB_CONSOLE=https://console-openshift-console.apps.argo-hub.sandboxXXXX.opentlc.com
+OCP_SNO_API=https://api.sno-XX.sandboxXXXX.opentlc.com:6443
+OCP_SNO_CONSOLE=https://console-openshift-console.apps.sno-XX.sandboxXXXX.opentlc.com</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -283,7 +283,7 @@ OCP_SNO_CONSOLE=https://console-openshift-console.apps.sno-XX.sandbox2414.opentl
 <div class="paragraph">
 <p>Let&#8217;s start logging in to <strong><em>Argo Hub</em></strong> cluster API:</p>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc login -u $OCP_USER -p $OCP_PASS $OCP_HUB_API</code></pre>
 </div>
@@ -457,16 +457,16 @@ As this configuration is already deployed you do not need to make any change, on
 </li>
 </ul>
 </div>
-<div class="listingblock lines_7 console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">cd ~/workshop-gitops-content-deploy
 git checkout setup-sno
 cat global-config/bootstrap-a/hub-setup-a.yaml</code></pre>
 </div>
 </div>
-<div class="listingblock lines_7 console-output">
+<div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">apiVersion: argoproj.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: hub-setup
