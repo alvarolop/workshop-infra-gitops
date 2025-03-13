@@ -102,6 +102,12 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#helmcharts">3.2. Helm Charts</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#triggergitops">3.3 Trigger the GitOps configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#vaultapp">3.4 Creating your first ArgoCD Apps application</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -1124,11 +1130,17 @@ git commit -m "bootstrap application for SNO"
 git push origin sno-&lt;clusterID&gt;-setup</code></pre>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="triggergitops"><a class="anchor" href="#triggergitops"></a>3.3 Trigger the GitOps configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Login to <em>argocd</em> instance in <em>Argo Hub</em> (<a href="https://argocd-server-openshift-operators.apps.argo-hub.&lt;domain&gt;" class="bare">https://argocd-server-openshift-operators.apps.argo-hub.&lt;domain&gt;</a>)</p>
+</div>
 <div class="ulist">
 <ul>
-<li>
-<p>Now login to <em>argocd</em> instance in <em>Argo Hub</em> (<a href="https://argocd-server-openshift-operators.apps.argo-hub.&lt;domain&gt;" class="bare">https://argocd-server-openshift-operators.apps.argo-hub.&lt;domain&gt;</a>)</p>
-</li>
 <li>
 <p>Click <strong><em>LOG IN VIA OPENSHIFT</em></strong>.</p>
 </li>
@@ -1167,7 +1179,7 @@ git push origin sno-&lt;clusterID&gt;-setup</code></pre>
 <div class="title">Figure 11. argocd instance log in</div>
 </div>
 <div class="paragraph">
-<p>To create bootstrap application, once logged in, click on:</p>
+<p>To create the bootstrap application, click on:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1439,8 +1451,13 @@ Remember to use your &lt;clusterID&gt; and &lt;domain&gt;.
 <img src="_images/projects.png" alt="projects">
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vaultapp"><a class="anchor" href="#vaultapp"></a>3.4 Creating your first ArgoCD Apps application</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Verify you can create apliations on <em>'Dev'</em> project for <em>argocd-apps</em> instance.</p>
+<p>Verify you can create applications on <em>'Dev'</em> project for <em>argocd-apps</em> instance.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -1543,7 +1560,6 @@ curl vault-vault-secrets.apps.sno-&lt;clusterID&gt;.&lt;domain&gt;</code></pre>
 <p>Login the <em>argocd-apps</em> instance as user <code>apimanager01</code> and <code>&lt;pass&gt;</code> (api-manager) and verify you do not have permissions to see apps on <em>'dev'</em> project.</p>
 </li>
 </ul>
-</div>
 </div>
 </div>
 </div>
